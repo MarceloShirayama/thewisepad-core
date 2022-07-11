@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */
-    "target": "es2019",
+    "target": "es2021",
     "allowJs": true,
     "module": "commonjs",
     "sourceMap": true,

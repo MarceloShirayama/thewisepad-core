@@ -1,5 +1,1 @@
-import { randomUUID } from 'crypto'
-
-const random = randomUUID()
-
-console.log(random)
+import './config/module-alias'
