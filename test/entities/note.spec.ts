@@ -7,9 +7,13 @@ describe('Note entity', () => {
   it('Should be created with a valid title and owner', () => {
     const validTitle = 'my note'
     const validEmail = 'my@mail.com'
+    const validPassword = 'valid_password'
     const validContent = 'my content'
 
-    const validOwner: User = User.create({ email: validEmail }).value as User
+    const validOwner: User = User.create({
+      email: validEmail,
+      password: validPassword
+    }).value as User
 
     const note: Note = Note.create(validOwner, validTitle, validContent)
       .value as Note
@@ -23,9 +27,13 @@ describe('Note entity', () => {
     const invalidTitle2 = ''
     const invalidTitle3 = '12'
     const validEmail = 'my@mail.com'
+    const validPassword = 'valid_password'
     const validContent = 'my content'
 
-    const validOwner: User = User.create({ email: validEmail }).value as User
+    const validOwner: User = User.create({
+      email: validEmail,
+      password: validPassword
+    }).value as User
 
     expect(Note.create(validOwner, invalidTitle1, validContent).isLeft()).toBe(
       true
