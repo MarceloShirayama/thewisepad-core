@@ -11,6 +11,7 @@ export class Note {
     this._owner = owner
     this._title = title
     this._content = content
+    Object.freeze(this)
   }
 
   get title(): Title {
