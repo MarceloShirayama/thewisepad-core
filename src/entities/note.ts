@@ -11,11 +11,11 @@ export class Note {
     this._owner = owner
   }
 
-  get Title(): Title {
+  get title(): Title {
     return this._title
   }
 
-  get Owner(): User {
+  get owner(): User {
     return this._owner
   }
 
