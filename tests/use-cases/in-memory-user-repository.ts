@@ -8,12 +8,16 @@ export class InMemoryUserRepository implements UserRepository {
     this._data = data
   }
 
+  public get data(): UserData[] {
+    return this._data
+  }
+
   async findAllUsers(): Promise<UserData[]> {
     return this._data
   }
 
   async findUserByEmail(email: string): Promise<UserData> {
-    const user = this._data.find((user) => user.email === email)
+    const user = this.data.find((user) => user.email === email)
 
     if (!user) {
       throw new Error('User not found')
@@ -22,7 +26,7 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async addUser(userData: UserData): Promise<UserData> {
-    this._data.push(userData)
+    this.data.push(userData)
 
     return userData
   }
