@@ -1,9 +1,9 @@
 import { UserData } from '@/entities/user-data'
 import { UserRepository } from '@/use-cases/ports/user-repository'
-import { Signup } from '@/use-cases/signup'
 import { Encoder } from '@/use-cases/signup/ports/encoder'
-import { InMemoryUserRepository } from './in-memory-user-repository'
-import { FakeEncoder } from './signup/fake-encoder'
+import { Signup } from '@/use-cases/signup/signup'
+import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { FakeEncoder } from './fake-encoder'
 
 const validEmail = 'valid@mail.com'
 const validPassword = 'valid-password_1'
