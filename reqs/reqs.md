@@ -4,6 +4,7 @@
 
 - [ ] add password to user
 - [ ] validate password (needs to be at least 6 char long and contain a number)
+- [ ] make all classes immutable
 
 ### Use Cases
 

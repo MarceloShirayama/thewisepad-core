@@ -6,6 +6,7 @@ export class Password {
 
   constructor(password: string) {
     this._value = password
+    Object.freeze(this)
   }
 
   get value(): string {
