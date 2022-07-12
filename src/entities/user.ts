@@ -7,13 +7,19 @@ import { UserData } from './user-data'
 
 export class User {
   private readonly _email: Email
+  private readonly _password: Password
 
-  private constructor(email: Email) {
+  private constructor(email: Email, password: Password) {
     this._email = email
+    this._password = password
   }
 
   get email(): Email {
     return this._email
+  }
+
+  get password(): Password {
+    return this._password
   }
 
   public static create(
@@ -29,10 +35,12 @@ export class User {
 
     const passwordOrError = Password.create(userData.password)
 
+    const password: Password = passwordOrError.value as Password
+
     if (passwordOrError.isLeft()) {
       return left(new InvalidPasswordError(userData.password))
     }
 
-    return right(new User(email))
+    return right(new User(email, password))
   }
 }
