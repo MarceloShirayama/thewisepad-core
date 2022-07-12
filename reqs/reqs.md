@@ -2,9 +2,10 @@
 
 ### Tasks
 
-- [ ] add password to user
-- [ ] validate password (needs to be at least 6 char long and contain a number)
-- [ ] make all objects of entity classes immutable
+- [x] add password to user
+- [x] validate password (needs to be at least 6 char long and contain a number)
+- [x] make all objects of entity classes immutable
+- [ ] implement error paths in sing-up use case
 
 ### Use Cases
 
