@@ -22,6 +22,16 @@ describe('User domain entity', () => {
     expect(error).toEqual(left(new InvalidPasswordError(invalidPassword)))
   })
 
+  it('Should not create user with invalid password (too few chars)', () => {
+    const validEmail = 'valid@mail.com'
+    const invalidPassword = '123ab'
+
+    const error = User.create({ email: validEmail, password: invalidPassword })
+
+    expect(error.isLeft()).toBe(true)
+    expect(error).toEqual(left(new InvalidPasswordError(invalidPassword)))
+  })
+
   it('Should create user with valid data', () => {
     const validEmail = 'any@mail.com'
     const validPassword = 'valid_password_1'
