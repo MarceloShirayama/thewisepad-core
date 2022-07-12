@@ -40,8 +40,6 @@ describe('User domain entity', () => {
       password: validPassword
     }).value as User
 
-    console.log({ user })
-
     expect(user.email.value).toBe(validEmail)
   })
 })
