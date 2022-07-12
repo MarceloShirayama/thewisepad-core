@@ -1,6 +1,6 @@
 export class InvalidTitleError extends Error {
-  constructor(message: string) {
-    super(message)
+  constructor(email: string) {
+    super(`Invalid title: ${email}.`)
     this.name = 'InvalidTitleError'
   }
 }

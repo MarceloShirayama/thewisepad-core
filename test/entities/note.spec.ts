@@ -1,3 +1,4 @@
+import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
 import { Note } from '@/entities/note'
 import { User } from '@/entities/user'
 import { left } from '@/shared/either'
@@ -30,19 +31,19 @@ describe('Note entity', () => {
       true
     )
     expect(Note.create(validOwner, invalidTitle1, validContent)).toEqual(
-      left(new Error(`Invalid title: ${invalidTitle1}`))
+      left(new InvalidTitleError(invalidTitle1))
     )
     expect(Note.create(validOwner, invalidTitle2, validContent).isLeft()).toBe(
       true
     )
     expect(Note.create(validOwner, invalidTitle2, validContent)).toEqual(
-      left(new Error(`Invalid title: ${invalidTitle2}`))
+      left(new InvalidTitleError(invalidTitle2))
     )
     expect(Note.create(validOwner, invalidTitle3, validContent).isLeft()).toBe(
       true
     )
     expect(Note.create(validOwner, invalidTitle3, validContent)).toEqual(
-      left(new Error(`Invalid title: ${invalidTitle3}`))
+      left(new InvalidTitleError(invalidTitle3))
     )
   })
 })

@@ -8,9 +8,7 @@ describe('User domain entity', () => {
     const error = User.create({ email: invalidEmail })
 
     expect(error.isLeft()).toBe(true)
-    expect(error).toEqual(
-      left(new InvalidEmailError(`Invalid email: ${invalidEmail}`))
-    )
+    expect(error).toEqual(left(new InvalidEmailError(invalidEmail)))
   })
 
   it('Should create user with valid data', () => {

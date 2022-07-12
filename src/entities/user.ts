@@ -18,7 +18,7 @@ export class User {
     const emailOrError = Email.create(userData.email)
 
     if (emailOrError.isLeft()) {
-      return left(new InvalidEmailError(emailOrError.value.message))
+      return left(new InvalidEmailError(userData.email))
     }
 
     const email: Email = emailOrError.value

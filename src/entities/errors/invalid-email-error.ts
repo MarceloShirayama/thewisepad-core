@@ -1,6 +1,6 @@
 export class InvalidEmailError extends Error {
-  constructor(message: string) {
-    super(message)
+  constructor(email: string) {
+    super(`Invalid email: ${email}.`)
     this.name = 'InvalidEmailError'
   }
 }
