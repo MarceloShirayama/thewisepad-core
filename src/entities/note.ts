@@ -5,10 +5,12 @@ import { User } from './user'
 export class Note {
   private readonly _title: Title
   private readonly _owner: User
+  private readonly _content: string
 
-  private constructor(title: Title, owner: User) {
-    this._title = title
+  private constructor(owner: User, title: Title, content: string) {
     this._owner = owner
+    this._title = title
+    this._content = content
   }
 
   get title(): Title {
@@ -19,7 +21,15 @@ export class Note {
     return this._owner
   }
 
-  public static create(title: string, owner: User): Either<Error, Note> {
+  get content(): string {
+    return this._content
+  }
+
+  public static create(
+    owner: User,
+    title: string,
+    content: string
+  ): Either<Error, Note> {
     const titleOrError = Title.create(title)
 
     if (titleOrError.isLeft()) {
@@ -28,6 +38,6 @@ export class Note {
 
     const newTitle: Title = titleOrError.value
 
-    return right(new Note(newTitle, owner))
+    return right(new Note(owner, newTitle, content))
   }
 }
