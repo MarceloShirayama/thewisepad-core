@@ -8,8 +8,9 @@
 
 ### Use Cases
 
-- [ ] create user
+- [ ] sign-up
+- [ ] sign-in
+- [ ] load notes for a user
 - [ ] create note
 - [ ] update note
 - [ ] delete note
-- [ ] login
