@@ -7,7 +7,7 @@ describe('Note entity', () => {
   it('Should be created with a valid title and owner', () => {
     const validTitle = 'my note'
     const validEmail = 'my@mail.com'
-    const validPassword = 'valid_password'
+    const validPassword = 'valid_password_1'
     const validContent = 'my content'
 
     const validOwner: User = User.create({
@@ -27,7 +27,7 @@ describe('Note entity', () => {
     const invalidTitle2 = ''
     const invalidTitle3 = '12'
     const validEmail = 'my@mail.com'
-    const validPassword = 'valid_password'
+    const validPassword = 'valid_password_1'
     const validContent = 'my content'
 
     const validOwner: User = User.create({
