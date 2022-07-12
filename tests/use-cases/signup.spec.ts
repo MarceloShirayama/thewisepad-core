@@ -1,0 +1,33 @@
+import { UserData } from '@/entities/user-data'
+import { UserRepository } from '@/use-cases/ports/user-repository'
+import { Signup } from '@/use-cases/signup'
+import { Encoder } from '@/use-cases/signup/ports/encoder'
+import { InMemoryUserRepository } from './in-memory-user-repository'
+import { FakeEncoder } from './signup/fake-encoder'
+
+describe('Signup use case', () => {
+  it('Should signup user with valid data', async () => {
+    const validEmail = 'valid@mail.com'
+    const validPassword = 'valid-password_1'
+    const userSignupRequest: UserData = {
+      email: validEmail,
+      password: validPassword
+    }
+
+    const userRepository: UserRepository = new InMemoryUserRepository([])
+
+    const encoder: Encoder = new FakeEncoder()
+
+    const useCase: Signup = new Signup(userRepository, encoder)
+
+    const userSignupResponse: UserData = await useCase.perform(
+      userSignupRequest
+    )
+
+    expect(userSignupResponse).toEqual(userSignupRequest)
+    expect((await userRepository.findAllUsers()).length).toBe(1)
+    expect((await userRepository.findUserByEmail(validEmail)).password).toBe(
+      validPassword + 'ENCRYPTED'
+    )
+  })
+})
