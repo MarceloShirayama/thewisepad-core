@@ -32,7 +32,7 @@ export class Signup {
       userSignupRequest.email
     )
 
-    if (user !== null) {
+    if (user) {
       return left(new ExistingUserError(userSignupRequest))
     }
 
