@@ -35,23 +35,12 @@ describe('Note entity', () => {
       password: validPassword
     }).value as User
 
-    expect(Note.create(validOwner, invalidTitle1, validContent).isLeft()).toBe(
-      true
-    )
-    expect(Note.create(validOwner, invalidTitle1, validContent)).toEqual(
-      left(new InvalidTitleError(invalidTitle1))
-    )
-    expect(Note.create(validOwner, invalidTitle2, validContent).isLeft()).toBe(
-      true
-    )
-    expect(Note.create(validOwner, invalidTitle2, validContent)).toEqual(
-      left(new InvalidTitleError(invalidTitle2))
-    )
-    expect(Note.create(validOwner, invalidTitle3, validContent).isLeft()).toBe(
-      true
-    )
-    expect(Note.create(validOwner, invalidTitle3, validContent)).toEqual(
-      left(new InvalidTitleError(invalidTitle3))
-    )
+    const error1 = Note.create(validOwner, invalidTitle1, validContent)
+    const error2 = Note.create(validOwner, invalidTitle2, validContent)
+    const error3 = Note.create(validOwner, invalidTitle3, validContent)
+
+    expect(error1).toEqual(left(new InvalidTitleError(invalidTitle1)))
+    expect(error2).toEqual(left(new InvalidTitleError(invalidTitle2)))
+    expect(error3).toEqual(left(new InvalidTitleError(invalidTitle3)))
   })
 })
