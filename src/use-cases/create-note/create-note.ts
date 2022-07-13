@@ -1,7 +1,9 @@
+import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
 import { Note } from '@/entities/note'
 import { User } from '@/entities/user'
 import { Either, left, right } from '@/shared/either'
 import { UserRepository } from '../ports/user-repository'
+import { ExistingTitleError } from './errors/existing-title-error'
 import { UnregisteredOwnerError } from './errors/invalid-owner-error'
 import { NoteData } from './note-data'
 import { NoteRepository } from './ports/note-repository'
@@ -25,7 +27,12 @@ export class CreateNote {
 
   public async perform(
     request: NoteData
-  ): Promise<Either<UnregisteredOwnerError, NoteData>> {
+  ): Promise<
+    Either<
+      UnregisteredOwnerError | ExistingTitleError | InvalidTitleError,
+      NoteData
+    >
+  > {
     const owner = await this.userRepository.findUserByEmail(
       request.ownerEmail as string
     )
@@ -34,11 +41,19 @@ export class CreateNote {
       return left(new UnregisteredOwnerError())
     }
 
-    const note = Note.create(
+    const noteOrError = Note.create(
       User.create(owner).value as User,
       request.title,
       request.content
-    ).value as Note
+    )
+
+    if (noteOrError.isLeft()) {
+      return left(noteOrError.value)
+    }
+
+    console.log({ note: noteOrError.value })
+
+    const note: Note = noteOrError.value
 
     const newNote = await this.noteRepository.addNote({
       title: note.title.value,
