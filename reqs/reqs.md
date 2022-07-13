@@ -6,7 +6,7 @@
 - [x] validate password (needs to be at least 6 char long and contain a number)
 - [x] make all objects of entity classes immutable
 - [ ] implement error paths in sing-up use case
-  - [ ] should not add existing user
+  - [x] should not add existing user
   - [ ] should handle data validation (email, password)
 
 ### Use Cases
