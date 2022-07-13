@@ -19,7 +19,7 @@ export class InMemoryNoteRepository implements NoteRepository {
     return note
   }
 
-  async finAllNotesFrom(userId: string): Promise<NoteData[]> {
+  async findAllNotesFrom(userId: string): Promise<NoteData[]> {
     return this.data.filter((note) => note.ownerId === userId)
   }
 }
