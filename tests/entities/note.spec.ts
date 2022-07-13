@@ -39,8 +39,8 @@ describe('Note entity', () => {
     const error2 = Note.create(validOwner, invalidTitle2, validContent)
     const error3 = Note.create(validOwner, invalidTitle3, validContent)
 
-    expect(error1).toEqual(left(new InvalidTitleError(invalidTitle1)))
-    expect(error2).toEqual(left(new InvalidTitleError(invalidTitle2)))
-    expect(error3).toEqual(left(new InvalidTitleError(invalidTitle3)))
+    expect(error1).toEqual(left(new InvalidTitleError()))
+    expect(error2).toEqual(left(new InvalidTitleError()))
+    expect(error3).toEqual(left(new InvalidTitleError()))
   })
 })
