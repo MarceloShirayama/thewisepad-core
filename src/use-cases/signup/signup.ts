@@ -24,10 +24,6 @@ export class Signup {
   public async perform(
     userSignupRequest: UserData
   ): Promise<Either<ExistingUserError, UserData>> {
-    const encodedPassword = await this.encoder.encode(
-      userSignupRequest.password
-    )
-
     const user = await this.userRepository.findUserByEmail(
       userSignupRequest.email
     )
@@ -35,6 +31,10 @@ export class Signup {
     if (user) {
       return left(new ExistingUserError(userSignupRequest))
     }
+
+    const encodedPassword = await this.encoder.encode(
+      userSignupRequest.password
+    )
 
     this.userRepository.addUser({
       email: userSignupRequest.email,
