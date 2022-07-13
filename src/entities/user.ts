@@ -39,7 +39,7 @@ export class User {
     const password: Password = passwordOrError.value as Password
 
     if (passwordOrError.isLeft()) {
-      return left(new InvalidPasswordError(userData.password))
+      return left(new InvalidPasswordError())
     }
 
     return right(new User(email, password))

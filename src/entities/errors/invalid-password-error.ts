@@ -1,5 +1,5 @@
 export class InvalidPasswordError extends Error {
-  constructor(public readonly password: string) {
+  constructor() {
     super('Invalid password')
     this.name = 'InvalidPasswordError'
   }

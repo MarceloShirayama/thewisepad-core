@@ -25,9 +25,7 @@ describe('User domain entity', () => {
     })
 
     expect(error.isLeft()).toBe(true)
-    expect(error).toEqual(
-      left(new InvalidPasswordError(invalidPasswordWithoutNumbers))
-    )
+    expect(error).toEqual(left(new InvalidPasswordError()))
   })
 
   it('Should not create user with invalid password (too few chars)', () => {
@@ -37,9 +35,7 @@ describe('User domain entity', () => {
     })
 
     expect(error.isLeft()).toBe(true)
-    expect(error).toEqual(
-      left(new InvalidPasswordError(invalidPasswordWithTooFewCharacters))
-    )
+    expect(error).toEqual(left(new InvalidPasswordError()))
   })
 
   it('Should create user with valid data', () => {

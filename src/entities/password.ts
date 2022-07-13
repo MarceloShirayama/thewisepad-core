@@ -17,7 +17,7 @@ export class Password {
     password: string
   ): Either<InvalidPasswordError, Password> {
     if (!Password.validate(password)) {
-      return left(new InvalidPasswordError(password))
+      return left(new InvalidPasswordError())
     }
 
     return right(new Password(password))
