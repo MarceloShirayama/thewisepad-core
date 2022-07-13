@@ -1,5 +1,8 @@
+import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
 import { UserData } from '@/entities/user-data'
+import { left } from '@/shared/either'
 import { CreateNote } from '@/use-cases/create-note/create-note'
+import { ExistingTitleError } from '@/use-cases/create-note/errors/existing-title-error'
 import { UnregisteredOwnerError } from '@/use-cases/create-note/errors/invalid-owner-error'
 import { NoteData } from '@/use-cases/create-note/note-data'
 import { NoteRepository } from '@/use-cases/create-note/ports/note-repository'
@@ -12,6 +15,7 @@ describe('Create note use case', () => {
   const unregisteredEmail = 'other@mail.com'
   const validPassword = 'valid_password_1'
   const validTitle = 'valid note'
+  const invalidTitle = ''
   const emptyContent = ''
   const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
   const validRegisteredUser: UserData = {
@@ -40,6 +44,12 @@ describe('Create note use case', () => {
     title: validTitle,
     content: emptyContent,
     ownerEmail: unregisteredUser.email
+  }
+
+  const createNoteRequestWithInvalidTitle: NoteData = {
+    title: invalidTitle,
+    content: emptyContent,
+    ownerEmail: validRegisteredUser.email
   }
 
   it('Should create note with valid user and title', async () => {
@@ -76,5 +86,30 @@ describe('Create note use case', () => {
     expect(response.value).toBeInstanceOf(UnregisteredOwnerError)
     expect((response.value as Error).name).toBe('UnregisteredOwnerError')
     expect(response.value).toEqual(new UnregisteredOwnerError())
+  })
+
+  it('Should not create note with invalid title', async () => {
+    const useCase = new CreateNote(
+      emptyNoteRepository,
+      singleUserUserRepository
+    )
+
+    const response = await useCase.perform(createNoteRequestWithInvalidTitle)
+
+    expect(response.value).toBeInstanceOf(InvalidTitleError)
+    expect((response.value as Error).name).toBe('InvalidTitleError')
+  })
+
+  it('Should not create note with existing title', async () => {
+    const useCase = new CreateNote(
+      emptyNoteRepository,
+      singleUserUserRepository
+    )
+
+    await useCase.perform(validCreateNoteRequest)
+
+    const response = await useCase.perform(validCreateNoteRequest)
+
+    expect(response).toEqual(left(new ExistingTitleError()))
   })
 })
