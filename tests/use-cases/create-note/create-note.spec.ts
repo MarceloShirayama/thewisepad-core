@@ -42,8 +42,6 @@ describe('Create note use case', () => {
       validRegisteredUser.id as string
     )
 
-    console.log({ addedNotes })
-
     expect(addedNotes.length).toBe(1)
     expect(addedNotes[0]).toMatchObject({
       title: validTitle,
