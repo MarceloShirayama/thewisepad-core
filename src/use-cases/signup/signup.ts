@@ -50,11 +50,11 @@ export class Signup {
       userSignupRequest.password
     )
 
-    this.userRepository.addUser({
+    const newUser = await this.userRepository.addUser({
       email: userSignupRequest.email,
       password: encodedPassword
     })
 
-    return right(userSignupRequest)
+    return right(newUser)
   }
 }

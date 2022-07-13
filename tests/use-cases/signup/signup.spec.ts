@@ -46,8 +46,15 @@ describe('Signup use case', () => {
 
     const userSignupResponse = await sut.perform(validUserSignupRequest)
 
-    expect(userSignupResponse.value).toEqual(validUserSignupRequest)
-    expect((await emptyUserRepository.findAllUsers()).length).toEqual(1)
+    const userRepositoryLength = (await emptyUserRepository.findAllUsers())
+      .length
+
+    expect(userSignupResponse.value).toEqual({
+      id: (userRepositoryLength - 1).toString(),
+      email: validUserSignupRequest.email,
+      password: validUserSignupRequest.password + 'ENCRYPTED'
+    })
+    expect(userRepositoryLength).toEqual(1)
     expect(
       (await emptyUserRepository.findUserByEmail(validEmail)).password
     ).toEqual(validPassword + 'ENCRYPTED')
