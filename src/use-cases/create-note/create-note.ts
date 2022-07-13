@@ -51,7 +51,17 @@ export class CreateNote {
       return left(noteOrError.value)
     }
 
-    console.log({ note: noteOrError.value })
+    const ownerNotes: NoteData[] = await this.noteRepository.findAllNotesFrom(
+      owner.id as string
+    )
+
+    const existingTitle = ownerNotes.find(
+      (note) => note.title === request.title
+    )
+
+    if (existingTitle) {
+      return left(new ExistingTitleError())
+    }
 
     const note: Note = noteOrError.value
 
