@@ -3,9 +3,9 @@ import { InvalidPasswordError } from '@/entities/errors/invalid-password-error'
 import { User } from '@/entities/user'
 import { UserData } from '@/entities/user-data'
 import { Either, left, right } from '@/shared/either'
+import { Encoder } from '../ports/encoder'
 import { UserRepository } from '../ports/user-repository'
 import { ExistingUserError } from './errors/existing-user-error'
-import { Encoder } from './ports/encoder'
 
 export class Signup {
   private readonly _userRepository: UserRepository
