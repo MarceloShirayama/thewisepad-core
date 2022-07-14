@@ -18,4 +18,4 @@
 - update note
   - content
   - title
-- delete note
+- remove note ✅
