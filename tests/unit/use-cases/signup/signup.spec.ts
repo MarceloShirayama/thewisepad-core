@@ -8,39 +8,39 @@ import { Signup } from '@/use-cases/signup/signup'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
 import { FakeEncoder } from './fake-encoder'
 
-//  variables
-const validEmail = 'valid@mail.com'
-const invalidEmail = 'invalid_email'
-const validPassword = 'valid_password_1'
-const invalidPassword = '1abc'
-const validUserSignupRequest: UserData = {
-  email: validEmail,
-  password: validPassword
-}
-
-// repositories
-const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
-const userDataArrayWithSingleUser: UserData[] = new Array(
-  validUserSignupRequest
-)
-const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
-  userDataArrayWithSingleUser
-)
-
-// encoders
-const encoder: Encoder = new FakeEncoder()
-
-// Signup Use Case Data
-const userSignupRequestWithInvalidEmail: UserData = {
-  email: invalidEmail,
-  password: validPassword
-}
-const userSignupRequestWithInvalidPassword: UserData = {
-  email: validEmail,
-  password: invalidPassword
-}
-
 describe('Signup use case', () => {
+  //  variables
+  const validEmail = 'valid@mail.com'
+  const invalidEmail = 'invalid_email'
+  const validPassword = 'valid_password_1'
+  const invalidPassword = '1abc'
+  const validUserSignupRequest: UserData = {
+    email: validEmail,
+    password: validPassword
+  }
+
+  // repositories
+  const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
+  const userDataArrayWithSingleUser: UserData[] = new Array(
+    validUserSignupRequest
+  )
+  const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
+    userDataArrayWithSingleUser
+  )
+
+  // encoders
+  const encoder: Encoder = new FakeEncoder()
+
+  // Signup Use Case Data
+  const userSignupRequestWithInvalidEmail: UserData = {
+    email: invalidEmail,
+    password: validPassword
+  }
+  const userSignupRequestWithInvalidPassword: UserData = {
+    email: validEmail,
+    password: invalidPassword
+  }
+
   it('should signup user with valid data', async () => {
     const sut: Signup = new Signup(emptyUserRepository, encoder)
 
