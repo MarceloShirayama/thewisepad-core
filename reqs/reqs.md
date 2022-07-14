@@ -13,7 +13,7 @@
 
 - sign-up ✅
 - sign-in
-- load notes for a user
+- load notes for a user ✅
 - create note ✅
 - update note
   - content
