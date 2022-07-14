@@ -2,11 +2,11 @@ import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
 import { Note } from '@/entities/note'
 import { User } from '@/entities/user'
 import { Either, left, right } from '@/shared/either'
+import { NoteData } from '../ports/note-data'
+import { NoteRepository } from '../ports/note-repository'
 import { UserRepository } from '../ports/user-repository'
 import { ExistingTitleError } from './errors/existing-title-error'
 import { UnregisteredOwnerError } from './errors/invalid-owner-error'
-import { NoteData } from './note-data'
-import { NoteRepository } from './ports/note-repository'
 
 export class CreateNote {
   private readonly _noteRepository: NoteRepository

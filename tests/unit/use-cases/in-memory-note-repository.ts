@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 
-import { NoteData } from '@/use-cases/create-note/note-data'
-import { NoteRepository } from '@/use-cases/create-note/ports/note-repository'
+import { NoteData } from '@/use-cases/ports/note-data'
+import { NoteRepository } from '@/use-cases/ports/note-repository'
 
 export class InMemoryNoteRepository implements NoteRepository {
   private readonly _data: NoteData[]

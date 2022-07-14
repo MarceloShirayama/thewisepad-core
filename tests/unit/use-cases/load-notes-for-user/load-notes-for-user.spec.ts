@@ -1,7 +1,7 @@
-import { NoteData } from '@/use-cases/create-note/note-data'
-import { NoteRepository } from '@/use-cases/create-note/ports/note-repository'
 import { LoadNotesForUser } from '@/use-cases/load-notes-for-user/load-notes-for-user'
-import { InMemoryNoteRepository } from '../create-note/in-memory-note-repository'
+import { NoteData } from '@/use-cases/ports/note-data'
+import { NoteRepository } from '@/use-cases/ports/note-repository'
+import { InMemoryNoteRepository } from '../in-memory-note-repository'
 
 describe('Load notes for user use case', () => {
   const validTitle1 = 'my note'
