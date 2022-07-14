@@ -16,6 +16,6 @@
 - load notes for a user ✅
 - create note ✅
 - update note
-  - content
-  - title
+  - content ✅
+  - title ✅
 - remove note ✅
