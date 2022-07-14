@@ -4,5 +4,6 @@ const jestConfig = require('./jest.config')
 
 module.exports = {
   ...jestConfig,
-  testMatch: ['**/?(*.)+(spec|test).integration.[tj]s?(x)']
+  displayName: 'INTEGRATION',
+  testMatch: ['<rootDir>/tests/integration/**/?(*.)+(spec|test).[tj]s?(x)']
 }
