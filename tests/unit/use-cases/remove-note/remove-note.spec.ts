@@ -1,12 +1,14 @@
+import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { RemoveNote } from '@/use-cases/remove-note/remove-note'
 import { InMemoryNoteRepository } from '../in-memory-note-repository'
 
 describe('Remove note use case', () => {
-  const note = {
+  const note: NoteData = {
     title: 'my note',
     content: 'some content',
     ownerId: '0',
+    ownerEmail: 'valid@mail.com',
     id: '0'
   }
 
@@ -16,11 +18,12 @@ describe('Remove note use case', () => {
 
   it('Should remove existing note', async () => {
     const useCase = new RemoveNote(noteRepositoryWithANote)
+    const noteId = note.id as string
 
-    const removedNote = await useCase.perform(note.id)
+    const removedNote = await useCase.perform(noteId)
 
     expect(removedNote).toBe(note)
-    expect(await noteRepositoryWithANote.findNoteById(note.id)).toBe(null)
+    expect(await noteRepositoryWithANote.findNoteById(noteId)).toBe(null)
   })
 
   it('Should return null if note does not exist', async () => {

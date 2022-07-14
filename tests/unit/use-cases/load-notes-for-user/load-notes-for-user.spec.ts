@@ -7,6 +7,7 @@ describe('Load notes for user use case', () => {
   const validTitle1 = 'my note'
   const validTitle2 = 'my second note'
   const validUserId = '0'
+  const validUserEmail = 'valid@mail.com'
   const userIdWithoutNotes = '1'
   const someContent = 'some content'
   const someOtherContent = 'some other content'
@@ -14,11 +15,13 @@ describe('Load notes for user use case', () => {
     title: validTitle1,
     content: someContent,
     ownerId: validUserId,
+    ownerEmail: validUserEmail,
     id: '0'
   }
   const note2: NoteData = {
     title: validTitle2,
     content: someOtherContent,
+    ownerEmail: validUserEmail,
     ownerId: validUserId,
     id: '1'
   }

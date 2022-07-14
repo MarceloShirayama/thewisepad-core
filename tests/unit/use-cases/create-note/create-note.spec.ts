@@ -69,6 +69,7 @@ describe('Create note use case', () => {
       title: validTitle,
       content: emptyContent,
       ownerId: user.id,
+      ownerEmail: validRegisteredUser.email,
       id: expect.any(String)
     })
   })
