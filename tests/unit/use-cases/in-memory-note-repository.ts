@@ -44,4 +44,28 @@ export class InMemoryNoteRepository implements NoteRepository {
 
     return noteToRemoved || null
   }
+
+  async updateTitle(noteId: string, newTitle: string): Promise<Boolean> {
+    const originalNote = await this.findNoteById(noteId)
+
+    if (!originalNote) {
+      return false
+    }
+
+    originalNote.title = newTitle
+
+    return true
+  }
+
+  async updateContent(noteId: string, newContent: string): Promise<Boolean> {
+    const originalNote = await this.findNoteById(noteId)
+
+    if (!originalNote) {
+      return false
+    }
+
+    originalNote.content = newContent
+
+    return true
+  }
 }
