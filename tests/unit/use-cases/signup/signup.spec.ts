@@ -52,7 +52,8 @@ describe('Signup use case', () => {
     expect(userSignupResponse.value).toEqual(
       expect.objectContaining({
         email: validUserSignupRequest.email,
-        password: validUserSignupRequest.password + 'ENCRYPTED'
+        password: validUserSignupRequest.password + 'ENCRYPTED',
+        id: expect.any(String)
       })
     )
     expect(userRepositoryLength).toEqual(1)
