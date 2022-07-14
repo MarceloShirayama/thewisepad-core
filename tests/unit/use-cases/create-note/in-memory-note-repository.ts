@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto'
+
 import { NoteData } from '@/use-cases/create-note/note-data'
 import { NoteRepository } from '@/use-cases/create-note/ports/note-repository'
 
@@ -13,14 +15,16 @@ export class InMemoryNoteRepository implements NoteRepository {
   }
 
   async addNote(note: NoteData): Promise<NoteData> {
-    note.id = this.data.length.toString()
+    note.id = randomUUID()
     this.data.push(note)
 
     return note
   }
 
   async findAllNotesFrom(userId: string): Promise<NoteData[]> {
-    return this.data.filter((note) => note.ownerId === userId)
+    const notes = this.data.filter((note) => note.ownerId === userId)
+
+    return notes
   }
 
   async findNoteById(noteId: string): Promise<NoteData> {

@@ -20,8 +20,7 @@ describe('Create note use case', () => {
   const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
   const validRegisteredUser: UserData = {
     email: validEmail,
-    password: validPassword,
-    id: '0'
+    password: validPassword
   }
   const unregisteredUser: UserData = {
     email: unregisteredEmail,
@@ -58,18 +57,19 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    await useCase.perform(validCreateNoteRequest)
+    const user = await singleUserUserRepository.addUser(validRegisteredUser)
 
+    await useCase.perform(validCreateNoteRequest)
     const addedNotes: NoteData[] = await emptyNoteRepository.findAllNotesFrom(
-      validRegisteredUser.id as string
+      user.id as string
     )
 
     expect(addedNotes.length).toBe(1)
-    expect(addedNotes[0]).toMatchObject({
+    expect(addedNotes[0]).toEqual({
       title: validTitle,
       content: emptyContent,
-      ownerId: validRegisteredUser.id,
-      id: validRegisteredUser.id
+      ownerId: user.id,
+      id: expect.any(String)
     })
   })
 

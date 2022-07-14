@@ -49,11 +49,12 @@ describe('Signup use case', () => {
     const userRepositoryLength = (await emptyUserRepository.findAllUsers())
       .length
 
-    expect(userSignupResponse.value).toEqual({
-      id: (userRepositoryLength - 1).toString(),
-      email: validUserSignupRequest.email,
-      password: validUserSignupRequest.password + 'ENCRYPTED'
-    })
+    expect(userSignupResponse.value).toEqual(
+      expect.objectContaining({
+        email: validUserSignupRequest.email,
+        password: validUserSignupRequest.password + 'ENCRYPTED'
+      })
+    )
     expect(userRepositoryLength).toEqual(1)
     expect(
       (await emptyUserRepository.findUserByEmail(validEmail)).password

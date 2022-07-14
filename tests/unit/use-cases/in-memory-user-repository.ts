@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto'
+
 import { UserData } from '@/entities/user-data'
 import { UserRepository } from '@/use-cases/ports/user-repository'
 
@@ -25,7 +27,7 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async addUser(userData: UserData): Promise<UserData> {
-    userData.id = this.data.length.toString()
+    userData.id = randomUUID()
     this.data.push(userData)
 
     return userData
