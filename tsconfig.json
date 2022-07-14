@@ -31,8 +31,14 @@
       "@/*": [
         "./src/*"
       ],
-      "@tests/*": [
+      "@test/*": [
         "./tests/*"
+      ],
+      "@unit-tests/*": [
+        "./tests/unit/*"
+      ],
+      "@integration-tests/*": [
+        "./tests/integration/*"
       ]
     },
     "rootDirs": [

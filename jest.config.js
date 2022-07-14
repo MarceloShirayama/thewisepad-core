@@ -10,7 +10,9 @@ module.exports = {
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
-    '@tests/(.*)': '<rootDir>/tests/$1'
+    '@tests/(.*)': '<rootDir>/tests/$1',
+    '@unit-tests/(.*)': '<rootDir>/tests/unit/$1',
+    '@integration-tests/(.*)': '<rootDir>/tests/integration/$1'
   },
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',

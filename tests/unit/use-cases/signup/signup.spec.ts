@@ -5,7 +5,7 @@ import { UserRepository } from '@/use-cases/ports/user-repository'
 import { ExistingUserError } from '@/use-cases/signup/errors/existing-user-error'
 import { Encoder } from '@/use-cases/signup/ports/encoder'
 import { Signup } from '@/use-cases/signup/signup'
-import { InMemoryUserRepository } from '@tests/unit/use-cases/in-memory-user-repository'
+import { InMemoryUserRepository } from '../in-memory-user-repository'
 import { FakeEncoder } from './fake-encoder'
 
 //  variables
