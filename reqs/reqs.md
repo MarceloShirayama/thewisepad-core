@@ -12,7 +12,7 @@
 ### Use Cases
 
 - sign-up ✅
-- sign-in
+- sign-in ✅
 - load notes for a user ✅
 - create note ✅
 - update note
