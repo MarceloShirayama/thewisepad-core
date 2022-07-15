@@ -1,16 +1,11 @@
 import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { RemoveNote } from '@/use-cases/remove-note/remove-note'
+import { NoteDataBuilder } from '../builders/note-builder'
 import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
 
 describe('Remove note use case', () => {
-  const note: NoteData = {
-    title: 'my note',
-    content: 'some content',
-    ownerId: '0',
-    ownerEmail: 'valid@mail.com',
-    id: '0'
-  }
+  const note: NoteData = NoteDataBuilder.validNote().build()
 
   const noteRepositoryWithANote: NoteRepository = new InMemoryNoteRepository([
     note
