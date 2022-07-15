@@ -15,11 +15,6 @@ export class UserDataBuilder {
     return this
   }
 
-  public withEmptyEmail(): UserDataBuilder {
-    this.user.email = ''
-    return this
-  }
-
   public withPasswordWithoutNumber(): UserDataBuilder {
     this.user.password = 'invalid_password'
     return this
