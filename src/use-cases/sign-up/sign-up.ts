@@ -7,7 +7,7 @@ import { Encoder } from '../ports/encoder'
 import { UserRepository } from '../ports/user-repository'
 import { ExistingUserError } from './errors/existing-user-error'
 
-export class Signup {
+export class SignUp {
   private readonly _userRepository: UserRepository
   private readonly _encoder: Encoder
 
