@@ -46,8 +46,7 @@ describe('Sign up use case', () => {
 
     const userSignUpResponse = await sut.perform(validUserSignUpRequest)
 
-    const userRepositoryLength = (await emptyUserRepository.findAllUsers())
-      .length
+    const userRepositoryLength = (await emptyUserRepository.findAll()).length
 
     expect(userSignUpResponse.value).toEqual(
       expect.objectContaining({
@@ -58,7 +57,7 @@ describe('Sign up use case', () => {
     )
     expect(userRepositoryLength).toEqual(1)
     expect(
-      (await emptyUserRepository.findUserByEmail(validEmail)).password
+      (await emptyUserRepository.findByEmail(validEmail)).password
     ).toEqual(`${validPassword}_ENCRYPTED`)
   })
 

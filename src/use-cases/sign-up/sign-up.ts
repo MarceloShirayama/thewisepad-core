@@ -38,7 +38,7 @@ export class SignUp {
       return left(userOrError.value)
     }
 
-    const userAlreadyExists = await this.userRepository.findUserByEmail(
+    const userAlreadyExists = await this.userRepository.findByEmail(
       userSignupRequest.email
     )
 
@@ -50,7 +50,7 @@ export class SignUp {
       userSignupRequest.password
     )
 
-    const newUser = await this.userRepository.addUser({
+    const newUser = await this.userRepository.add({
       email: userSignupRequest.email,
       password: encodedPassword
     })

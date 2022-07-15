@@ -14,11 +14,11 @@ export class InMemoryUserRepository implements UserRepository {
     return this._data
   }
 
-  async findAllUsers(): Promise<UserData[]> {
+  async findAll(): Promise<UserData[]> {
     return this._data
   }
 
-  async findUserByEmail(email: string): Promise<UserData> {
+  async findByEmail(email: string): Promise<UserData> {
     const found = this.data.find(
       (user: UserData) => user.email === email
     ) as UserData
@@ -26,7 +26,7 @@ export class InMemoryUserRepository implements UserRepository {
     return found
   }
 
-  async addUser(userData: UserData): Promise<UserData> {
+  async add(userData: UserData): Promise<UserData> {
     userData.id = randomUUID()
     this.data.push(userData)
 

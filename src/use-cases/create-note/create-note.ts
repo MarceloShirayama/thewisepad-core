@@ -33,7 +33,7 @@ export class CreateNote {
       NoteData
     >
   > {
-    const owner = await this.userRepository.findUserByEmail(
+    const owner = await this.userRepository.findByEmail(
       request.ownerEmail as string
     )
 
