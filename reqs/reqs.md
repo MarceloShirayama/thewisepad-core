@@ -19,3 +19,12 @@
   - content ✅
   - title ✅
 - remove note ✅
+
+### Controllers
+
+- sign up
+- sign in
+- load notes for a user
+- create note
+- update note
+- remove note
