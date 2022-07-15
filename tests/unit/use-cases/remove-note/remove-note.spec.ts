@@ -1,7 +1,7 @@
 import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { RemoveNote } from '@/use-cases/remove-note/remove-note'
-import { InMemoryNoteRepository } from '../in-memory-note-repository'
+import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
 
 describe('Remove note use case', () => {
   const note: NoteData = {

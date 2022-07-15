@@ -7,8 +7,8 @@ import { UnregisteredOwnerError } from '@/use-cases/create-note/errors/invalid-o
 import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { UserRepository } from '@/use-cases/ports/user-repository'
-import { InMemoryNoteRepository } from '../in-memory-note-repository'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 
 describe('Create note use case', () => {
   const validEmail = 'valid@mail.com'

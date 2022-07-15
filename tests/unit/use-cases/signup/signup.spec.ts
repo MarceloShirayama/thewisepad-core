@@ -6,7 +6,7 @@ import { UserRepository } from '@/use-cases/ports/user-repository'
 import { ExistingUserError } from '@/use-cases/sign-up/errors/existing-user-error'
 import { SignUp } from '@/use-cases/sign-up/sign-up'
 import { UserDataBuilder } from '../builders/user-builder'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 import { FakeEncoder } from './fake-encoder'
 
 describe('Sign up use case', () => {

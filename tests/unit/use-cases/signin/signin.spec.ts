@@ -5,7 +5,7 @@ import { UserNotFoundError } from '@/use-cases/sign-in/errors/user-not-found-err
 import { WrongPasswordError } from '@/use-cases/sign-in/errors/wrong-password-error'
 import { SignIn } from '@/use-cases/sign-in/sign-in'
 import { UserDataBuilder } from '../builders/user-builder'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 import { FakeEncoder } from '../signup/fake-encoder'
 
 describe('Sign in use case', () => {

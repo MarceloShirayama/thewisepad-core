@@ -2,8 +2,8 @@ import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { UserRepository } from '@/use-cases/ports/user-repository'
 import { UpdateNote } from '@/use-cases/update-note/update-note'
-import { InMemoryNoteRepository } from '../in-memory-note-repository'
-import { InMemoryUserRepository } from '../in-memory-user-repository'
+import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 
 describe('Update note use case', () => {
   const validUserEmail = 'valid@mail.com'
