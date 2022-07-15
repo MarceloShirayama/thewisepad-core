@@ -5,23 +5,23 @@ import { UserRepository } from '../ports/user-repository'
 import { UserNotFoundError } from './errors/user-not-found-error'
 import { WrongPasswordError } from './errors/wrong-password-error'
 
-export class Signin {
+export class SignIn {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly encoder: Encoder
   ) {}
 
   public async perform(
-    signinRequest: UserData
+    signInRequest: UserData
   ): Promise<Either<UserNotFoundError | WrongPasswordError, UserData>> {
-    const user = await this.userRepository.findUserByEmail(signinRequest.email)
+    const user = await this.userRepository.findUserByEmail(signInRequest.email)
 
     if (!user) {
       return left(new UserNotFoundError())
     }
 
     const checkPassword = await this.encoder.compare(
-      signinRequest.password,
+      signInRequest.password,
       user.password
     )
 
@@ -29,6 +29,6 @@ export class Signin {
       return left(new WrongPasswordError())
     }
 
-    return right(signinRequest)
+    return right(signInRequest)
   }
 }
