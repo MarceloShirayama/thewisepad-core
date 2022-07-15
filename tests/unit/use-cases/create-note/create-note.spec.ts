@@ -7,25 +7,17 @@ import { UnregisteredOwnerError } from '@/use-cases/create-note/errors/invalid-o
 import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 import { UserRepository } from '@/use-cases/ports/user-repository'
+import { NoteDataBuilder } from '../builders/note-builder'
+import { UserDataBuilder } from '../builders/user-builder'
 import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
 import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 
 describe('Create note use case', () => {
-  const validEmail = 'valid@mail.com'
-  const unregisteredEmail = 'other@mail.com'
-  const validPassword = 'valid_password_1'
-  const validTitle = 'valid note'
-  const invalidTitle = ''
-  const emptyContent = ''
   const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
-  const validRegisteredUser: UserData = {
-    email: validEmail,
-    password: validPassword
-  }
-  const unregisteredUser: UserData = {
-    email: unregisteredEmail,
-    password: validPassword
-  }
+  const validRegisteredUser: UserData = UserDataBuilder.validUser().build()
+  const unregisteredUser: UserData = UserDataBuilder.validUser()
+    .withUnregisterEmail()
+    .build()
 
   const userDataArrayWithSingleUser: UserData[] = new Array(validRegisteredUser)
 
@@ -33,22 +25,20 @@ describe('Create note use case', () => {
     userDataArrayWithSingleUser
   )
 
-  const validCreateNoteRequest: NoteData = {
-    title: validTitle,
-    content: emptyContent,
-    ownerEmail: validRegisteredUser.email
-  }
+  const requestWithValidNote: NoteData = NoteDataBuilder.validNote().build()
 
-  const createNoteRequestWithUnregisteredOwner: NoteData = {
-    title: validTitle,
-    content: emptyContent,
+  const requestWithNoteWithFewChars: NoteData = NoteDataBuilder.validNote()
+    .withTitleWithFewChars()
+    .build()
+
+  const requestNoteWithManyChars: NoteData = NoteDataBuilder.validNote()
+    .withTitleWithManyChars()
+    .build()
+
+  const requestNoteWithUnregisteredOwner: NoteData = {
+    title: requestWithValidNote.title,
+    content: requestWithValidNote.content,
     ownerEmail: unregisteredUser.email
-  }
-
-  const createNoteRequestWithInvalidTitle: NoteData = {
-    title: invalidTitle,
-    content: emptyContent,
-    ownerEmail: validRegisteredUser.email
   }
 
   it('Should create note with valid user and title', async () => {
@@ -59,15 +49,15 @@ describe('Create note use case', () => {
 
     const user = await singleUserUserRepository.add(validRegisteredUser)
 
-    await useCase.perform(validCreateNoteRequest)
+    await useCase.perform(requestWithValidNote)
     const addedNotes: NoteData[] = await emptyNoteRepository.findAllFromUserId(
       user.id as string
     )
 
     expect(addedNotes.length).toBe(1)
     expect(addedNotes[0]).toEqual({
-      title: validTitle,
-      content: emptyContent,
+      title: requestWithValidNote.title,
+      content: requestWithValidNote.content,
       ownerId: user.id,
       ownerEmail: validRegisteredUser.email,
       id: expect.any(String)
@@ -80,22 +70,32 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    const response = await useCase.perform(
-      createNoteRequestWithUnregisteredOwner
-    )
+    const response = await useCase.perform(requestNoteWithUnregisteredOwner)
 
     expect(response.value).toBeInstanceOf(UnregisteredOwnerError)
     expect((response.value as Error).name).toBe('UnregisteredOwnerError')
     expect(response.value).toEqual(new UnregisteredOwnerError())
   })
 
-  it('Should not create note with invalid title', async () => {
+  it('Should not create note if title has few chars', async () => {
     const useCase = new CreateNote(
       emptyNoteRepository,
       singleUserUserRepository
     )
 
-    const response = await useCase.perform(createNoteRequestWithInvalidTitle)
+    const response = await useCase.perform(requestWithNoteWithFewChars)
+
+    expect(response.value).toBeInstanceOf(InvalidTitleError)
+    expect((response.value as Error).name).toBe('InvalidTitleError')
+  })
+
+  it('Should not create note if title has many chars', async () => {
+    const useCase = new CreateNote(
+      emptyNoteRepository,
+      singleUserUserRepository
+    )
+
+    const response = await useCase.perform(requestNoteWithManyChars)
 
     expect(response.value).toBeInstanceOf(InvalidTitleError)
     expect((response.value as Error).name).toBe('InvalidTitleError')
@@ -107,9 +107,9 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    await useCase.perform(validCreateNoteRequest)
+    await useCase.perform(requestWithValidNote)
 
-    const response = await useCase.perform(validCreateNoteRequest)
+    const response = await useCase.perform(requestWithValidNote)
 
     expect(response).toEqual(left(new ExistingTitleError()))
   })

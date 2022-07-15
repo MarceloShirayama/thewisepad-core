@@ -11,6 +11,12 @@ export class UserDataBuilder {
     return new UserDataBuilder()
   }
 
+  public withUnregisterEmail(): UserDataBuilder {
+    this.user.email = 'unrefistered@mail.com'
+
+    return this
+  }
+
   public withInvalidEmail(): UserDataBuilder {
     this.user.email = 'invalid_email'
     return this
