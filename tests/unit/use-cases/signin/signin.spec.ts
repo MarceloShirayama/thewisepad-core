@@ -4,29 +4,25 @@ import { UserRepository } from '@/use-cases/ports/user-repository'
 import { UserNotFoundError } from '@/use-cases/sign-in/errors/user-not-found-error'
 import { WrongPasswordError } from '@/use-cases/sign-in/errors/wrong-password-error'
 import { SignIn } from '@/use-cases/sign-in/sign-in'
+import { UserDataBuilder } from '../builders/user-builder'
 import { InMemoryUserRepository } from '../in-memory-user-repository'
 import { FakeEncoder } from '../signup/fake-encoder'
 
 describe('Sign in use case', () => {
-  const validEmail = 'valid@mail.com'
-  const validPassword = 'valid_password_1'
   const wrongPassword = 'wrong_password'
   const unregisteredEmail = 'unregistered@mail.com'
-  const validUserSignInRequest: UserData = {
-    email: validEmail,
-    password: validPassword
-  }
+  const validUserSignInRequest: UserData = UserDataBuilder.validUser().build()
   const signInRequestWithWrongPassword: UserData = {
-    email: validEmail,
+    email: validUserSignInRequest.email,
     password: wrongPassword
   }
   const signInRequestWithUnregisteredUser: UserData = {
     email: unregisteredEmail,
-    password: validPassword
+    password: validUserSignInRequest.password
   }
   const userDataArrayWithSingleUser = new Array<UserData>({
-    email: validEmail,
-    password: `${validPassword}_ENCRYPTED`
+    email: validUserSignInRequest.email,
+    password: `${validUserSignInRequest.password}_ENCRYPTED`
   })
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
     userDataArrayWithSingleUser
@@ -48,7 +44,7 @@ describe('Sign in use case', () => {
 
     const response = await useCase.perform(signInRequestWithWrongPassword)
     const value = response.value as UserData
-    const error = value as unknown as WrongPasswordError
+    const error = value as unknown as Error
 
     expect(response.isLeft()).toBe(true)
     expect(value).toBeInstanceOf(WrongPasswordError)
@@ -62,7 +58,7 @@ describe('Sign in use case', () => {
 
     const response = await useCase.perform(signInRequestWithUnregisteredUser)
     const value = response.value as UserData
-    const error = value as unknown as WrongPasswordError
+    const error = value as unknown as Error
 
     expect(response.isLeft()).toBe(true)
     expect(value).toBeInstanceOf(UserNotFoundError)
