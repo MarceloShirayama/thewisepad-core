@@ -3,7 +3,8 @@ import { UserData } from '@/entities/user-data'
 export class UserDataBuilder {
   private user: UserData = {
     email: 'valid@mail.com',
-    password: 'valid_password_1'
+    password: 'valid_password_1',
+    id: '0'
   }
 
   public static validUser(): UserDataBuilder {
