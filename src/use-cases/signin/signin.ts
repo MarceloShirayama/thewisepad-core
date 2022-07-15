@@ -20,7 +20,7 @@ export class Signin {
       return left(new UserNotFoundError())
     }
 
-    const checkPassword = this.encoder.compare(
+    const checkPassword = await this.encoder.compare(
       signinRequest.password,
       user.password
     )
@@ -29,6 +29,6 @@ export class Signin {
       return left(new WrongPasswordError())
     }
 
-    return right(user)
+    return right(signinRequest)
   }
 }

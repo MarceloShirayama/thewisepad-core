@@ -52,14 +52,14 @@ describe('Signup use case', () => {
     expect(userSignupResponse.value).toEqual(
       expect.objectContaining({
         email: validUserSignupRequest.email,
-        password: validUserSignupRequest.password + 'ENCRYPTED',
+        password: `${validUserSignupRequest.password}_ENCRYPTED`,
         id: expect.any(String)
       })
     )
     expect(userRepositoryLength).toEqual(1)
     expect(
       (await emptyUserRepository.findUserByEmail(validEmail)).password
-    ).toEqual(validPassword + 'ENCRYPTED')
+    ).toEqual(`${validPassword}_ENCRYPTED`)
   })
 
   it('should not signup existing user', async () => {
