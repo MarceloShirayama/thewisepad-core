@@ -49,7 +49,7 @@ export class CreateNote {
       return left(noteOrError.value)
     }
 
-    const ownerNotes: NoteData[] = await this.noteRepository.findAllFrom(
+    const ownerNotes: NoteData[] = await this.noteRepository.findAllFromUserId(
       owner.id as string
     )
 

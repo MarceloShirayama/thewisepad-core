@@ -21,7 +21,7 @@ export class InMemoryNoteRepository implements NoteRepository {
     return note
   }
 
-  async findAllFrom(userId: string): Promise<NoteData[]> {
+  async findAllFromUserId(userId: string): Promise<NoteData[]> {
     const notes = this.data.filter((note) => note.ownerId === userId)
 
     return notes
