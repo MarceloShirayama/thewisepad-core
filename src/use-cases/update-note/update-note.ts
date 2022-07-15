@@ -37,7 +37,7 @@ export class UpdateNote {
 
     const changedNote = noteOrError.value as Note
 
-    const notesFromUser = await this.noteRepository.findAllNotesFrom(
+    const notesFromUser = await this.noteRepository.findAllFrom(
       changedNoteData.ownerId as string
     )
 

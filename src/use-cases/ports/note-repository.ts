@@ -1,10 +1,10 @@
 import { NoteData } from './note-data'
 
 export interface NoteRepository {
-  addNote(noteData: NoteData): Promise<NoteData>
-  findAllNotesFrom(userId: string): Promise<NoteData[]>
-  findNoteById(noteId: string): Promise<NoteData>
-  removeNote(noteId: string): Promise<NoteData>
+  add(note: NoteData): Promise<NoteData>
+  findAllFrom(userId: string): Promise<NoteData[]>
+  findById(noteId: string): Promise<NoteData>
+  remove(noteId: string): Promise<NoteData>
   updateTitle(noteId: string, newTitle: string): Promise<Boolean>
   updateContent(noteId: string, newContent: string): Promise<Boolean>
 }

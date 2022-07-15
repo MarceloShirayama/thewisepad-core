@@ -5,7 +5,7 @@ export class LoadNotesForUser {
   constructor(private readonly notesRepository: NoteRepository) {}
 
   async perform(requestUserId: string): Promise<NoteData[]> {
-    const notes = await this.notesRepository.findAllNotesFrom(requestUserId)
+    const notes = await this.notesRepository.findAllFrom(requestUserId)
 
     return notes
   }

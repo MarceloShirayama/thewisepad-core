@@ -14,26 +14,26 @@ export class InMemoryNoteRepository implements NoteRepository {
     return this._data
   }
 
-  async addNote(note: NoteData): Promise<NoteData> {
+  async add(note: NoteData): Promise<NoteData> {
     note.id = randomUUID()
     this.data.push(note)
 
     return note
   }
 
-  async findAllNotesFrom(userId: string): Promise<NoteData[]> {
+  async findAllFrom(userId: string): Promise<NoteData[]> {
     const notes = this.data.filter((note) => note.ownerId === userId)
 
     return notes
   }
 
-  async findNoteById(noteId: string): Promise<NoteData> {
+  async findById(noteId: string): Promise<NoteData> {
     const note = this.data.find((note) => note.id === noteId) as NoteData
 
     return note || null
   }
 
-  async removeNote(noteId: string): Promise<NoteData> {
+  async remove(noteId: string): Promise<NoteData> {
     const noteToRemoved = this.data.find(
       (note) => note.id === noteId
     ) as NoteData
@@ -46,7 +46,7 @@ export class InMemoryNoteRepository implements NoteRepository {
   }
 
   async updateTitle(noteId: string, newTitle: string): Promise<Boolean> {
-    const originalNote = await this.findNoteById(noteId)
+    const originalNote = await this.findById(noteId)
 
     if (!originalNote) {
       return false
@@ -58,7 +58,7 @@ export class InMemoryNoteRepository implements NoteRepository {
   }
 
   async updateContent(noteId: string, newContent: string): Promise<Boolean> {
-    const originalNote = await this.findNoteById(noteId)
+    const originalNote = await this.findById(noteId)
 
     if (!originalNote) {
       return false

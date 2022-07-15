@@ -9,6 +9,6 @@ export class RemoveNote {
   }
 
   async perform(noteId: string): Promise<NoteData> {
-    return this.noteRepository.removeNote(noteId)
+    return this.noteRepository.remove(noteId)
   }
 }

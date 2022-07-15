@@ -49,7 +49,7 @@ export class CreateNote {
       return left(noteOrError.value)
     }
 
-    const ownerNotes: NoteData[] = await this.noteRepository.findAllNotesFrom(
+    const ownerNotes: NoteData[] = await this.noteRepository.findAllFrom(
       owner.id as string
     )
 
@@ -63,7 +63,7 @@ export class CreateNote {
 
     const note: Note = noteOrError.value
 
-    const newNote = await this.noteRepository.addNote({
+    const newNote = await this.noteRepository.add({
       title: note.title.value,
       content: note.content,
       ownerEmail: ownerUser.email.value,

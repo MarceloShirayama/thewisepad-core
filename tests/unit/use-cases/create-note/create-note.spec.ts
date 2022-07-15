@@ -60,7 +60,7 @@ describe('Create note use case', () => {
     const user = await singleUserUserRepository.addUser(validRegisteredUser)
 
     await useCase.perform(validCreateNoteRequest)
-    const addedNotes: NoteData[] = await emptyNoteRepository.findAllNotesFrom(
+    const addedNotes: NoteData[] = await emptyNoteRepository.findAllFrom(
       user.id as string
     )
 
