@@ -1,10 +1,9 @@
-import { randomUUID } from 'crypto'
-
 import { NoteData } from '@/use-cases/ports/note-data'
 import { NoteRepository } from '@/use-cases/ports/note-repository'
 
 export class InMemoryNoteRepository implements NoteRepository {
   private readonly _data: NoteData[]
+  private idCounter: number = 0
 
   constructor(data: NoteData[]) {
     this._data = data
@@ -15,7 +14,8 @@ export class InMemoryNoteRepository implements NoteRepository {
   }
 
   async add(note: NoteData): Promise<NoteData> {
-    note.id = randomUUID()
+    note.id = this.idCounter.toString()
+    this.idCounter++
     this.data.push(note)
 
     return note
