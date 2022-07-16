@@ -8,15 +8,23 @@ export class NoteDataBuilder {
     title: 'valid title',
     content: 'valid content',
     ownerEmail: this.owner.email,
-    ownerId: this.owner.id
+    ownerId: this.owner.id,
+    id: '0'
   }
 
   public static validNote(): NoteDataBuilder {
     return new NoteDataBuilder()
   }
 
-  public withTitleWithFewChars(): NoteDataBuilder {
-    this.note.title = 'a'
+  public withDifferentTileAndId(): NoteDataBuilder {
+    this.note.title = 'different title'
+    this.note.id = '1'
+
+    return this
+  }
+
+  public withInvalidTitle(): NoteDataBuilder {
+    this.note.title = ''
 
     return this
   }
@@ -27,8 +35,8 @@ export class NoteDataBuilder {
     return this
   }
 
-  public withUnregisterEmail(): NoteDataBuilder {
-    this.note.ownerEmail = 'unrefistered@mail.com'
+  public withUnregisterOwnerEmail(): NoteDataBuilder {
+    this.note.ownerEmail = 'unregistered@mail.com'
 
     return this
   }

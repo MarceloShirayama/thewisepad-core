@@ -16,7 +16,7 @@ export class UserDataBuilder {
     return this
   }
 
-  public withPasswordWithoutNumber(): UserDataBuilder {
+  public withPasswordWithoutNumbers(): UserDataBuilder {
     this.user.password = 'invalid_password'
     return this
   }
@@ -26,8 +26,14 @@ export class UserDataBuilder {
     return this
   }
 
-  public withUnregisteredUser(): UserDataBuilder {
+  public withDifferentEmail(): UserDataBuilder {
     this.user.email = 'unregistered@mail.com'
+
+    return this
+  }
+
+  public withWrongPassword(): UserDataBuilder {
+    this.user.password = 'wrong_password_1'
 
     return this
   }

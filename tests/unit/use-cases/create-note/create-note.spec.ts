@@ -55,7 +55,7 @@ describe('Create note use case', () => {
     )
 
     const response = await useCase.perform(
-      NoteDataBuilder.validNote().withUnregisterEmail().build()
+      NoteDataBuilder.validNote().withUnregisterOwnerEmail().build()
     )
 
     expect(response.value).toBeInstanceOf(UnregisteredOwnerError)
@@ -63,28 +63,14 @@ describe('Create note use case', () => {
     expect(response.value).toEqual(new UnregisteredOwnerError())
   })
 
-  it('Should not create note if title has few chars', async () => {
+  it('Should not be able create note if invalid title', async () => {
     const useCase = new CreateNote(
       emptyNoteRepository,
       singleUserUserRepository
     )
 
     const response = await useCase.perform(
-      NoteDataBuilder.validNote().withTitleWithFewChars().build()
-    )
-
-    expect(response.value).toBeInstanceOf(InvalidTitleError)
-    expect((response.value as Error).name).toBe('InvalidTitleError')
-  })
-
-  it('Should not create note if title has many chars', async () => {
-    const useCase = new CreateNote(
-      emptyNoteRepository,
-      singleUserUserRepository
-    )
-
-    const response = await useCase.perform(
-      NoteDataBuilder.validNote().withTitleWithManyChars().build()
+      NoteDataBuilder.validNote().withInvalidTitle().build()
     )
 
     expect(response.value).toBeInstanceOf(InvalidTitleError)

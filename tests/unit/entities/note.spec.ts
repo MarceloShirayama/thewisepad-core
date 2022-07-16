@@ -2,45 +2,53 @@ import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
 import { Note } from '@/entities/note'
 import { User } from '@/entities/user'
 import { left } from '@/shared/either'
+import { NoteDataBuilder } from '../use-cases/builders/note-builder'
+import { UserDataBuilder } from '../use-cases/builders/user-builder'
 
 describe('Note entity', () => {
+  const validUser = UserDataBuilder.validUser().build()
+
+  const validOwner: User = User.create({
+    email: validUser.email,
+    password: validUser.password
+  }).value as User
+
+  const validNote = NoteDataBuilder.validNote().build()
+
   it('Should be created with a valid title and owner', () => {
-    const validTitle = 'my note'
-    const validEmail = 'my@mail.com'
-    const validPassword = 'valid_password_1'
-    const validContent = 'my content'
+    const note: Note = Note.create(
+      validOwner,
+      validNote.title,
+      validNote.content
+    ).value as Note
 
-    const validOwner: User = User.create({
-      email: validEmail,
-      password: validPassword
-    }).value as User
-
-    const note: Note = Note.create(validOwner, validTitle, validContent)
-      .value as Note
-
-    expect(note.title.value).toBe(validTitle)
-    expect(note.owner.email.value).toBe(validEmail)
+    expect(note.title.value).toBe(validNote.title)
+    expect(note.owner.email.value).toBe(validOwner.email.value)
   })
 
-  it('Should not be created with invalid title', () => {
-    const invalidTitle1 = null as any as string
-    const invalidTitle2 = ''
-    const invalidTitle3 = '12'
-    const validEmail = 'my@mail.com'
-    const validPassword = 'valid_password_1'
-    const validContent = 'my content'
+  it('Should not be able created a new note if title too short', () => {
+    const noteWithTitleTooShort = JSON.parse(JSON.stringify(validNote))
+    noteWithTitleTooShort.title = 'a'
 
-    const validOwner: User = User.create({
-      email: validEmail,
-      password: validPassword
-    }).value as User
+    const error = Note.create(
+      validOwner,
+      noteWithTitleTooShort.title,
+      noteWithTitleTooShort.content
+    )
 
-    const error1 = Note.create(validOwner, invalidTitle1, validContent)
-    const error2 = Note.create(validOwner, invalidTitle2, validContent)
-    const error3 = Note.create(validOwner, invalidTitle3, validContent)
+    expect(error).toEqual(left(new InvalidTitleError()))
+  })
 
-    expect(error1).toEqual(left(new InvalidTitleError()))
-    expect(error2).toEqual(left(new InvalidTitleError()))
-    expect(error3).toEqual(left(new InvalidTitleError()))
+  it('Should not be able created a new note if title too long', () => {
+    const noteWithTitleTooLong = JSON.parse(JSON.stringify(validNote))
+    noteWithTitleTooLong.title = 'a'.repeat(257)
+
+    const error = Note.create(
+      validOwner,
+      noteWithTitleTooLong.title,
+      noteWithTitleTooLong.content
+    )
+
+    expect(error).toEqual(left(new InvalidTitleError()))
   })
 })

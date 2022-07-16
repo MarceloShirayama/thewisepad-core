@@ -70,7 +70,7 @@ describe('Sign up use case', () => {
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
 
     const error = await sut.perform(
-      UserDataBuilder.validUser().withPasswordWithoutNumber().build()
+      UserDataBuilder.validUser().withPasswordWithoutNumbers().build()
     )
 
     expect((error.value as Error).name).toBe('InvalidPasswordError')

@@ -4,7 +4,7 @@ import { InvalidPasswordError } from './errors/invalid-password-error'
 export class Password {
   private readonly _value: string
 
-  constructor(password: string) {
+  private constructor(password: string) {
     this._value = password
     Object.freeze(this)
   }
@@ -24,15 +24,15 @@ export class Password {
   }
 
   public static validate(password: string): boolean {
-    if (!password) {
-      return false
-    }
-
-    if (!Password.hasNumber(password) || password.length < 6) {
+    if (!Password.hasNumber(password) || Password.lengthTooShort(password)) {
       return false
     }
 
     return true
+  }
+
+  private static lengthTooShort(str: string): boolean {
+    return str.trim().length < 6
   }
 
   private static hasNumber(str: string): boolean {

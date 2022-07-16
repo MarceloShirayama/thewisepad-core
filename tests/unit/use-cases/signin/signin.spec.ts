@@ -15,14 +15,15 @@ describe('Sign in use case', () => {
     email: validUserSignInRequest.email,
     password: `${validUserSignInRequest.password}_ENCRYPTED`
   })
+
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
     userDataArrayWithSingleUser
   )
+
   const encoder: Encoder = new FakeEncoder()
 
   it('Should correctly sign in if password is correct', async () => {
     const useCase = new SignIn(singleUserUserRepository, encoder)
-
     const response = await useCase.perform(validUserSignInRequest)
     const value = response.value as UserData
 
@@ -32,11 +33,9 @@ describe('Sign in use case', () => {
 
   it('Should not sign in if password is incorrect', async () => {
     const useCase = new SignIn(singleUserUserRepository, encoder)
-    const wrongPassword = 'wrong_password'
-    const response = await useCase.perform({
-      email: validUserSignInRequest.email,
-      password: wrongPassword
-    })
+    const response = await useCase.perform(
+      UserDataBuilder.validUser().withWrongPassword().build()
+    )
     const value = response.value as UserData
     const error = value as unknown as Error
 
@@ -49,9 +48,8 @@ describe('Sign in use case', () => {
 
   it('Should not sign in with unregistered user', async () => {
     const useCase = new SignIn(singleUserUserRepository, encoder)
-
     const response = await useCase.perform(
-      UserDataBuilder.validUser().withUnregisteredUser().build()
+      UserDataBuilder.validUser().withDifferentEmail().build()
     )
     const value = response.value as UserData
     const error = value as unknown as Error

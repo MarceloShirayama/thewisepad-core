@@ -6,6 +6,7 @@ import { ExistingTitleError } from '../create-note/errors/existing-title-error'
 import { NoteData } from '../ports/note-data'
 import { NoteRepository } from '../ports/note-repository'
 import { UserRepository } from '../ports/user-repository'
+import { UserNotOwnerError } from './errors/user-not-owner'
 
 export class UpdateNote {
   constructor(
@@ -17,24 +18,32 @@ export class UpdateNote {
     noteId: string,
     changedNoteData: NoteData
   ): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
-    const { email: userEmail } = await this.userRepository.findByEmail(
-      changedNoteData.ownerEmail as string
-    )
+    const { ownerEmail } = await this.noteRepository.findById(noteId)
 
-    const owner = User.create(await this.userRepository.findByEmail(userEmail))
-      .value as User
+    if (ownerEmail !== changedNoteData.ownerEmail) {
+      return left(new UserNotOwnerError())
+    }
 
-    const noteOrError = Note.create(
+    const owner = User.create(
+      await this.userRepository.findByEmail(changedNoteData.ownerEmail)
+    ).value as User
+
+    // const noteOrError = Note.create(
+    //   owner,
+    //   changedNoteData.title,
+    //   changedNoteData.content
+    // )
+
+    // if (noteOrError.isLeft()) {
+    //   return left(noteOrError.value)
+    // }
+
+    // const changedNote = noteOrError.value as Note
+    const changedNote = Note.create(
       owner,
       changedNoteData.title,
       changedNoteData.content
-    )
-
-    if (noteOrError.isLeft()) {
-      return left(noteOrError.value)
-    }
-
-    const changedNote = noteOrError.value as Note
+    ).value as Note
 
     const notesFromUser = await this.noteRepository.findAllFromUserId(
       changedNoteData.ownerId as string

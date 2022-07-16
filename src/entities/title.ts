@@ -22,7 +22,10 @@ export class Title {
       return false
     }
 
-    if (title.trim().length < 3 || title.trim().length > 256) {
+    const titleTooShort = title.trim().length < 3
+    const titleTooLong = title.trim().length > 256
+
+    if (titleTooShort || titleTooLong) {
       return false
     }
 
