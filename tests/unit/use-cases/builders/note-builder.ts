@@ -1,4 +1,4 @@
-import { UserData } from '@/entities/user-data'
+import { UserData } from '@/entities/ports/user-data'
 import { NoteData } from '@/use-cases/ports/note-data'
 import { UserDataBuilder } from './user-builder'
 

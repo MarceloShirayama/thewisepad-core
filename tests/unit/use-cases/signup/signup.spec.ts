@@ -1,6 +1,6 @@
 import { InvalidEmailError } from '@/entities/errors/invalid-email-error'
 import { InvalidPasswordError } from '@/entities/errors/invalid-password-error'
-import { UserData } from '@/entities/user-data'
+import { UserData } from '@/entities/ports/user-data'
 import { Encoder } from '@/use-cases/ports/encoder'
 import { UserRepository } from '@/use-cases/ports/user-repository'
 import { ExistingUserError } from '@/use-cases/sign-up/errors/existing-user-error'

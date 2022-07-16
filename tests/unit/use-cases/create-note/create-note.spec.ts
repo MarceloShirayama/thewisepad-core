@@ -1,5 +1,5 @@
 import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
-import { UserData } from '@/entities/user-data'
+import { UserData } from '@/entities/ports/user-data'
 import { left } from '@/shared/either'
 import { CreateNote } from '@/use-cases/create-note/create-note'
 import { ExistingTitleError } from '@/use-cases/create-note/errors/existing-title-error'

@@ -3,7 +3,7 @@ import { Email } from './email'
 import { InvalidEmailError } from './errors/invalid-email-error'
 import { InvalidPasswordError } from './errors/invalid-password-error'
 import { Password } from './password'
-import { UserData } from './user-data'
+import { UserData } from './ports/user-data'
 
 export class User {
   private readonly _email: Email

@@ -1,4 +1,4 @@
-import { UserData } from '@/entities/user-data'
+import { UserData } from '@/entities/ports/user-data'
 import { Encoder } from '@/use-cases/ports/encoder'
 import { UserRepository } from '@/use-cases/ports/user-repository'
 import { UserNotFoundError } from '@/use-cases/sign-in/errors/user-not-found-error'

@@ -1,4 +1,4 @@
-import { UserData } from '@/entities/user-data'
+import { UserData } from '@/entities/ports/user-data'
 import { Either, left, right } from '@/shared/either'
 import { Encoder } from '../ports/encoder'
 import { UserRepository } from '../ports/user-repository'
