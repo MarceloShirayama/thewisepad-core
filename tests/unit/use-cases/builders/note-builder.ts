@@ -27,6 +27,12 @@ export class NoteDataBuilder {
     return this
   }
 
+  public withUnregisterEmail(): NoteDataBuilder {
+    this.note.ownerEmail = 'unrefistered@mail.com'
+
+    return this
+  }
+
   public build(): NoteData {
     return this.note
   }

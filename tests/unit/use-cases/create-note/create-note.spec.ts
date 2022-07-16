@@ -13,33 +13,17 @@ import { InMemoryNoteRepository } from '../repositories/in-memory-note-repositor
 import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
 
 describe('Create note use case', () => {
-  const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
   const validRegisteredUser: UserData = UserDataBuilder.validUser().build()
-  const unregisteredUser: UserData = UserDataBuilder.validUser()
-    .withUnregisterEmail()
-    .build()
 
   const userDataArrayWithSingleUser: UserData[] = new Array(validRegisteredUser)
+
+  const emptyNoteRepository: NoteRepository = new InMemoryNoteRepository([])
 
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
     userDataArrayWithSingleUser
   )
 
   const requestWithValidNote: NoteData = NoteDataBuilder.validNote().build()
-
-  const requestWithNoteWithFewChars: NoteData = NoteDataBuilder.validNote()
-    .withTitleWithFewChars()
-    .build()
-
-  const requestNoteWithManyChars: NoteData = NoteDataBuilder.validNote()
-    .withTitleWithManyChars()
-    .build()
-
-  const requestNoteWithUnregisteredOwner: NoteData = {
-    title: requestWithValidNote.title,
-    content: requestWithValidNote.content,
-    ownerEmail: unregisteredUser.email
-  }
 
   it('Should create note with valid user and title', async () => {
     const useCase = new CreateNote(
@@ -70,7 +54,9 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    const response = await useCase.perform(requestNoteWithUnregisteredOwner)
+    const response = await useCase.perform(
+      NoteDataBuilder.validNote().withUnregisterEmail().build()
+    )
 
     expect(response.value).toBeInstanceOf(UnregisteredOwnerError)
     expect((response.value as Error).name).toBe('UnregisteredOwnerError')
@@ -83,7 +69,9 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    const response = await useCase.perform(requestWithNoteWithFewChars)
+    const response = await useCase.perform(
+      NoteDataBuilder.validNote().withTitleWithFewChars().build()
+    )
 
     expect(response.value).toBeInstanceOf(InvalidTitleError)
     expect((response.value as Error).name).toBe('InvalidTitleError')
@@ -95,7 +83,9 @@ describe('Create note use case', () => {
       singleUserUserRepository
     )
 
-    const response = await useCase.perform(requestNoteWithManyChars)
+    const response = await useCase.perform(
+      NoteDataBuilder.validNote().withTitleWithManyChars().build()
+    )
 
     expect(response.value).toBeInstanceOf(InvalidTitleError)
     expect((response.value as Error).name).toBe('InvalidTitleError')
