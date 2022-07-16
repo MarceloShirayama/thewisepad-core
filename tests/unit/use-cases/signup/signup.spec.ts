@@ -25,15 +25,6 @@ describe('Sign up use case', () => {
   // encoders
   const encoder: Encoder = new FakeEncoder()
 
-  // Sign up use case data
-  const userSignUpRequestWithInvalidEmail: UserData =
-    UserDataBuilder.validUser().withInvalidEmail().build()
-  const userSignUpRequestWithPasswordWithoutNumber: UserData =
-    UserDataBuilder.validUser().withPasswordWithoutNumber().build()
-
-  const userSignUpRequestWithPasswordWithFewChars: UserData =
-    UserDataBuilder.validUser().withPasswordWithoutNumber().build()
-
   it('should sign up user with valid data', async () => {
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
 
@@ -62,6 +53,9 @@ describe('Sign up use case', () => {
   })
 
   it('Should not sign up user with invalid email', async () => {
+    const userSignUpRequestWithInvalidEmail: UserData =
+      UserDataBuilder.validUser().withInvalidEmail().build()
+
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
 
     const error = await sut.perform(userSignUpRequestWithInvalidEmail)
@@ -75,7 +69,9 @@ describe('Sign up use case', () => {
   it('Should not sign up user with password without number', async () => {
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
 
-    const error = await sut.perform(userSignUpRequestWithPasswordWithoutNumber)
+    const error = await sut.perform(
+      UserDataBuilder.validUser().withPasswordWithoutNumber().build()
+    )
 
     expect((error.value as Error).name).toBe('InvalidPasswordError')
     expect(error.value).toEqual(new InvalidPasswordError())
@@ -84,7 +80,9 @@ describe('Sign up use case', () => {
   it('Should not sign up user with password with few chars', async () => {
     const sut: SignUp = new SignUp(emptyUserRepository, encoder)
 
-    const error = await sut.perform(userSignUpRequestWithPasswordWithFewChars)
+    const error = await sut.perform(
+      UserDataBuilder.validUser().withPasswordWithFewChars().build()
+    )
 
     expect((error.value as Error).name).toBe('InvalidPasswordError')
     expect(error.value).toEqual(new InvalidPasswordError())
