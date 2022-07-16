@@ -26,6 +26,12 @@ export class UserDataBuilder {
     return this
   }
 
+  public withUnregisteredUser(): UserDataBuilder {
+    this.user.email = 'unregistered@mail.com'
+
+    return this
+  }
+
   public build(): UserData {
     return this.user
   }
