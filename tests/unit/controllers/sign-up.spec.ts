@@ -84,4 +84,27 @@ describe('Sign up controller', () => {
     expect(error.message).toBe('Invalid password')
     expect(error.stack).toBeDefined()
   })
+
+  it('Should return 500 if an error is raised internally', async () => {
+    SignUp.prototype.perform = jest.fn().mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const controllerWithMockedUseCase: SignUpController = new SignUpController(
+      SignUpUseCase
+    )
+
+    const response: HttpResponse = await controllerWithMockedUseCase.handle(
+      validUserSignUpData
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(500)
+    expect(error).toBeInstanceOf(Error)
+    expect(error.name).toBe('InternalServerError')
+    expect(error.message).toBe('Internal server error')
+    expect(error.stack).toBeDefined()
+  })
 })

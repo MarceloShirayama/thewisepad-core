@@ -1,3 +1,4 @@
+import { InternalServerError } from '@/controllers/errors'
 import { HttpResponse } from '@/controllers/ports'
 
 export const created = (data: any): HttpResponse => ({
@@ -15,7 +16,7 @@ export const forbidden = (error: Error): HttpResponse => ({
   body: error
 })
 
-export const serverError = (error: Error): HttpResponse => ({
+export const serverError = (): HttpResponse => ({
   statusCode: 500,
-  body: error
+  body: new InternalServerError()
 })

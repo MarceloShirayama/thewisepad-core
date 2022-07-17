@@ -21,7 +21,7 @@ export class SignUpController {
 
       return badRequest(response.value)
     } catch (error: any) {
-      return serverError(error)
+      return serverError()
     }
   }
 }
