@@ -30,7 +30,10 @@ export class SignUp {
       UserData
     >
   > {
-    const userOrError = User.create(userSignupRequest)
+    const userOrError = User.create(
+      userSignupRequest.email,
+      userSignupRequest.password
+    )
 
     if (userOrError.isLeft()) {
       return left(userOrError.value)

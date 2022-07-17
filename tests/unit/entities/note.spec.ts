@@ -9,10 +9,8 @@ import {
 describe('Note entity', () => {
   const validUser = UserDataBuilder.validUser().build()
 
-  const validOwner: User = User.create({
-    email: validUser.email,
-    password: validUser.password
-  }).value as User
+  const validOwner: User = User.create(validUser.email, validUser.password)
+    .value as User
 
   const validNote = NoteDataBuilder.validNote().build()
 

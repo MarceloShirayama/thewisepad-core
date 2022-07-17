@@ -8,7 +8,10 @@ describe('User domain entity', () => {
     const userWithInvalidEmail = UserDataBuilder.validUser()
       .withInvalidEmail()
       .build()
-    const error = User.create(userWithInvalidEmail)
+    const error = User.create(
+      userWithInvalidEmail.email,
+      userWithInvalidEmail.password
+    )
 
     expect(error.isLeft()).toBe(true)
     expect(error).toEqual(
@@ -17,18 +20,20 @@ describe('User domain entity', () => {
   })
 
   it('Should not create user with invalid password (no numbers)', () => {
-    const error = User.create(
-      UserDataBuilder.validUser().withPasswordWithoutNumbers().build()
-    )
+    const invalidUser = UserDataBuilder.validUser()
+      .withPasswordWithoutNumbers()
+      .build()
+    const error = User.create(invalidUser.email, invalidUser.password)
 
     expect(error.isLeft()).toBe(true)
     expect(error).toEqual(left(new InvalidPasswordError()))
   })
 
   it('Should not create user with invalid password (too few chars)', () => {
-    const error = User.create(
-      UserDataBuilder.validUser().withPasswordWithFewChars().build()
-    )
+    const invalidUser = UserDataBuilder.validUser()
+      .withPasswordWithFewChars()
+      .build()
+    const error = User.create(invalidUser.email, invalidUser.password)
 
     expect(error.isLeft()).toBe(true)
     expect(error).toEqual(left(new InvalidPasswordError()))
@@ -36,7 +41,8 @@ describe('User domain entity', () => {
 
   it('Should create user with valid data', () => {
     const validUser = UserDataBuilder.validUser().build()
-    const user: User = User.create(validUser).value as User
+    const user: User = User.create(validUser.email, validUser.password)
+      .value as User
 
     expect(user.email.value).toBe(validUser.email)
   })

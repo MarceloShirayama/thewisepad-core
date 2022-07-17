@@ -1,6 +1,5 @@
 import { Email, Password } from '@/entities'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
-import { UserData } from '@/entities/ports'
 import { Either, left, right } from '@/shared/either'
 
 export class User {
@@ -22,24 +21,25 @@ export class User {
   }
 
   public static create(
-    userData: UserData
+    email: string,
+    password: string
   ): Either<InvalidEmailError | InvalidPasswordError, User> {
-    const emailOrError = Email.create(userData.email)
+    const emailOrError = Email.create(email)
 
     if (emailOrError.isLeft()) {
-      return left(new InvalidEmailError(userData.email))
+      return left(new InvalidEmailError(email))
     }
 
-    const email: Email = emailOrError.value
+    const emailObject: Email = emailOrError.value as Email
 
-    const passwordOrError = Password.create(userData.password)
+    const passwordOrError = Password.create(password)
 
-    const password: Password = passwordOrError.value as Password
+    const passwordObject = passwordOrError.value as Password
 
     if (passwordOrError.isLeft()) {
       return left(new InvalidPasswordError())
     }
 
-    return right(new User(email, password))
+    return right(new User(emailObject, passwordObject))
   }
 }

@@ -13,9 +13,10 @@ describe('Sign up use case', () => {
 
   // repositories
   const emptyUserRepository: UserRepository = new InMemoryUserRepository([])
-  const userDataArrayWithSingleUser: UserData[] = new Array(
-    validUserSignUpRequest
-  )
+  const userDataArrayWithSingleUser = new Array({
+    email: validUserSignUpRequest.email,
+    password: validUserSignUpRequest.password
+  })
   const singleUserUserRepository: UserRepository = new InMemoryUserRepository(
     userDataArrayWithSingleUser
   )
