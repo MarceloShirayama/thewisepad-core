@@ -1,6 +1,5 @@
+import { Title, User } from '@/entities'
 import { Either, left, right } from '@/shared/either'
-import { Title } from './title'
-import { User } from './user'
 
 export class Note {
   private readonly _title: Title

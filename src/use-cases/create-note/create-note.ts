@@ -1,12 +1,11 @@
-import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
-import { Note } from '@/entities/note'
-import { User } from '@/entities/user'
+import { Note, User } from '@/entities'
+import { InvalidTitleError } from '@/entities/errors'
 import { Either, left, right } from '@/shared/either'
-import { NoteData } from '../ports/note-data'
-import { NoteRepository } from '../ports/note-repository'
-import { UserRepository } from '../ports/user-repository'
-import { ExistingTitleError } from './errors/existing-title-error'
-import { UnregisteredOwnerError } from './errors/invalid-owner-error'
+import {
+  ExistingTitleError,
+  UnregisteredOwnerError
+} from '@/use-cases/create-note/errors'
+import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 
 export class CreateNote {
   private readonly _noteRepository: NoteRepository

@@ -1,8 +1,7 @@
-import { LoadNotesForUser } from '@/use-cases/load-notes-for-user/load-notes-for-user'
-import { NoteData } from '@/use-cases/ports/note-data'
-import { NoteRepository } from '@/use-cases/ports/note-repository'
-import { NoteDataBuilder } from '../builders/note-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { NoteDataBuilder } from '@/tests/unit/use-cases/builders'
+import { InMemoryNoteRepository } from '@/tests/unit/use-cases/repositories'
+import { LoadNotesForUser } from '@/use-cases/load-notes-for-user'
+import { NoteData, NoteRepository } from '@/use-cases/ports'
 
 describe('Load notes for user use case', () => {
   const note1: NoteData = NoteDataBuilder.validNote().build()

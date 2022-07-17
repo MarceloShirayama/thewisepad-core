@@ -1,9 +1,7 @@
+import { Email, Password } from '@/entities'
+import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
+import { UserData } from '@/entities/ports'
 import { Either, left, right } from '@/shared/either'
-import { Email } from './email'
-import { InvalidEmailError } from './errors/invalid-email-error'
-import { InvalidPasswordError } from './errors/invalid-password-error'
-import { Password } from './password'
-import { UserData } from './ports/user-data'
 
 export class User {
   private readonly _email: Email

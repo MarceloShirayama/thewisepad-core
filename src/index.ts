@@ -1,1 +1,1 @@
-import './config/module-alias'
+import 'module-alias/register'

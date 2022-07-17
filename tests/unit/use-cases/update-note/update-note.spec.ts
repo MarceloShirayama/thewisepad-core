@@ -1,14 +1,16 @@
-import { left } from '@/shared/either'
-import { ExistingTitleError } from '@/use-cases/create-note/errors/existing-title-error'
-import { NoteData } from '@/use-cases/ports/note-data'
-import { NoteRepository } from '@/use-cases/ports/note-repository'
-import { UserRepository } from '@/use-cases/ports/user-repository'
-import { UserNotOwnerError } from '@/use-cases/update-note/errors/user-not-owner'
-import { UpdateNote } from '@/use-cases/update-note/update-note'
-import { NoteDataBuilder } from '../builders/note-builder'
-import { UserDataBuilder } from '../builders/user-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
+import { left } from '@/shared'
+import {
+  NoteDataBuilder,
+  UserDataBuilder
+} from '@/tests/unit/use-cases/builders'
+import {
+  InMemoryNoteRepository,
+  InMemoryUserRepository
+} from '@/tests/unit/use-cases/repositories'
+import { ExistingTitleError } from '@/use-cases/create-note/errors'
+import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import { UpdateNote } from '@/use-cases/update-note'
+import { UserNotOwnerError } from '@/use-cases/update-note/errors'
 
 describe('Update note use case', () => {
   const originalNote = NoteDataBuilder.validNote().build()

@@ -1,8 +1,7 @@
-import { NoteData } from '@/use-cases/ports/note-data'
-import { NoteRepository } from '@/use-cases/ports/note-repository'
-import { RemoveNote } from '@/use-cases/remove-note/remove-note'
-import { NoteDataBuilder } from '../builders/note-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
+import { NoteDataBuilder } from '@/tests/unit/use-cases/builders'
+import { InMemoryNoteRepository } from '@/tests/unit/use-cases/repositories'
+import { NoteData, NoteRepository } from '@/use-cases/ports'
+import { RemoveNote } from '@/use-cases/remove-note'
 
 describe('Remove note use case', () => {
   const note: NoteData = NoteDataBuilder.validNote().build()

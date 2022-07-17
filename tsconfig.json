@@ -7,7 +7,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./",
+    "baseUrl": "src",
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
@@ -26,21 +26,16 @@
     "noPropertyAccessFromIndexSignature": true,
     /* Module Resolution Options */
     "paths": {
+      "@/tests/*": [
+        "../tests/*"
+      ],
       "@/*": [
-        "./src/*"
-      ],
-      "@test/*": [
-        "./tests/*"
-      ],
-      "@unit-tests/*": [
-        "./tests/unit/*"
-      ],
-      "@integration-tests/*": [
-        "./tests/integration/*"
+        "*"
       ]
     },
     "rootDirs": [
-      "./src"
+      "src",
+      "tests"
     ],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -54,8 +49,8 @@
     ]
   },
   "include": [
-    "**/*.ts",
-    "**/*.js"
+    "src",
+    "tests"
   ],
   "exclude": [
     "node_modules",

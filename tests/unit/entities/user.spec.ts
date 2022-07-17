@@ -1,8 +1,7 @@
-import { InvalidEmailError } from '@/entities/errors/invalid-email-error'
-import { InvalidPasswordError } from '@/entities/errors/invalid-password-error'
-import { User } from '@/entities/user'
-import { left } from '@/shared/either'
-import { UserDataBuilder } from '../use-cases/builders/user-builder'
+import { User } from '@/entities'
+import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
+import { left } from '@/shared'
+import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 
 describe('User domain entity', () => {
   it('Should not create user with invalid e-mail address', () => {

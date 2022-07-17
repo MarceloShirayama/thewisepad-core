@@ -1,9 +1,10 @@
 import { UserData } from '@/entities/ports/user-data'
 import { Either, left, right } from '@/shared/either'
-import { Encoder } from '../ports/encoder'
-import { UserRepository } from '../ports/user-repository'
-import { UserNotFoundError } from './errors/user-not-found-error'
-import { WrongPasswordError } from './errors/wrong-password-error'
+import { Encoder, UserRepository } from '@/use-cases/ports'
+import {
+  UserNotFoundError,
+  WrongPasswordError
+} from '@/use-cases/sign-in/errors'
 
 export class SignIn {
   constructor(

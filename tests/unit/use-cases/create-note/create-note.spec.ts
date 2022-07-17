@@ -1,16 +1,14 @@
-import { InvalidTitleError } from '@/entities/errors/invalid-title-error'
-import { UserData } from '@/entities/ports/user-data'
-import { left } from '@/shared/either'
-import { CreateNote } from '@/use-cases/create-note/create-note'
-import { ExistingTitleError } from '@/use-cases/create-note/errors/existing-title-error'
-import { UnregisteredOwnerError } from '@/use-cases/create-note/errors/invalid-owner-error'
-import { NoteData } from '@/use-cases/ports/note-data'
-import { NoteRepository } from '@/use-cases/ports/note-repository'
-import { UserRepository } from '@/use-cases/ports/user-repository'
-import { NoteDataBuilder } from '../builders/note-builder'
-import { UserDataBuilder } from '../builders/user-builder'
-import { InMemoryNoteRepository } from '../repositories/in-memory-note-repository'
-import { InMemoryUserRepository } from '../repositories/in-memory-user-repository'
+import { InvalidTitleError } from '@/entities/errors'
+import { UserData } from '@/entities/ports'
+import { left } from '@/shared'
+import { CreateNote } from '@/use-cases/create-note'
+import {
+  ExistingTitleError,
+  UnregisteredOwnerError
+} from '@/use-cases/create-note/errors'
+import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import { NoteDataBuilder, UserDataBuilder } from '../builders'
+import { InMemoryNoteRepository, InMemoryUserRepository } from '../repositories'
 
 describe('Create note use case', () => {
   const validRegisteredUser: UserData = UserDataBuilder.validUser().build()
