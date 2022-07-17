@@ -1,4 +1,4 @@
-import { UserData } from '@/entities/ports/user-data'
+import { UserData } from '@/use-cases/ports'
 
 export class UserDataBuilder {
   private user: UserData = {

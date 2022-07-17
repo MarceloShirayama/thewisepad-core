@@ -1,6 +1,5 @@
-import { UserData } from '@/entities/ports/user-data'
 import { Either, left, right } from '@/shared/either'
-import { Encoder, UserRepository } from '@/use-cases/ports'
+import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import {
   UserNotFoundError,
   WrongPasswordError

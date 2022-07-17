@@ -1,4 +1,4 @@
-import { UserData } from '@/entities/ports'
+import { UserData } from '@/use-cases/ports'
 
 export class ExistingUserError extends Error {
   constructor(userData: UserData) {

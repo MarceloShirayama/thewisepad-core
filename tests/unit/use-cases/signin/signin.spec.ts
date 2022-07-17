@@ -1,8 +1,7 @@
-import { UserData } from '@/entities/ports'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
 import { FakeEncoder } from '@/tests/unit/use-cases/signup/fake-encoder'
-import { Encoder, UserRepository } from '@/use-cases/ports'
+import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignIn } from '@/use-cases/sign-in'
 import {
   UserNotFoundError,

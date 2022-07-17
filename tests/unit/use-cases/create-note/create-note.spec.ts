@@ -1,12 +1,16 @@
 import { InvalidTitleError } from '@/entities/errors'
-import { UserData } from '@/entities/ports'
 import { left } from '@/shared'
 import { CreateNote } from '@/use-cases/create-note'
 import {
   ExistingTitleError,
   UnregisteredOwnerError
 } from '@/use-cases/create-note/errors'
-import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import {
+  NoteData,
+  NoteRepository,
+  UserData,
+  UserRepository
+} from '@/use-cases/ports'
 import { NoteDataBuilder, UserDataBuilder } from '../builders'
 import { InMemoryNoteRepository, InMemoryUserRepository } from '../repositories'
 

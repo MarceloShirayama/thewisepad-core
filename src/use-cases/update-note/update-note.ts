@@ -21,9 +21,9 @@ export class UpdateNote {
       return left(new UserNotOwnerError())
     }
 
-    const owner = User.create(
-      await this.userRepository.findByEmail(changedNoteData.ownerEmail)
-    ).value as User
+    const user = await this.userRepository.findByEmail(ownerEmail)
+
+    const owner = User.create(user.email, user.password).value as User
 
     // const noteOrError = Note.create(
     //   owner,
