@@ -24,12 +24,12 @@ describe('Sign up controller', () => {
   const userSignupDataWithInvalidPassword: UserData =
     UserDataBuilder.validUser().withPasswordWithFewChars().build()
 
-  it('Should return 200 and the registered user, if successful', async () => {
+  it('Should return 201 and the registered user, if successful', async () => {
     const response: HttpResponse = await controller.handle(validUserSignUpData)
 
     const { statusCode, body } = response
 
-    expect(statusCode).toBe(200)
+    expect(statusCode).toBe(201)
     expect(body).toEqual({
       id: expect.any(String),
       email: validUserSignUpData.email,
