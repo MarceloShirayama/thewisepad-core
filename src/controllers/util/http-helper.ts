@@ -5,9 +5,9 @@ export const ok = (data: any): HttpResponse => ({
   body: data
 })
 
-export const badRequest = (): HttpResponse => ({
+export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: 'Unexpected error'
+  body: error
 })
 
 export const forbidden = (error: Error): HttpResponse => ({

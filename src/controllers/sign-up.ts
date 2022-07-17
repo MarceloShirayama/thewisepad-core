@@ -18,6 +18,6 @@ export class SignUpController {
       return forbidden(response.value)
     }
 
-    return badRequest()
+    return badRequest(response.value)
   }
 }

@@ -17,6 +17,13 @@ describe('Sign up controller', () => {
 
   const controller: SignUpController = new SignUpController(SignUpUseCase)
 
+  const userSignupDataWithInvalidEmail: UserData = UserDataBuilder.validUser()
+    .withInvalidEmail()
+    .build()
+
+  const userSignupDataWithInvalidPassword: UserData =
+    UserDataBuilder.validUser().withPasswordWithFewChars().build()
+
   it('Should return 200 and the registered user, if successful', async () => {
     const response: HttpResponse = await controller.handle(validUserSignUpData)
 
@@ -43,6 +50,38 @@ describe('Sign up controller', () => {
     expect(error.message).toBe(
       `User ${validUserSignUpData.email} already registered`
     )
+    expect(error.stack).toBeDefined()
+  })
+
+  it(`Should return 400 when trying to sign up user with invalid email
+    `, async () => {
+    const response: HttpResponse = await controller.handle(
+      userSignupDataWithInvalidEmail
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(400)
+    expect(error.name).toBe('InvalidEmailError')
+    expect(error.message).toBe(
+      `Invalid email: ${userSignupDataWithInvalidEmail.email}.`
+    )
+    expect(error.stack).toBeDefined()
+  })
+
+  it(`Should return 400 when trying to sign up user with invalid password
+    `, async () => {
+    const response: HttpResponse = await controller.handle(
+      userSignupDataWithInvalidPassword
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(400)
+    expect(error.name).toBe('InvalidPasswordError')
+    expect(error.message).toBe('Invalid password')
     expect(error.stack).toBeDefined()
   })
 })
