@@ -1,5 +1,5 @@
 import { SignUpController } from '@/controllers'
-import { HttpResponse } from '@/controllers/ports'
+import { HttpRequest, HttpResponse } from '@/controllers/ports'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
 import { FakeEncoder } from '@/tests/unit/use-cases/signup/fake-encoder'
@@ -15,17 +15,31 @@ describe('Sign up controller', () => {
 
   const validUserSignUpData: UserData = UserDataBuilder.validUser().build()
 
+  const validUserSignUpRequest: HttpRequest = {
+    body: validUserSignUpData
+  }
+
   const controller: SignUpController = new SignUpController(SignUpUseCase)
 
-  const userSignupDataWithInvalidEmail: UserData = UserDataBuilder.validUser()
+  const userSignUpDataWithInvalidEmail: UserData = UserDataBuilder.validUser()
     .withInvalidEmail()
     .build()
+
+  const userSignUpRequestWithInvalidEmail: HttpRequest = {
+    body: userSignUpDataWithInvalidEmail
+  }
 
   const userSignupDataWithInvalidPassword: UserData =
     UserDataBuilder.validUser().withPasswordWithFewChars().build()
 
+  const userSignupRequestWithInvalidPassword: HttpRequest = {
+    body: userSignupDataWithInvalidPassword
+  }
+
   it('Should return 201 and the registered user, if successful', async () => {
-    const response: HttpResponse = await controller.handle(validUserSignUpData)
+    const response: HttpResponse = await controller.handle(
+      validUserSignUpRequest
+    )
 
     const { statusCode, body } = response
 
@@ -38,9 +52,11 @@ describe('Sign up controller', () => {
   })
 
   it('Should return 403 when trying to sign up existing user', async () => {
-    await controller.handle(validUserSignUpData)
+    await controller.handle(validUserSignUpRequest)
 
-    const response: HttpResponse = await controller.handle(validUserSignUpData)
+    const response: HttpResponse = await controller.handle(
+      validUserSignUpRequest
+    )
 
     const { statusCode, body } = response
     const error = body as Error
@@ -56,7 +72,7 @@ describe('Sign up controller', () => {
   it(`Should return 400 when trying to sign up user with invalid email
     `, async () => {
     const response: HttpResponse = await controller.handle(
-      userSignupDataWithInvalidEmail
+      userSignUpRequestWithInvalidEmail
     )
 
     const { statusCode, body } = response
@@ -65,7 +81,7 @@ describe('Sign up controller', () => {
     expect(statusCode).toBe(400)
     expect(error.name).toBe('InvalidEmailError')
     expect(error.message).toBe(
-      `Invalid email: ${userSignupDataWithInvalidEmail.email}.`
+      `Invalid email: ${userSignUpDataWithInvalidEmail.email}.`
     )
     expect(error.stack).toBeDefined()
   })
@@ -73,7 +89,7 @@ describe('Sign up controller', () => {
   it(`Should return 400 when trying to sign up user with invalid password
     `, async () => {
     const response: HttpResponse = await controller.handle(
-      userSignupDataWithInvalidPassword
+      userSignupRequestWithInvalidPassword
     )
 
     const { statusCode, body } = response
@@ -95,7 +111,7 @@ describe('Sign up controller', () => {
     )
 
     const response: HttpResponse = await controllerWithMockedUseCase.handle(
-      validUserSignUpData
+      validUserSignUpRequest
     )
 
     const { statusCode, body } = response
