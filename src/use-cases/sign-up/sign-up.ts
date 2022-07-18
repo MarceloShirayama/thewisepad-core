@@ -1,10 +1,10 @@
 import { User } from '@/entities'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { Either, left, right } from '@/shared'
-import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
+import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
-export class SignUp {
+export class SignUp implements UseCase {
   private readonly _userRepository: UserRepository
   private readonly _encoder: Encoder
 

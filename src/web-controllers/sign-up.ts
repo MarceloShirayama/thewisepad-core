@@ -1,5 +1,4 @@
-import { UserData } from '@/use-cases/ports'
-import { SignUp } from '@/use-cases/sign-up'
+import { UseCase, UserData } from '@/use-cases/ports'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import {
   HttpRequest,
@@ -14,7 +13,7 @@ import {
 } from '@/web-controllers/util'
 
 export class SignUpController implements WebController {
-  constructor(private readonly useCase: SignUp) {}
+  constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest<UserData>): Promise<HttpResponse> {
     try {
