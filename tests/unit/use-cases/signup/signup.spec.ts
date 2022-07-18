@@ -1,10 +1,10 @@
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
+import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
 import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
-import { FakeEncoder } from './fake-encoder'
 
 describe('Sign up use case', () => {
   //  variables

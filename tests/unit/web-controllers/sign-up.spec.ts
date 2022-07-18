@@ -1,6 +1,6 @@
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
+import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
-import { FakeEncoder } from '@/tests/unit/use-cases/signup/fake-encoder'
 import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers'
