@@ -110,6 +110,63 @@ describe('Sign up controller', () => {
     expect(error.stack).toBeDefined()
   })
 
+  it(`Should return 400 when trying to sign up user with missing email
+  `, async () => {
+    const userSignUpRequestWithMissingEmail: HttpRequest = {
+      body: { password: validUserSignUpData.password }
+    }
+
+    const response: HttpResponse = await controller.handle(
+      userSignUpRequestWithMissingEmail
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(400)
+    expect(error.name).toBe('MissingParamError')
+    expect(error.message).toBe('Missing param: email')
+    expect(error.stack).toBeDefined()
+  })
+
+  it(`Should return 400 when trying to sign up user with missing password
+  `, async () => {
+    const userSignUpRequestWithMissingPassword: HttpRequest = {
+      body: { email: validUserSignUpData.email }
+    }
+
+    const response: HttpResponse = await controller.handle(
+      userSignUpRequestWithMissingPassword
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(400)
+    expect(error.name).toBe('MissingParamError')
+    expect(error.message).toBe('Missing param: password')
+    expect(error.stack).toBeDefined()
+  })
+
+  it(`Should return 400 when trying to sign up user with missing email, and password
+  `, async () => {
+    const userSignUpRequestWithMissingEmailAndPassword: HttpRequest = {
+      body: {}
+    }
+
+    const response: HttpResponse = await controller.handle(
+      userSignUpRequestWithMissingEmailAndPassword
+    )
+
+    const { statusCode, body } = response
+    const error = body as Error
+
+    expect(statusCode).toBe(400)
+    expect(error.name).toBe('MissingParamError')
+    expect(error.message).toBe('Missing param: email, password')
+    expect(error.stack).toBeDefined()
+  })
+
   it('Should return 500 if an error is raised internally', async () => {
     const controllerWithStubUseCase: SignUpController = new SignUpController(
       errorThrowingSignUpUseCaseStub
