@@ -1,10 +1,19 @@
-import { Controller, HttpRequest, HttpResponse } from '@/controllers/ports'
-import { badRequest, created, forbidden, serverError } from '@/controllers/util'
 import { UserData } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
+import {
+  HttpRequest,
+  HttpResponse,
+  WebController
+} from '@/web-controllers/ports'
+import {
+  badRequest,
+  created,
+  forbidden,
+  serverError
+} from '@/web-controllers/util'
 
-export class SignUpController implements Controller {
+export class SignUpController implements WebController {
   constructor(private readonly useCase: SignUp) {}
 
   async handle(request: HttpRequest<UserData>): Promise<HttpResponse> {

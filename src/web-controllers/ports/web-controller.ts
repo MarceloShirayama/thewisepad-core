@@ -1,5 +1,5 @@
 import { HttpResponse } from './http-response'
 
-export interface Controller {
+export interface WebController {
   handle(req: any): Promise<HttpResponse>
 }

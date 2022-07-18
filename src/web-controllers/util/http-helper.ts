@@ -1,5 +1,5 @@
-import { InternalServerError } from '@/controllers/errors'
-import { HttpResponse } from '@/controllers/ports'
+import { InternalServerError } from '@/web-controllers/errors'
+import { HttpResponse } from '@/web-controllers/ports'
 
 export const created = (data: any): HttpResponse => ({
   statusCode: 201,

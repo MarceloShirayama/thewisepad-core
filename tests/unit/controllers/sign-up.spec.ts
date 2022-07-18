@@ -1,10 +1,10 @@
-import { SignUpController } from '@/controllers'
-import { HttpRequest, HttpResponse } from '@/controllers/ports'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
 import { FakeEncoder } from '@/tests/unit/use-cases/signup/fake-encoder'
 import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
+import { SignUpController } from '@/web-controllers'
+import { HttpRequest, HttpResponse } from '@/web-controllers/ports'
 
 describe('Sign up controller', () => {
   const emptyRepository: UserRepository = new InMemoryUserRepository([])
