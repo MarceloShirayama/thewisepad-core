@@ -1,5 +1,6 @@
+import { HttpRequest } from './http-request'
 import { HttpResponse } from './http-response'
 
 export interface WebController {
-  handle(req: any): Promise<HttpResponse>
+  handle(req: HttpRequest): Promise<HttpResponse>
 }
