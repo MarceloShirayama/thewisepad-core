@@ -110,11 +110,11 @@ describe('Sign up controller', () => {
   })
 
   it('Should return 500 if an error is raised internally', async () => {
-    const controllerWithMockedUseCase: SignUpController = new SignUpController(
+    const controllerWithStubUseCase: SignUpController = new SignUpController(
       errorThrowingSignUpUseCaseStub
     )
 
-    const response: HttpResponse = await controllerWithMockedUseCase.handle(
+    const response: HttpResponse = await controllerWithStubUseCase.handle(
       validUserSignUpRequest
     )
 
