@@ -1,7 +1,7 @@
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
 import { FakeEncoder } from '@/tests/unit/use-cases/signup/fake-encoder'
-import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
+import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers'
 import { HttpRequest, HttpResponse } from '@/web-controllers/ports'
@@ -11,7 +11,7 @@ describe('Sign up controller', () => {
 
   const encoder: Encoder = new FakeEncoder()
 
-  const SignUpUseCase: SignUp = new SignUp(emptyRepository, encoder)
+  const SignUpUseCase: UseCase = new SignUp(emptyRepository, encoder)
 
   const validUserSignUpData: UserData = UserDataBuilder.validUser().build()
 
@@ -35,6 +35,14 @@ describe('Sign up controller', () => {
   const userSignupRequestWithInvalidPassword: HttpRequest = {
     body: userSignupDataWithInvalidPassword
   }
+
+  class ErrorThrowingSignUpUseCaseStub implements UseCase {
+    public async perform(_request: UserData): Promise<void> {
+      throw Error()
+    }
+  }
+
+  const errorThrowingSignUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub()
 
   it('Should return 201 and the registered user, if successful', async () => {
     const response: HttpResponse = await controller.handle(
@@ -102,12 +110,8 @@ describe('Sign up controller', () => {
   })
 
   it('Should return 500 if an error is raised internally', async () => {
-    SignUp.prototype.perform = jest.fn().mockImplementationOnce(() => {
-      throw new Error()
-    })
-
     const controllerWithMockedUseCase: SignUpController = new SignUpController(
-      SignUpUseCase
+      errorThrowingSignUpUseCaseStub
     )
 
     const response: HttpResponse = await controllerWithMockedUseCase.handle(
