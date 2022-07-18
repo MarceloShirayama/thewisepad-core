@@ -1,11 +1,11 @@
 import { Either, left, right } from '@/shared/either'
-import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
+import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import {
   UserNotFoundError,
   WrongPasswordError
 } from '@/use-cases/sign-in/errors'
 
-export class SignIn {
+export class SignIn implements UseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly encoder: Encoder

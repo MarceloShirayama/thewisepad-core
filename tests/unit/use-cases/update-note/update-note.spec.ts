@@ -10,7 +10,6 @@ import {
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 import { UpdateNote } from '@/use-cases/update-note'
-import { UserNotOwnerError } from '@/use-cases/update-note/errors'
 
 describe('Update note use case', () => {
   const originalNote = NoteDataBuilder.validNote().build()
@@ -31,8 +30,7 @@ describe('Update note use case', () => {
       noteRepositoryWithNote,
       userRepositoryWithUser
     )
-    const noteId = originalNote.id as string
-    const result = await useCase.perform(noteId, newNote)
+    const result = await useCase.perform(newNote)
     const { title, content } = result.value as NoteData
 
     expect(result.value as NoteData).toEqual(newNote)
@@ -46,35 +44,13 @@ describe('Update note use case', () => {
       noteRepositoryWithNote,
       userRepositoryWithUser
     )
-    const noteId = originalNote.id as string
-    const result = await useCase.perform(noteId, originalNote)
+    const result = await useCase.perform(originalNote)
     const error = result.value as Error
 
     expect(result).toEqual(left(new ExistingTitleError()))
     expect(error).toBeInstanceOf(ExistingTitleError)
     expect(error.name).toBe('ExistingTitleError')
     expect(error.message).toBe('User already has note with the same title.')
-    expect(error.stack).toBeDefined()
-  })
-
-  it('Should not be able update note if not owner note', async () => {
-    const useCase = new UpdateNote(
-      noteRepositoryWithNote,
-      userRepositoryWithUser
-    )
-
-    const changedNote = NoteDataBuilder.validNote()
-      .withUnregisterOwnerEmail()
-      .build()
-
-    const noteId = originalNote.id as string
-    const result = await useCase.perform(noteId, changedNote)
-    const error = result.value as Error
-
-    expect(result).toEqual(left(new UserNotOwnerError()))
-    expect(error).toBeInstanceOf(UserNotOwnerError)
-    expect(error.name).toBe('UserNotOwnerError')
-    expect(error.message).toBe('user do not owner this note')
     expect(error.stack).toBeDefined()
   })
 })

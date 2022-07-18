@@ -2,45 +2,39 @@ import { Note, User } from '@/entities'
 import { InvalidTitleError } from '@/entities/errors'
 import { Either, left, right } from '@/shared'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
-import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
-import { UserNotOwnerError } from '@/use-cases/update-note/errors'
+import {
+  NoteData,
+  NoteRepository,
+  UseCase,
+  UserRepository
+} from '@/use-cases/ports'
 
-export class UpdateNote {
+export class UpdateNote implements UseCase {
   constructor(
     private readonly noteRepository: NoteRepository,
     private readonly userRepository: UserRepository
   ) {}
 
   public async perform(
-    noteId: string,
     changedNoteData: NoteData
   ): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
-    const { ownerEmail } = await this.noteRepository.findById(noteId)
+    const userData = await this.userRepository.findByEmail(
+      changedNoteData.ownerEmail
+    )
 
-    if (ownerEmail !== changedNoteData.ownerEmail) {
-      return left(new UserNotOwnerError())
-    }
+    const owner = User.create(userData.email, userData.password).value as User
 
-    const user = await this.userRepository.findByEmail(ownerEmail)
-
-    const owner = User.create(user.email, user.password).value as User
-
-    // const noteOrError = Note.create(
-    //   owner,
-    //   changedNoteData.title,
-    //   changedNoteData.content
-    // )
-
-    // if (noteOrError.isLeft()) {
-    //   return left(noteOrError.value)
-    // }
-
-    // const changedNote = noteOrError.value as Note
-    const changedNote = Note.create(
+    const noteOrError = Note.create(
       owner,
       changedNoteData.title,
       changedNoteData.content
-    ).value as Note
+    )
+
+    if (noteOrError.isLeft()) {
+      return left(noteOrError.value)
+    }
+
+    const changedNote = noteOrError.value as Note
 
     const notesFromUser = await this.noteRepository.findAllFromUserId(
       changedNoteData.ownerId as string
@@ -55,11 +49,17 @@ export class UpdateNote {
     }
 
     if (changedNoteData.title) {
-      await this.noteRepository.updateTitle(noteId, changedNoteData.title)
+      await this.noteRepository.updateTitle(
+        changedNoteData.id as string,
+        changedNoteData.title
+      )
     }
 
     if (changedNoteData.content) {
-      await this.noteRepository.updateContent(noteId, changedNoteData.content)
+      await this.noteRepository.updateContent(
+        changedNoteData.id as string,
+        changedNoteData.content
+      )
     }
 
     return right(changedNoteData)

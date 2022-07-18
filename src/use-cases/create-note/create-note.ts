@@ -5,9 +5,14 @@ import {
   ExistingTitleError,
   UnregisteredOwnerError
 } from '@/use-cases/create-note/errors'
-import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
+import {
+  NoteData,
+  NoteRepository,
+  UseCase,
+  UserRepository
+} from '@/use-cases/ports'
 
-export class CreateNote {
+export class CreateNote implements UseCase {
   private readonly _noteRepository: NoteRepository
   private readonly _userRepository: UserRepository
 
