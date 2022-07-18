@@ -1,4 +1,4 @@
-import { UserData } from '@/use-cases/ports'
+import { UseCase, UserData } from '@/use-cases/ports'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 import {
   HttpRequest,
@@ -13,7 +13,9 @@ import {
 } from '@/web-controllers/util'
 import { MissingParamError } from './errors'
 
-export class SignUpController extends WebController {
+export class SignUpController implements WebController {
+  constructor(private readonly useCase: UseCase) {}
+
   async handle(request: HttpRequest<UserData>): Promise<HttpResponse> {
     try {
       const requestParamsRequired = ['email', 'password']
