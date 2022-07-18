@@ -12,7 +12,7 @@ import {
   UserRepository
 } from '@/use-cases/ports'
 
-export class CreateNote implements UseCase {
+export class CreateNote implements UseCase<NoteData, Either<Error, NoteData>> {
   private readonly _noteRepository: NoteRepository
   private readonly _userRepository: UserRepository
 

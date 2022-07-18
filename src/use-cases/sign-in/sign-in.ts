@@ -5,7 +5,7 @@ import {
   WrongPasswordError
 } from '@/use-cases/sign-in/errors'
 
-export class SignIn implements UseCase {
+export class SignIn implements UseCase<UserData, Either<Error, UserData>> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly encoder: Encoder

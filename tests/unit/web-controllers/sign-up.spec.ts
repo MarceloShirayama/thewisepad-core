@@ -36,13 +36,14 @@ describe('Sign up controller', () => {
     body: userSignupDataWithInvalidPassword
   }
 
-  class ErrorThrowingSignUpUseCaseStub implements UseCase {
+  class ErrorThrowingSignUpUseCaseStub implements UseCase<UserData, void> {
     public async perform(_request: UserData): Promise<void> {
       throw Error()
     }
   }
 
-  const errorThrowingSignUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub()
+  const errorThrowingSignUpUseCaseStub: UseCase<UserData, void> =
+    new ErrorThrowingSignUpUseCaseStub()
 
   it('Should return 201 and the registered user, if successful', async () => {
     const response: HttpResponse = await controller.handle(

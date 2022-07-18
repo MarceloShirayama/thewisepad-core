@@ -9,7 +9,7 @@ import {
   UserRepository
 } from '@/use-cases/ports'
 
-export class UpdateNote implements UseCase {
+export class UpdateNote implements UseCase<NoteData, Either<Error, NoteData>> {
   constructor(
     private readonly noteRepository: NoteRepository,
     private readonly userRepository: UserRepository

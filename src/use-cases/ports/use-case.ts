@@ -1,3 +1,3 @@
-export interface UseCase {
-  perform(request: any): Promise<any>
+export interface UseCase<TI = any, TO = any> {
+  perform(request: TI): Promise<TO>
 }

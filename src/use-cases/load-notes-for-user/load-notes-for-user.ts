@@ -1,6 +1,6 @@
 import { NoteData, NoteRepository, UseCase } from '@/use-cases/ports'
 
-export class LoadNotesForUser implements UseCase {
+export class LoadNotesForUser implements UseCase<string, NoteData[]> {
   constructor(private readonly notesRepository: NoteRepository) {}
 
   async perform(requestUserId: string): Promise<NoteData[]> {
