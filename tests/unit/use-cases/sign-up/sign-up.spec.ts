@@ -1,5 +1,5 @@
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
-import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
+import { UserDataBuilder } from '@/tests/builders'
 import { makeAuthenticationStub } from '@/tests/unit/use-cases/doubles/authentication'
 import { FakeEncoder } from '@/tests/unit/use-cases/doubles/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/doubles/repositories'

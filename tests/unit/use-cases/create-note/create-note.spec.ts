@@ -1,9 +1,6 @@
 import { InvalidTitleError } from '@/entities/errors'
 import { left } from '@/shared'
-import {
-  NoteDataBuilder,
-  UserDataBuilder
-} from '@/tests/unit/use-cases/builders'
+import { NoteDataBuilder, UserDataBuilder } from '@/tests/builders'
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository

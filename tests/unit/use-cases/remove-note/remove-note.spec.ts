@@ -1,4 +1,4 @@
-import { NoteDataBuilder } from '@/tests/unit/use-cases/builders'
+import { NoteDataBuilder } from '@/tests/builders'
 import { InMemoryNoteRepository } from '@/tests/unit/use-cases/doubles/repositories'
 import { NoteData, NoteRepository } from '@/use-cases/ports'
 import { RemoveNote } from '@/use-cases/remove-note'

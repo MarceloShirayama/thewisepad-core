@@ -1,5 +1,5 @@
 import { Either, right } from '@/shared'
-import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
+import { UserDataBuilder } from '@/tests/builders'
 import {
   UserNotFoundError,
   WrongPasswordError

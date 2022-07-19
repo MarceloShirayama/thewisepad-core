@@ -1,10 +1,7 @@
 import { Note, User } from '@/entities'
 import { InvalidTitleError } from '@/entities/errors'
 import { left } from '@/shared'
-import {
-  NoteDataBuilder,
-  UserDataBuilder
-} from '@/tests/unit/use-cases/builders'
+import { NoteDataBuilder, UserDataBuilder } from '@/tests/builders'
 
 describe('Note entity', () => {
   const validUser = UserDataBuilder.validUser().build()

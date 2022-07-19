@@ -1,7 +1,7 @@
 import { User } from '@/entities'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { left } from '@/shared'
-import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
+import { UserDataBuilder } from '@/tests/builders'
 
 describe('User domain entity', () => {
   it('Should not create user with invalid e-mail address', () => {
