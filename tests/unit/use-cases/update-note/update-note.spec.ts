@@ -3,7 +3,7 @@ import { NoteDataBuilder, UserDataBuilder } from '@/tests/builders'
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository
-} from '@/tests/unit/use-cases/doubles/repositories'
+} from '@/tests/doubles/repositories'
 import { ExistingTitleError } from '@/use-cases/create-note/errors'
 import { NoteData, NoteRepository, UserRepository } from '@/use-cases/ports'
 import { UpdateNote } from '@/use-cases/update-note'

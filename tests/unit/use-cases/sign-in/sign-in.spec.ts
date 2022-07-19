@@ -1,7 +1,7 @@
 import { UserDataBuilder } from '@/tests/builders'
-import { FakeTokenManager } from '@/tests/unit/use-cases/doubles/authentication'
-import { FakeEncoder } from '@/tests/unit/use-cases/doubles/encoders'
-import { InMemoryUserRepository } from '@/tests/unit/use-cases/doubles/repositories'
+import { FakeTokenManager } from '@/tests/doubles/authentication'
+import { FakeEncoder } from '@/tests/doubles/encoders'
+import { InMemoryUserRepository } from '@/tests/doubles/repositories'
 import { CustomAuthentication } from '@/use-cases/authentication/custom-authentication'
 import {
   UserNotFoundError,
