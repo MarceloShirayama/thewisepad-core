@@ -6,7 +6,11 @@ import { Payload, TokenManager } from '@/use-cases/authentication/ports'
 export class JwtTokenManager implements TokenManager {
   constructor(private readonly secret: string) {}
 
-  async sign(info: Payload): Promise<string> {
+  async sign(info: Payload, expires?: string): Promise<string> {
+    if (expires) {
+      return jwt.sign(info, this.secret, { expiresIn: expires })
+    }
+
     return jwt.sign(info, this.secret)
   }
 
