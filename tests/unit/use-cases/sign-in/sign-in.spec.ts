@@ -36,7 +36,7 @@ describe('Sign in use case', () => {
       new FakeEncoder(),
       new FakeTokenManager()
     )
-    const useCase = new SignIn(singleUserUserRepository, authentication)
+    const useCase = new SignIn(authentication)
     const response = await useCase.perform(validUserSignInRequest)
     const value = response.value as AuthenticationResult
 
@@ -53,7 +53,7 @@ describe('Sign in use case', () => {
       new FakeEncoder(),
       new FakeTokenManager()
     )
-    const useCase = new SignIn(singleUserUserRepository, authentication)
+    const useCase = new SignIn(authentication)
     const response = await useCase.perform(
       UserDataBuilder.validUser().withWrongPassword().build()
     )
@@ -76,7 +76,7 @@ describe('Sign in use case', () => {
       new FakeEncoder(),
       new FakeTokenManager()
     )
-    const useCase = new SignIn(singleUserUserRepository, authentication)
+    const useCase = new SignIn(authentication)
     const response = await useCase.perform(
       UserDataBuilder.validUser().withDifferentEmail().build()
     )

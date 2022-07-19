@@ -3,7 +3,7 @@ import {
   UserNotFoundError,
   WrongPasswordError
 } from '@/use-cases/authentication/errors'
-import { UseCase, UserData, UserRepository } from '@/use-cases/ports'
+import { UseCase, UserData } from '@/use-cases/ports'
 import {
   AuthenticationResult,
   AuthenticationService
@@ -12,10 +12,7 @@ import {
 export class SignIn
   implements UseCase<UserData, Either<Error, AuthenticationResult>>
 {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly authentication: AuthenticationService
-  ) {}
+  constructor(private readonly authentication: AuthenticationService) {}
 
   public async perform(
     signInRequest: UserData
