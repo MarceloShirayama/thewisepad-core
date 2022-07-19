@@ -39,4 +39,27 @@ describe('Custom authentication', () => {
       validUserSignInRequest.id
     )
   })
+
+  it('Should not authenticate with unregistered user', async () => {
+    const singleUserRepository = await getSingleUserRepository()
+
+    const unregisteredUserSignInRequest: UserData = UserDataBuilder.validUser()
+      .withDifferentEmail()
+      .build()
+
+    const fakeTokenManager = new FakeTokenManager()
+
+    const authentication = new CustomAuthentication(
+      singleUserRepository,
+      new FakeEncoder(),
+      fakeTokenManager
+    )
+
+    const response = await authentication.auth(unregisteredUserSignInRequest)
+    const error = response.value as Error
+
+    expect(error.name).toEqual('UserNotFoundError')
+    expect(error.message).toEqual('User not found')
+    expect(error.stack).toBeDefined()
+  })
 })
