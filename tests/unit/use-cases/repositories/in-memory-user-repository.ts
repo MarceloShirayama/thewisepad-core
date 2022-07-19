@@ -31,4 +31,9 @@ export class InMemoryUserRepository implements UserRepository {
 
     return userData
   }
+
+  async updateAccessToken(userId: string, accessToken: string): Promise<void> {
+    console.log(userId, accessToken)
+    throw new Error('Method not implemented.')
+  }
 }

@@ -1,9 +1,9 @@
 import { Either, left, right } from '@/shared/either'
-import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import {
   UserNotFoundError,
   WrongPasswordError
-} from '@/use-cases/sign-in/errors'
+} from '@/use-cases/authentication/errors'
+import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 
 export class SignIn implements UseCase<UserData, Either<Error, UserData>> {
   constructor(

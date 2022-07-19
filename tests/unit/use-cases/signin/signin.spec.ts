@@ -1,12 +1,12 @@
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
-import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
-import { SignIn } from '@/use-cases/sign-in'
 import {
   UserNotFoundError,
   WrongPasswordError
-} from '@/use-cases/sign-in/errors'
+} from '@/use-cases/authentication/errors'
+import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
+import { SignIn } from '@/use-cases/sign-in'
 
 describe('Sign in use case', () => {
   const validUserSignInRequest: UserData = UserDataBuilder.validUser().build()
