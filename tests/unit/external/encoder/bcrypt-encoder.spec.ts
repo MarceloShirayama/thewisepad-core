@@ -7,7 +7,6 @@ describe('Bcrypt encode', () => {
     const password = 'password'
 
     const encoded = await encoder.encode(password)
-    console.log({ encoded })
 
     expect(await encoder.compare(password, encoded)).toBe(true)
     expect(password).not.toBe(encoded)
