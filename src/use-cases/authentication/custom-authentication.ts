@@ -39,7 +39,7 @@ export class CustomAuthentication implements AuthenticationService {
 
     const id = user.id as string
 
-    const accessToken = await this.tokenManager.sign(id)
+    const accessToken = await this.tokenManager.sign({ id })
 
     await this.userRepository.updateAccessToken(id, accessToken)
 
