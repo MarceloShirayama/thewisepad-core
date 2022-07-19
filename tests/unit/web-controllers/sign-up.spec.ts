@@ -1,63 +1,94 @@
+import { Either, right } from '@/shared'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
+import {
+  UserNotFoundError,
+  WrongPasswordError
+} from '@/use-cases/authentication/errors'
+import {
+  AuthenticationParams,
+  AuthenticationResult,
+  AuthenticationService
+} from '@/use-cases/authentication/ports'
 import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers'
 import { HttpRequest, HttpResponse } from '@/web-controllers/ports'
 
 describe('Sign up controller', () => {
-  const emptyRepository: UserRepository = new InMemoryUserRepository([])
-
-  const encoder: Encoder = new FakeEncoder()
-
-  const SignUpUseCase: UseCase = new SignUp(emptyRepository, encoder)
-
+  //  variables
   const validUserSignUpData: UserData = UserDataBuilder.validUser().build()
-
-  const validUserSignUpRequest: HttpRequest = {
-    body: validUserSignUpData
-  }
-
-  const controller: SignUpController = new SignUpController(SignUpUseCase)
 
   const userSignUpDataWithInvalidEmail: UserData = UserDataBuilder.validUser()
     .withInvalidEmail()
     .build()
 
+  const userSignupDataWithInvalidPassword: UserData =
+    UserDataBuilder.validUser().withPasswordWithFewChars().build()
+
+  // requests data
+  const validUserSignUpRequest: HttpRequest = {
+    body: validUserSignUpData
+  }
+
   const userSignUpRequestWithInvalidEmail: HttpRequest = {
     body: userSignUpDataWithInvalidEmail
   }
-
-  const userSignupDataWithInvalidPassword: UserData =
-    UserDataBuilder.validUser().withPasswordWithFewChars().build()
 
   const userSignupRequestWithInvalidPassword: HttpRequest = {
     body: userSignupDataWithInvalidPassword
   }
 
+  // stub authentication service
+  class AuthenticationServiceStub implements AuthenticationService {
+    async auth(
+      _authenticationParams: AuthenticationParams
+    ): Promise<
+      Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>
+    > {
+      const id = validUserSignUpData.id as string
+      return right({
+        accessToken: 'accessToken',
+        id
+      })
+    }
+  }
+
+  const authenticationStub = new AuthenticationServiceStub()
   class ErrorThrowingSignUpUseCaseStub implements UseCase<UserData, void> {
     public async perform(_request: UserData): Promise<void> {
       throw Error()
     }
   }
 
+  // repositories
+  const emptyRepository: UserRepository = new InMemoryUserRepository([])
+
+  // encoders
+  const encoder: Encoder = new FakeEncoder()
+
+  const signUpUseCase = new SignUp(emptyRepository, encoder, authenticationStub)
+
+  const controller = new SignUpController(signUpUseCase)
+
   const errorThrowingSignUpUseCaseStub: UseCase<UserData, void> =
     new ErrorThrowingSignUpUseCaseStub()
 
-  it('Should return 201 and the registered user, if successful', async () => {
+  it('Should return 201 and authentication result, if successful', async () => {
     const response: HttpResponse = await controller.handle(
       validUserSignUpRequest
     )
 
-    const { statusCode, body } = response
+    console.log({ response: response.body })
 
-    expect(statusCode).toBe(201)
-    expect(body).toEqual({
-      id: expect.any(String),
-      email: validUserSignUpData.email,
-      password: expect.any(String)
-    })
+    expect(response.statusCode).toBe(201)
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        accessToken: 'accessToken',
+        id: validUserSignUpData.id
+      })
+    )
   })
 
   it('Should return 403 when trying to sign up existing user', async () => {

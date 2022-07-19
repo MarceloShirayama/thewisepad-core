@@ -1,32 +1,28 @@
 import { User } from '@/entities'
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
 import { Either, left, right } from '@/shared'
+import {
+  AuthenticationResult,
+  AuthenticationService
+} from '@/use-cases/authentication/ports'
 import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
 
-export class SignUp implements UseCase<UserData, Either<Error, UserData>> {
-  private readonly _userRepository: UserRepository
-  private readonly _encoder: Encoder
-
-  constructor(userRepository: UserRepository, encoder: Encoder) {
-    this._userRepository = userRepository
-    this._encoder = encoder
-  }
-
-  private get userRepository(): UserRepository {
-    return this._userRepository
-  }
-
-  private get encoder(): Encoder {
-    return this._encoder
-  }
+export class SignUp
+  implements UseCase<UserData, Either<Error, AuthenticationResult>>
+{
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly encoder: Encoder,
+    private readonly authentication: AuthenticationService
+  ) {}
 
   public async perform(
     userSignupRequest: UserData
   ): Promise<
     Either<
       ExistingUserError | InvalidEmailError | InvalidPasswordError,
-      UserData
+      AuthenticationResult
     >
   > {
     const userOrError = User.create(
@@ -50,11 +46,18 @@ export class SignUp implements UseCase<UserData, Either<Error, UserData>> {
       userSignupRequest.password
     )
 
-    const newUser = await this.userRepository.add({
+    await this.userRepository.add({
       email: userSignupRequest.email,
       password: encodedPassword
     })
 
-    return right(newUser)
+    const authenticationResult = await this.authentication.auth({
+      email: userSignupRequest.email,
+      password: userSignupRequest.password
+    })
+
+    const result = authenticationResult.value as AuthenticationResult
+
+    return right(result)
   }
 }

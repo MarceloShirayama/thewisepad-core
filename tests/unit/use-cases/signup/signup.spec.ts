@@ -1,7 +1,17 @@
 import { InvalidEmailError, InvalidPasswordError } from '@/entities/errors'
+import { Either, right } from '@/shared'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
+import {
+  UserNotFoundError,
+  WrongPasswordError
+} from '@/use-cases/authentication/errors'
+import {
+  AuthenticationParams,
+  AuthenticationResult,
+  AuthenticationService
+} from '@/use-cases/authentication/ports'
 import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { ExistingUserError } from '@/use-cases/sign-up/errors'
@@ -23,18 +33,39 @@ describe('Sign up use case', () => {
   // encoders
   const encoder: Encoder = new FakeEncoder()
 
+  // use cases stubs
+  class AuthenticationServiceStub implements AuthenticationService {
+    async auth(
+      _authenticationParams: AuthenticationParams
+    ): Promise<
+      Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>
+    > {
+      const id = validUserSignUpRequest.id as string
+      return right({
+        accessToken: 'accessToken',
+        id
+      })
+    }
+  }
+
+  const authenticationStub = new AuthenticationServiceStub()
+
   it('should sign up user with valid data', async () => {
-    const sut: SignUp = new SignUp(emptyUserRepository, encoder)
+    const sut: SignUp = new SignUp(
+      emptyUserRepository,
+      encoder,
+      authenticationStub
+    )
 
     const userSignUpResponse = await sut.perform(validUserSignUpRequest)
+    const response = userSignUpResponse.value
 
     const userRepositoryLength = (await emptyUserRepository.findAll()).length
 
-    expect(userSignUpResponse.value).toEqual(
+    expect(response).toEqual(
       expect.objectContaining({
-        email: validUserSignUpRequest.email,
-        password: `${validUserSignUpRequest.password}_ENCRYPTED`,
-        id: expect.any(String)
+        accessToken: 'accessToken',
+        id: validUserSignUpRequest.id
       })
     )
     expect(userRepositoryLength).toEqual(1)
@@ -45,7 +76,11 @@ describe('Sign up use case', () => {
   })
 
   it('should not sign up existing user', async () => {
-    const sut: SignUp = new SignUp(singleUserUserRepository, encoder)
+    const sut: SignUp = new SignUp(
+      singleUserUserRepository,
+      encoder,
+      authenticationStub
+    )
     const error = await sut.perform(validUserSignUpRequest)
     expect(error.value).toEqual(new ExistingUserError(validUserSignUpRequest))
   })
@@ -54,7 +89,11 @@ describe('Sign up use case', () => {
     const userSignUpRequestWithInvalidEmail: UserData =
       UserDataBuilder.validUser().withInvalidEmail().build()
 
-    const sut: SignUp = new SignUp(emptyUserRepository, encoder)
+    const sut: SignUp = new SignUp(
+      emptyUserRepository,
+      encoder,
+      authenticationStub
+    )
 
     const error = await sut.perform(userSignUpRequestWithInvalidEmail)
 
@@ -65,7 +104,11 @@ describe('Sign up use case', () => {
   })
 
   it('Should not sign up user with password without number', async () => {
-    const sut: SignUp = new SignUp(emptyUserRepository, encoder)
+    const sut: SignUp = new SignUp(
+      emptyUserRepository,
+      encoder,
+      authenticationStub
+    )
 
     const error = await sut.perform(
       UserDataBuilder.validUser().withPasswordWithoutNumbers().build()
@@ -76,7 +119,11 @@ describe('Sign up use case', () => {
   })
 
   it('Should not sign up user with password with few chars', async () => {
-    const sut: SignUp = new SignUp(emptyUserRepository, encoder)
+    const sut: SignUp = new SignUp(
+      emptyUserRepository,
+      encoder,
+      authenticationStub
+    )
 
     const error = await sut.perform(
       UserDataBuilder.validUser().withPasswordWithFewChars().build()
