@@ -17,7 +17,8 @@ describe('Custom authentication', () => {
     return new InMemoryUserRepository(userDataArrayWithSingleUser)
   }
 
-  it('Should correctly authenticate if password is correct', async () => {
+  it(`Should correctly authenticate if user email and password is correct
+    `, async () => {
     const singleUserRepository = await getSingleUserRepository()
 
     const validUserSignInRequest: UserData = UserDataBuilder.validUser().build()
