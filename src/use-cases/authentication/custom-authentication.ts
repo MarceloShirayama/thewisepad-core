@@ -24,25 +24,25 @@ export class CustomAuthentication implements AuthenticationService {
       authenticationParams.email
     )
 
-    if (user) {
-      const isValid = await this.encoder.compare(
-        authenticationParams.password,
-        user.password
-      )
-
-      if (!isValid) {
-        return left(new WrongPasswordError())
-      }
-
-      const id = user.id as string
-
-      const accessToken = await this.tokenManager.sign(id)
-
-      await this.userRepository.updateAccessToken(id, accessToken)
-
-      return right({ accessToken, id })
+    if (!user) {
+      return left(new UserNotFoundError())
     }
 
-    return left(new UserNotFoundError())
+    const isValid = await this.encoder.compare(
+      authenticationParams.password,
+      user.password
+    )
+
+    if (!isValid) {
+      return left(new WrongPasswordError())
+    }
+
+    const id = user.id as string
+
+    const accessToken = await this.tokenManager.sign(id)
+
+    await this.userRepository.updateAccessToken(id, accessToken)
+
+    return right({ accessToken, id })
   }
 }
