@@ -23,4 +23,4 @@ class AuthenticationServiceStub implements AuthenticationService {
   }
 }
 
-export const authenticationStub = new AuthenticationServiceStub()
+export const makeAuthenticationStub = new AuthenticationServiceStub()

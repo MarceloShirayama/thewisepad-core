@@ -1,16 +1,7 @@
-import { Either, right } from '@/shared'
+import { makeAuthenticationStub } from '@/tests/unit/use-cases/authentication'
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
 import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
 import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
-import {
-  UserNotFoundError,
-  WrongPasswordError
-} from '@/use-cases/authentication/errors'
-import {
-  AuthenticationParams,
-  AuthenticationResult,
-  AuthenticationService
-} from '@/use-cases/authentication/ports'
 import { Encoder, UseCase, UserData, UserRepository } from '@/use-cases/ports'
 import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers'
@@ -41,21 +32,7 @@ describe('Sign up controller', () => {
   }
 
   // stub authentication service
-  class AuthenticationServiceStub implements AuthenticationService {
-    async auth(
-      _authenticationParams: AuthenticationParams
-    ): Promise<
-      Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>
-    > {
-      const id = validUserSignUpData.id as string
-      return right({
-        accessToken: 'accessToken',
-        id
-      })
-    }
-  }
-
-  const authenticationStub = new AuthenticationServiceStub()
+  const authenticationStub = makeAuthenticationStub
   class ErrorThrowingSignUpUseCaseStub implements UseCase<UserData, void> {
     public async perform(_request: UserData): Promise<void> {
       throw Error()
