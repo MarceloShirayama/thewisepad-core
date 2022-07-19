@@ -57,8 +57,6 @@ describe('Sign up controller', () => {
       validUserSignUpRequest
     )
 
-    console.log({ response: response.body })
-
     expect(response.statusCode).toBe(201)
     expect(response.body).toEqual(
       expect.objectContaining({
