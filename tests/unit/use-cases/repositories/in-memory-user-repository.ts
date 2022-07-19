@@ -33,7 +33,9 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async updateAccessToken(userId: string, accessToken: string): Promise<void> {
-    console.log(userId, accessToken)
-    throw new Error('Method not implemented.')
+    const found = this.data.find((user: UserData) => user.id === userId)
+    if (found) {
+      found.accessToken = accessToken
+    }
   }
 }
