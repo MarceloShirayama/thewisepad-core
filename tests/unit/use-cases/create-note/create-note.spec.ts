@@ -1,5 +1,13 @@
 import { InvalidTitleError } from '@/entities/errors'
 import { left } from '@/shared'
+import {
+  NoteDataBuilder,
+  UserDataBuilder
+} from '@/tests/unit/use-cases/builders'
+import {
+  InMemoryNoteRepository,
+  InMemoryUserRepository
+} from '@/tests/unit/use-cases/doubles/repositories'
 import { CreateNote } from '@/use-cases/create-note'
 import {
   ExistingTitleError,
@@ -11,8 +19,6 @@ import {
   UserData,
   UserRepository
 } from '@/use-cases/ports'
-import { NoteDataBuilder, UserDataBuilder } from '../builders'
-import { InMemoryNoteRepository, InMemoryUserRepository } from '../repositories'
 
 describe('Create note use case', () => {
   const validRegisteredUser: UserData = UserDataBuilder.validUser().build()

@@ -1,6 +1,7 @@
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
-import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
-import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
+import { FakeTokenManager } from '@/tests/unit/use-cases/doubles/authentication'
+import { FakeEncoder } from '@/tests/unit/use-cases/doubles/encoders'
+import { InMemoryUserRepository } from '@/tests/unit/use-cases/doubles/repositories'
 import { CustomAuthentication } from '@/use-cases/authentication/custom-authentication'
 import {
   UserNotFoundError,
@@ -9,7 +10,6 @@ import {
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { Encoder, UserData, UserRepository } from '@/use-cases/ports'
 import { SignIn } from '@/use-cases/sign-in'
-import { FakeTokenManager } from '../authentication'
 
 describe('Sign in use case', () => {
   const validUserSignInRequest: UserData = UserDataBuilder.validUser().build()

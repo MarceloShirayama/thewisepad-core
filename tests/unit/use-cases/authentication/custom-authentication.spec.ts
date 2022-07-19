@@ -1,10 +1,10 @@
 import { UserDataBuilder } from '@/tests/unit/use-cases/builders'
-import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
+import { FakeTokenManager } from '@/tests/unit/use-cases/doubles/authentication'
+import { FakeEncoder } from '@/tests/unit/use-cases/doubles/encoders'
+import { InMemoryUserRepository } from '@/tests/unit/use-cases/doubles/repositories'
 import { CustomAuthentication } from '@/use-cases/authentication/custom-authentication'
 import { AuthenticationResult } from '@/use-cases/authentication/ports'
 import { UserData, UserRepository } from '@/use-cases/ports'
-import { InMemoryUserRepository } from '../repositories'
-import { FakeTokenManager } from './fake-token-manager'
 
 describe('Custom authentication', () => {
   async function getSingleUserRepository(): Promise<UserRepository> {

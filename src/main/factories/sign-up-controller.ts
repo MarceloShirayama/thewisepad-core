@@ -1,6 +1,6 @@
-import { makeAuthenticationStub } from '@/tests/unit/use-cases/authentication'
-import { FakeEncoder } from '@/tests/unit/use-cases/encoders'
-import { InMemoryUserRepository } from '@/tests/unit/use-cases/repositories'
+import { makeAuthenticationStub } from '@/tests/unit/use-cases/doubles/authentication'
+import { FakeEncoder } from '@/tests/unit/use-cases/doubles/encoders'
+import { InMemoryUserRepository } from '@/tests/unit/use-cases/doubles/repositories'
 import { SignUp } from '@/use-cases/sign-up'
 import { SignUpController } from '@/web-controllers/sign-up'
 
