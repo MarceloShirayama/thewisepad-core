@@ -31,11 +31,4 @@ export class InMemoryUserRepository implements UserRepository {
 
     return userData
   }
-
-  async updateAccessToken(userId: string, accessToken: string): Promise<void> {
-    const found = this.data.find((user: UserData) => user.id === userId)
-    if (found) {
-      found.accessToken = accessToken
-    }
-  }
 }
