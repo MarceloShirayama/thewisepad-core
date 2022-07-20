@@ -22,6 +22,29 @@ describe('JWT token manager', () => {
     expect(tokenSign).not.toBe(info)
   })
 
+  it(`should return a JsonWebTokenError object if the signature is invalid
+    `, async () => {
+    const secret = 'secret'
+    const info: Payload = { id: 'id' }
+
+    const tokenManager = new JwtTokenManager(secret)
+
+    const tokenSign = await tokenManager.sign(info)
+
+    const invalidToken = tokenSign + 'invalid'
+
+    const tokenVerify = await tokenManager.verify(invalidToken)
+    const decodeError = tokenVerify.value as Token
+
+    expect(tokenVerify.isLeft()).toBeTruthy()
+    expect(decodeError).toEqual(
+      expect.objectContaining({
+        name: 'JsonWebTokenError',
+        message: 'invalid signature'
+      })
+    )
+  })
+
   it('Should correctly verify expired json web tokens', async () => {
     const secret = 'secret'
     const info: Payload = { id: 'id' }
