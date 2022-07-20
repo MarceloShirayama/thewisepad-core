@@ -4,10 +4,6 @@ import sinon from 'sinon'
 import { JwtTokenManager } from '@/external/token-manager/jwt-token-manager'
 import { Payload } from '@/use-cases/authentication/ports'
 
-type Token = {
-  [key: string]: any
-}
-
 describe('JWT token manager', () => {
   it('Should correctly sign and verify a json web token', async () => {
     const secret = 'secret'
@@ -19,7 +15,7 @@ describe('JWT token manager', () => {
 
     const tokenVerify = await tokenManager.verify(tokenSign)
 
-    const decoded = tokenVerify.value as Token
+    const decoded = tokenVerify.value
 
     expect(decoded).toEqual({ id: 'id', iat: expect.any(Number) })
     expect(tokenSign).not.toBe(info)
