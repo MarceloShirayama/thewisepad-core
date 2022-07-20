@@ -1,3 +1,4 @@
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import sinon from 'sinon'
 
 import { JwtTokenManager } from '@/external/token-manager/jwt-token-manager'
@@ -36,9 +37,10 @@ describe('JWT token manager', () => {
     const invalidToken = tokenSign + 'invalid'
 
     const tokenVerify = await tokenManager.verify(invalidToken)
-    const decodedError = tokenVerify.value as Token
+    const decodedError = tokenVerify.value as JsonWebTokenError
 
     expect(tokenVerify.isLeft()).toBeTruthy()
+    expect(decodedError).toBeInstanceOf(JsonWebTokenError)
     expect(decodedError).toEqual(
       expect.objectContaining({
         name: 'JsonWebTokenError',
@@ -60,8 +62,10 @@ describe('JWT token manager', () => {
 
     const tokenVerify = await tokenManager.verify(tokenSign)
 
-    const decodedError = tokenVerify.value as Token
+    const decodedError = tokenVerify.value as TokenExpiredError
 
+    expect(tokenVerify.isLeft()).toBeTruthy()
+    expect(decodedError).toBeInstanceOf(TokenExpiredError)
     expect(decodedError).toEqual(
       expect.objectContaining({
         name: 'TokenExpiredError',
