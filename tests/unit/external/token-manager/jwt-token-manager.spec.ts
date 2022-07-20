@@ -1,3 +1,5 @@
+import sinon from 'sinon'
+
 import { JwtTokenManager } from '@/external/token-manager/jwt-token-manager'
 import { Payload } from '@/use-cases/authentication/ports'
 
@@ -22,7 +24,7 @@ describe('JWT token manager', () => {
     expect(tokenSign).not.toBe(info)
   })
 
-  it(`should return a JsonWebTokenError object if the signature is invalid
+  it(`should return a JsonWebTokenError object if the token is expired
     `, async () => {
     const secret = 'secret'
     const info: Payload = { id: 'id' }
@@ -34,10 +36,10 @@ describe('JWT token manager', () => {
     const invalidToken = tokenSign + 'invalid'
 
     const tokenVerify = await tokenManager.verify(invalidToken)
-    const decodeError = tokenVerify.value as Token
+    const decodedError = tokenVerify.value as Token
 
     expect(tokenVerify.isLeft()).toBeTruthy()
-    expect(decodeError).toEqual(
+    expect(decodedError).toEqual(
       expect.objectContaining({
         name: 'JsonWebTokenError',
         message: 'invalid signature'
@@ -46,24 +48,27 @@ describe('JWT token manager', () => {
   })
 
   it('Should correctly verify expired json web tokens', async () => {
+    const clock = sinon.useFakeTimers()
     const secret = 'secret'
     const info: Payload = { id: 'id' }
 
     const tokenManager = new JwtTokenManager(secret)
-    const expiresIn = '1s'
+    const expiresIn = '1h'
 
     const tokenSign = await tokenManager.sign(info, expiresIn)
+    clock.tick(3600100)
 
     const tokenVerify = await tokenManager.verify(tokenSign)
 
-    const decoded = tokenVerify.value as Token
+    const decodedError = tokenVerify.value as Token
 
-    expect(decoded).toEqual(
+    expect(decodedError).toEqual(
       expect.objectContaining({
-        id: 'id',
-        iat: expect.any(Number),
-        exp: expect.any(Number)
+        name: 'TokenExpiredError',
+        message: 'jwt expired',
+        expiredAt: expect.any(Date)
       })
     )
+    clock.restore()
   })
 })
