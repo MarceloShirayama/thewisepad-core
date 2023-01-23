@@ -1,0 +1,21 @@
+{
+  "name": "thewisepad-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/main/server.js",
+    "build": "tsup src --minify --sourcemap",
+    "dev": "tsx watch src/main/server.ts",
+    "test:watch": "vitest",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsup": "^6.5.0",
+    "tsx": "^3.12.2",
+    "typescript": "^4.9.4"
+  }
+}
