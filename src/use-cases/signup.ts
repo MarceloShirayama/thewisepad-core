@@ -1,8 +1,8 @@
 import { UserData } from "@/entities/user-data";
 import { UserRepository } from "./ports/user-repository";
-import { Encoder } from "./signup/ports/encoder";
+import { Encoder } from "./sign-up/ports/encoder";
 
-export class Signup {
+export class SignUp {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly encoder: Encoder
@@ -13,7 +13,7 @@ export class Signup {
       userSignupRequest.password
     );
 
-    this.userRepository.addUser({
+    await this.userRepository.addUser({
       email: userSignupRequest.email,
       password: encodePassword,
     });
