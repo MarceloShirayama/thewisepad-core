@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "istanbul",
+      exclude: ["*/**/errors/*", "*/**/either.ts"],
     },
   },
   resolve: {
