@@ -4,10 +4,14 @@ import { InvalidEmailError } from "./errors/invalid-email-error";
 import { Email } from "./email";
 
 export class User {
-  public readonly email: Email;
+  private readonly _email: Email;
 
   private constructor(email: Email) {
-    this.email = email;
+    this._email = email;
+  }
+
+  get email() {
+    return this._email;
   }
 
   public static create(userData: UserData): Either<InvalidEmailError, User> {
