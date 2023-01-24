@@ -11,7 +11,7 @@ export class Email {
   public static create(email: string): Either<InvalidEmailError, Email> {
     return Email.validate(email)
       ? right(new Email(email))
-      : left(new InvalidEmailError());
+      : left(new InvalidEmailError(email));
   }
 
   static validate(email: string): boolean {

@@ -11,7 +11,7 @@ export class Title {
   static create(title: string): Either<InvalidTitleError, Title> {
     return Title.validate(title)
       ? right(new Title(title))
-      : left(new InvalidTitleError());
+      : left(new InvalidTitleError(title));
   }
 
   static validate(title: string) {

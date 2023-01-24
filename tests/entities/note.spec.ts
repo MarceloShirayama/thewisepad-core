@@ -19,14 +19,14 @@ describe("Note entity", () => {
   });
 
   test("Should not be created with a invalid title", () => {
-    const validTitle = "my";
+    const inValidTitle = "my";
     const validEmail = "my@mail.com";
     const content = "content";
 
     const validOwner = User.create({ email: validEmail }).value as User;
 
-    const error = Note.create(validOwner, validTitle, content);
+    const error = Note.create(validOwner, inValidTitle, content);
 
-    expect(error).toEqual(left(new InvalidTitleError()));
+    expect(error).toEqual(left(new InvalidTitleError(inValidTitle)));
   });
 });
