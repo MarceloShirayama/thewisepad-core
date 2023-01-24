@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1674536340790" clover="3.2.0">
+  <project timestamp="1674536340790" name="All files">
+    <metrics statements="45" coveredstatements="43" conditionals="26" coveredconditionals="26" methods="21" coveredmethods="19" elements="92" coveredelements="88" complexity="0" loc="45" ncloc="45" packages="2" files="5" classes="5"/>
+    <package name="entities">
+      <metrics statements="35" coveredstatements="35" conditionals="26" coveredconditionals="26" methods="13" coveredmethods="13"/>
+      <file name="email.ts" path="/home/marcelo/Desenvolvimento/Projetos/javascript/otavio-lemos/thewisepad-core/src/entities/email.ts">
+        <metrics statements="19" coveredstatements="19" conditionals="18" coveredconditionals="18" methods="4" coveredmethods="4"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="12" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="22" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="27" count="14" type="stmt"/>
+        <line num="29" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="7" type="stmt"/>
+        <line num="33" count="7" type="stmt"/>
+        <line num="34" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="38" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="42" count="5" type="stmt"/>
+        <line num="43" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="9" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="51" count="4" type="stmt"/>
+      </file>
+      <file name="note.ts" path="/home/marcelo/Desenvolvimento/Projetos/javascript/otavio-lemos/thewisepad-core/src/entities/note.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="26" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+      </file>
+      <file name="title.ts" path="/home/marcelo/Desenvolvimento/Projetos/javascript/otavio-lemos/thewisepad-core/src/entities/title.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="user.ts" path="/home/marcelo/Desenvolvimento/Projetos/javascript/otavio-lemos/thewisepad-core/src/entities/user.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="16" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="shared">
+      <metrics statements="10" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="6"/>
+      <file name="either.ts" path="/home/marcelo/Desenvolvimento/Projetos/javascript/otavio-lemos/thewisepad-core/src/shared/either.ts">
+        <metrics statements="10" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="6"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="21" count="8" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="8" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

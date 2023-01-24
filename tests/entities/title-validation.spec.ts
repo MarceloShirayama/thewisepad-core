@@ -1,5 +1,6 @@
-import { Title } from "@/entities/title";
 import { describe, expect, test } from "vitest";
+
+import { Title } from "@/entities/title";
 
 describe("Title validation", () => {
   test("Should not accept empty strings", () => {
