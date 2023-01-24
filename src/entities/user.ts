@@ -2,19 +2,29 @@ import { UserData } from "./user-data";
 import { Either, left, right } from "@/shared/either";
 import { InvalidEmailError } from "./errors/invalid-email-error";
 import { Email } from "./email";
+import { Password } from "./password";
+import { InvalidPasswordError } from "./errors/invalid-password-error";
 
 export class User {
   private readonly _email: Email;
+  private readonly _password: Password;
 
-  private constructor(email: Email) {
+  private constructor(email: Email, password: Password) {
     this._email = email;
+    this._password = password;
   }
 
   get email() {
     return this._email;
   }
 
-  public static create(userData: UserData): Either<InvalidEmailError, User> {
+  get password() {
+    return this._password;
+  }
+
+  public static create(
+    userData: UserData
+  ): Either<InvalidEmailError | InvalidPasswordError, User> {
     const emailOrError = Email.create(userData.email);
 
     if (emailOrError.isLeft()) {
@@ -23,6 +33,14 @@ export class User {
 
     const email = emailOrError.value;
 
-    return right(new User(email));
+    const passwordOrError = Password.create(userData.password);
+
+    if (passwordOrError.isLeft()) {
+      return left(new InvalidPasswordError(userData.password));
+    }
+
+    const password = passwordOrError.value;
+
+    return right(new User(email, password));
   }
 }
