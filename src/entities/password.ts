@@ -19,7 +19,7 @@ export class Password {
   }
 
   static validate(password: string) {
-    return !!password && Password.hasNumber(password);
+    return !!password && Password.hasNumber(password) && password.length >= 6;
   }
 
   private static hasNumber(str: string) {

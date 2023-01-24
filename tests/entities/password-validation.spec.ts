@@ -8,6 +8,12 @@ describe("Password validation", () => {
     expect(Password.validate(invalidPassword)).toBeFalsy();
   });
 
+  test("Should not accept strings (too few chars)", () => {
+    const invalidPassword = "12abc";
+
+    expect(Password.validate(invalidPassword)).toBeFalsy();
+  });
+
   test("Should not accept strings without numbers", () => {
     const invalidPassword = "invalid_password";
 
