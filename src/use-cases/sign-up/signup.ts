@@ -1,3 +1,6 @@
+import { InvalidEmailError } from "@/entities/errors/invalid-email-error";
+import { InvalidPasswordError } from "@/entities/errors/invalid-password-error";
+import { User } from "@/entities/user";
 import { UserData } from "@/entities/user-data";
 import { Either, left, right } from "@/shared/either";
 import { UserRepository } from "../ports/user-repository";
@@ -12,7 +15,16 @@ export class SignUp {
 
   async perform(
     userSignupRequest: UserData
-  ): Promise<Either<ExistingUserError, UserData>> {
+  ): Promise<
+    Either<
+      ExistingUserError | InvalidEmailError | InvalidPasswordError,
+      UserData
+    >
+  > {
+    const userOrError = User.create(userSignupRequest);
+
+    if (userOrError.isLeft()) return left(userOrError.value);
+
     const userAlreadyExists = await this.userRepository.findUserByEmail(
       userSignupRequest.email
     );
