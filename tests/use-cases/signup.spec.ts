@@ -1,6 +1,7 @@
-import { UserData } from "@/entities/user-data";
-import { SignUp } from "@/use-cases/signup";
 import { describe, expect, test } from "vitest";
+
+import { UserData } from "@/entities/user-data";
+import { SignUp } from "@/use-cases/sign-up/signup";
 import { InMemoryUserRepository } from "./in-memory-user-repository";
 import { FakeEncoder } from "./sign-up/fake-encoder";
 

@@ -1,6 +1,6 @@
 import { UserData } from "@/entities/user-data";
-import { UserRepository } from "./ports/user-repository";
-import { Encoder } from "./sign-up/ports/encoder";
+import { UserRepository } from "../ports/user-repository";
+import { Encoder } from "./ports/encoder";
 
 export class SignUp {
   constructor(
