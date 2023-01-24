@@ -7,20 +7,26 @@ import { FakeEncoder } from "./sign-up/fake-encoder";
 import { ExistingUserError } from "@/use-cases/sign-up/errors/existing-user-error";
 
 describe("SignUp use case", () => {
-  test("Should sign up user with valid data", async () => {
-    const validEmail = "any@mail.com";
-    const validPassword = "1valid_password";
+  const validEmail = "any@mail.com";
+  const validPassword = "1valid_password";
 
-    const userSignupRequest: UserData = {
-      email: validEmail,
-      password: validPassword,
-    };
+  const userSignupRequest: UserData = {
+    email: validEmail,
+    password: validPassword,
+  };
 
+  const makeSut = () => {
     const userRepository = new InMemoryUserRepository([]);
 
     const encoder = new FakeEncoder();
 
     const signUpUseCase = new SignUp(userRepository, encoder);
+
+    return { signUpUseCase, userRepository };
+  };
+
+  test("Should sign up user with valid data", async () => {
+    const { signUpUseCase, userRepository } = makeSut();
 
     const userSignupResponse = await signUpUseCase.perform(userSignupRequest);
 
@@ -36,19 +42,7 @@ describe("SignUp use case", () => {
   });
 
   test("Should not sign up existing user", async () => {
-    const validEmail = "any@mail.com";
-    const validPassword = "1valid_password";
-
-    const userSignupRequest: UserData = {
-      email: validEmail,
-      password: validPassword,
-    };
-
-    const userRepository = new InMemoryUserRepository([]);
-
-    const encoder = new FakeEncoder();
-
-    const signUpUseCase = new SignUp(userRepository, encoder);
+    const { signUpUseCase } = makeSut();
 
     await signUpUseCase.perform(userSignupRequest);
     const error = await signUpUseCase.perform(userSignupRequest);
