@@ -3,8 +3,10 @@ import { describe, expect, test } from "vitest";
 import { ReplaceType } from "@/shared";
 import { CreateNote } from "@/use-cases/create-note";
 import { NoteData, UserData } from "@/use-cases/ports";
-import { InMemoryUserRepository } from "../in-memory-user-repository";
-import { InMemoryNoteRepository } from "./in-memory-note-repository";
+import {
+  InMemoryNoteRepository,
+  InMemoryUserRepository,
+} from "tests/doubles/repositories";
 
 describe("Create note use case", () => {
   const validEmail = "any@mail.com";

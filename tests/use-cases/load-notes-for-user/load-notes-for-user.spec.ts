@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { LoadNotesForUser } from "@/use-cases/load-notes-for-user";
 import { NoteData } from "@/use-cases/ports";
-import { InMemoryNoteRepository } from "../create-note/in-memory-note-repository";
+import { InMemoryNoteRepository } from "tests/doubles/repositories";
 
 describe("Load notes for user use case", () => {
   const validTitle1 = "my note";

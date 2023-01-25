@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { NoteData } from "@/use-cases/ports";
 import { RemoveNote } from "@/use-cases/remove-note";
-import { InMemoryNoteRepository } from "../create-note/in-memory-note-repository";
+import { InMemoryNoteRepository } from "tests/doubles/repositories";
 
 describe("Remove note use case", () => {
   const validTitle1 = "my note";

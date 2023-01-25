@@ -4,8 +4,8 @@ import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
 import { UserData } from "@/use-cases/ports";
 import { SignUp } from "@/use-cases/sign-up";
 import { ExistingUserError } from "@/use-cases/sign-up/errors";
-import { InMemoryUserRepository } from "../in-memory-user-repository";
-import { FakeEncoder } from "./fake-encoder";
+import { FakeEncoder } from "tests/doubles/encoder";
+import { InMemoryUserRepository } from "tests/doubles/repositories";
 
 describe("SignUp use case", () => {
   const validEmail = "any@mail.com";
