@@ -3,6 +3,9 @@ import { NoteData } from "@/entities/note-data";
 import { UserRepository } from "@/use-cases/ports/user-repository";
 import { NoteRepository } from "@/use-cases/ports/note-repository";
 import { User } from "@/entities/user";
+import { Either, left, right } from "@/shared/either";
+import { UnregisteredOwnerError } from "./errors/unregistered-owner-error";
+import { UserData } from "@/entities/user-data";
 
 export class CreateNote {
   constructor(
@@ -10,17 +13,18 @@ export class CreateNote {
     private readonly userRepository: UserRepository
   ) {}
 
-  async perform(request: NoteData): Promise<NoteData> {
+  async perform(
+    request: NoteData
+  ): Promise<Either<UnregisteredOwnerError, NoteData>> {
     if (!request.ownerEmail) throw new Error("Owner email is required.");
 
     const owner = await this.userRepository.findUserByEmail(request.ownerEmail);
 
-    if (!owner || !owner.id) throw new Error("Owner not found");
+    if (!owner) return left(new UnregisteredOwnerError(request.ownerEmail));
 
-    const user = User.create({
-      email: owner.email,
-      password: owner.password,
-    }).value as User;
+    const { id, email, password } = owner;
+
+    const user = User.create({ email, password }).value as User;
 
     const note = Note.create(user, request.title, request.content)
       .value as Note;
@@ -28,9 +32,9 @@ export class CreateNote {
     const saveNote = await this.noteRepository.addNote({
       title: note.title.value,
       content: note.content,
-      ownerId: owner.id,
+      ownerId: id,
     });
 
-    return saveNote;
+    return right(saveNote);
   }
 }
