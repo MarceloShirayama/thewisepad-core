@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
 
-import { UserData } from "@/entities/user-data";
+import { UserData } from "@/use-cases/ports/user-data";
 import { InMemoryNoteRepository } from "./in-memory-note-repository";
 import { InMemoryUserRepository } from "../in-memory-user-repository";
 import { CreateNote } from "@/use-cases/create-note/create-note";
-import { NoteData } from "@/entities/note-data";
+import { NoteData } from "@/use-cases/ports/note-data";
 import { ReplaceType } from "@/shared/replace-type";
 
 describe("Create note use case", () => {

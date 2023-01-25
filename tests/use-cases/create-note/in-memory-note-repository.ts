@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { NoteData } from "@/entities/note-data";
+import { NoteData } from "@/use-cases/ports/note-data";
 import { NoteRepository } from "@/use-cases/ports/note-repository";
 
 export class InMemoryNoteRepository implements NoteRepository {

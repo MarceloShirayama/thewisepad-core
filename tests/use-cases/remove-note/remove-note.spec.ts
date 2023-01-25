@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, test } from "vitest";
 
-import { NoteData } from "@/entities/note-data";
+import { NoteData } from "@/use-cases/ports/note-data";
 import { InMemoryNoteRepository } from "../create-note/in-memory-note-repository";
 import { RemoveNote } from "@/use-cases/remove-note/remove-note";
 

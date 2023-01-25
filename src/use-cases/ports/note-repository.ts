@@ -1,4 +1,4 @@
-import { NoteData } from "@/entities/note-data";
+import { NoteData } from "@/use-cases/ports/note-data";
 
 export interface NoteRepository {
   addNote(noteData: NoteData): Promise<NoteData>;

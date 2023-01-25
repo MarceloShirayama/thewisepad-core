@@ -1,6 +1,6 @@
 import { InvalidTitleError } from "@/entities/errors/invalid-title-error";
 import { Note } from "@/entities/note";
-import { NoteData } from "@/entities/note-data";
+import { NoteData } from "@/use-cases/ports/note-data";
 import { User } from "@/entities/user";
 import { Either, left, right } from "@/shared/either";
 import { ReplaceType } from "@/shared/replace-type";
