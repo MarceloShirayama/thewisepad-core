@@ -17,11 +17,13 @@ export class CreateNote {
 
     if (!owner || !owner.id) throw new Error("Owner not found");
 
-    const note = Note.create(
-      owner as unknown as User,
-      request.title,
-      request.content
-    ) as unknown as Note;
+    const user = User.create({
+      email: owner.email,
+      password: owner.password,
+    }).value as User;
+
+    const note = Note.create(user, request.title, request.content)
+      .value as Note;
 
     const saveNote = await this.noteRepository.addNote({
       title: note.title.value,
