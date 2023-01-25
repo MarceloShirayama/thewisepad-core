@@ -11,7 +11,7 @@ Tasks
 Use Cases
 - signUp ✅
 - signIn
-- load notes for a user
+- load notes for a user ✅
 - create note ✅
 - update note
   - update note content
