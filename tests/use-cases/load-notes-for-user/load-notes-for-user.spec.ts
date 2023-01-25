@@ -37,4 +37,14 @@ describe("Load notes for user use case", () => {
     expect(notes[0]).toEqual(note1);
     expect(notes[1]).toEqual(note2);
   });
+
+  test("should fail to load notes for user without notes", async () => {
+    const loadNotesForUserUseCase = new LoadNotesForUser(
+      noteRepositoryWithTwoNotes
+    );
+
+    const notes = await loadNotesForUserUseCase.perform(randomUUID());
+
+    expect(notes.length).toBe(0);
+  });
 });
