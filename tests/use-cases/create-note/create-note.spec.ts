@@ -5,6 +5,7 @@ import { InMemoryNoteRepository } from "./in-memory-note-repository";
 import { InMemoryUserRepository } from "../in-memory-user-repository";
 import { CreateNote } from "@/use-cases/create-note/create-note";
 import { NoteData } from "@/entities/note-data";
+import { ReplaceType } from "@/shared/replace-type";
 
 describe("Create note use case", () => {
   const validEmail = "any@mail.com";
@@ -23,7 +24,10 @@ describe("Create note use case", () => {
     password: validPassword,
   };
 
-  const createNoteRequestWithUnregisteredOwner: NoteData = {
+  const createNoteRequestWithUnregisteredOwner: ReplaceType<
+    NoteData,
+    { ownerEmail: string }
+  > = {
     title: validTitle,
     content: emptyContent,
     ownerEmail: unregisteredUser.email,
@@ -37,7 +41,10 @@ describe("Create note use case", () => {
 
     const user = await singleUserUserRepository.addUser(validRegisteredUser);
 
-    const validCreateNoteRequest: NoteData = {
+    const validCreateNoteRequest: ReplaceType<
+      NoteData,
+      { ownerEmail: string }
+    > = {
       title: validTitle,
       content: emptyContent,
       ownerEmail: user.email,

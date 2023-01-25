@@ -1,11 +1,11 @@
 import { Note } from "@/entities/note";
 import { NoteData } from "@/entities/note-data";
-import { UserRepository } from "@/use-cases/ports/user-repository";
-import { NoteRepository } from "@/use-cases/ports/note-repository";
 import { User } from "@/entities/user";
 import { Either, left, right } from "@/shared/either";
+import { ReplaceType } from "@/shared/replace-type";
+import { NoteRepository } from "@/use-cases/ports/note-repository";
+import { UserRepository } from "@/use-cases/ports/user-repository";
 import { UnregisteredOwnerError } from "./errors/unregistered-owner-error";
-import { UserData } from "@/entities/user-data";
 
 export class CreateNote {
   constructor(
@@ -14,10 +14,8 @@ export class CreateNote {
   ) {}
 
   async perform(
-    request: NoteData
+    request: ReplaceType<NoteData, { ownerEmail: string }>
   ): Promise<Either<UnregisteredOwnerError, NoteData>> {
-    if (!request.ownerEmail) throw new Error("Owner email is required.");
-
     const owner = await this.userRepository.findUserByEmail(request.ownerEmail);
 
     if (!owner) return left(new UnregisteredOwnerError(request.ownerEmail));
