@@ -35,7 +35,12 @@ describe("SignUp use case", () => {
 
     const userSignupResponse = await signUpUseCase.perform(userSignupRequest);
 
-    expect(userSignupResponse.value).toEqual(userSignupRequest);
+    expect(userSignupResponse.value).toHaveProperty("id");
+    expect(userSignupResponse.value).toHaveProperty("email", validEmail);
+    expect(userSignupResponse.value).toHaveProperty(
+      "password",
+      `${validPassword}-ENCRYPTED`
+    );
 
     const users = await userRepository.findAllUsers();
 

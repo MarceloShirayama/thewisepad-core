@@ -36,11 +36,11 @@ export class SignUp {
       userSignupRequest.password
     );
 
-    await this.userRepository.addUser({
+    const user = await this.userRepository.addUser({
       email: userSignupRequest.email,
       password: encodePassword,
     });
 
-    return right(userSignupRequest);
+    return right(user);
   }
 }
