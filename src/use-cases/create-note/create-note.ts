@@ -1,3 +1,4 @@
+import { InvalidTitleError } from "@/entities/errors/invalid-title-error";
 import { Note } from "@/entities/note";
 import { NoteData } from "@/entities/note-data";
 import { User } from "@/entities/user";
@@ -15,7 +16,7 @@ export class CreateNote {
 
   async perform(
     request: ReplaceType<NoteData, { ownerEmail: string }>
-  ): Promise<Either<UnregisteredOwnerError, NoteData>> {
+  ): Promise<Either<UnregisteredOwnerError | InvalidTitleError, NoteData>> {
     const owner = await this.userRepository.findUserByEmail(request.ownerEmail);
 
     if (!owner) return left(new UnregisteredOwnerError(request.ownerEmail));
@@ -24,12 +25,13 @@ export class CreateNote {
 
     const user = User.create({ email, password }).value as User;
 
-    const note = Note.create(user, request.title, request.content)
-      .value as Note;
+    const noteOrError = Note.create(user, request.title, request.content);
+
+    if (noteOrError.isLeft()) return left(noteOrError.value);
 
     const saveNote = await this.noteRepository.addNote({
-      title: note.title.value,
-      content: note.content,
+      title: noteOrError.value.title.value,
+      content: noteOrError.value.content,
       ownerId: id,
     });
 

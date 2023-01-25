@@ -12,6 +12,7 @@ describe("Create note use case", () => {
   const unregisteredEmail = "other@mail.com";
   const validPassword = "1valid_password";
   const validTitle = "my note";
+  const invalidTitle = "no";
   const emptyContent = "";
 
   const validRegisteredUser: UserData = {
@@ -41,14 +42,6 @@ describe("Create note use case", () => {
 
     const user = await singleUserUserRepository.addUser(validRegisteredUser);
 
-    const validCreateNoteRequest: ReplaceType<
-      NoteData,
-      { ownerEmail: string }
-    > = {
-      title: validTitle,
-      content: emptyContent,
-      ownerEmail: user.email,
-    };
     const emptyNoteRepository = new InMemoryNoteRepository([]);
 
     const createNoteUseCase = new CreateNote(
@@ -58,19 +51,22 @@ describe("Create note use case", () => {
 
     return {
       createNoteUseCase,
-      validCreateNoteRequest,
       emptyNoteRepository,
       user,
     };
   };
 
   test("Should create note with valid user and title", async () => {
-    const {
-      createNoteUseCase,
-      validCreateNoteRequest,
-      emptyNoteRepository,
-      user,
-    } = await makeSut();
+    const { createNoteUseCase, emptyNoteRepository, user } = await makeSut();
+
+    const validCreateNoteRequest: ReplaceType<
+      NoteData,
+      { ownerEmail: string }
+    > = {
+      title: validTitle,
+      content: emptyContent,
+      ownerEmail: user.email,
+    };
 
     const response = (await createNoteUseCase.perform(validCreateNoteRequest))
       .value as NoteData;
@@ -94,5 +90,23 @@ describe("Create note use case", () => {
     ).value as Error;
 
     expect(error.name).toBe("UnregisteredOwnerError");
+  });
+
+  test("Should not create note with invalid title", async () => {
+    const { createNoteUseCase, user } = await makeSut();
+
+    const validCreateNoteRequest: ReplaceType<
+      NoteData,
+      { ownerEmail: string }
+    > = {
+      title: invalidTitle,
+      content: emptyContent,
+      ownerEmail: user.email,
+    };
+
+    const error = (await createNoteUseCase.perform(validCreateNoteRequest))
+      .value as Error;
+
+    expect(error.name).toBe("InvalidTitleError");
   });
 });
