@@ -16,4 +16,4 @@ Use Cases
 - update note
   - update note content
   - update note title
-- delete note
+- delete note ✅
