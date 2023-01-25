@@ -109,4 +109,25 @@ describe("Create note use case", () => {
 
     expect(error.name).toBe("InvalidTitleError");
   });
+
+  test("Should not create note with existing title", async () => {
+    const { createNoteUseCase, user } = await makeSut();
+
+    const validCreateNoteRequest: ReplaceType<
+      NoteData,
+      { ownerEmail: string }
+    > = {
+      title: validTitle,
+      content: emptyContent,
+      ownerEmail: user.email,
+    };
+
+    await createNoteUseCase.perform(validCreateNoteRequest);
+
+    const error = (await createNoteUseCase.perform(validCreateNoteRequest))
+      .value as Error;
+
+    expect(error.name).toBe("ExistingTitleError");
+    expect(error.message).toBe("User already has note with the same title.");
+  });
 });
