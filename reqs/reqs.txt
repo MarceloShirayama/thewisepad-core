@@ -4,7 +4,8 @@ Tasks
 - make all classes immutable ✅
 - implement error paths in SignUp use case ✅
   - should not add existing user ✅
-  - should handle data validation (email, password)
+  - should handle data validation (email, password) ✅
+- sign up
 
 
 Use Cases
