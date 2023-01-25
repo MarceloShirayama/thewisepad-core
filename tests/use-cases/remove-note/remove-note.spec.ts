@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, test } from "vitest";
 
-import { NoteData } from "@/use-cases/ports/note-data";
+import { NoteData } from "@/use-cases/ports";
+import { RemoveNote } from "@/use-cases/remove-note";
 import { InMemoryNoteRepository } from "../create-note/in-memory-note-repository";
-import { RemoveNote } from "@/use-cases/remove-note/remove-note";
 
 describe("Remove note use case", () => {
   const validTitle1 = "my note";

@@ -1,4 +1,4 @@
-import { UserData } from "@/use-cases/ports/user-data";
+import { UserData } from "@/use-cases/ports";
 
 export interface UserRepository {
   findAllUsers(): Promise<UserData[]>;

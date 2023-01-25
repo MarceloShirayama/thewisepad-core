@@ -1,4 +1,4 @@
-import { Encoder } from "@/use-cases/sign-up/ports/encoder";
+import { Encoder } from "@/use-cases/sign-up/ports";
 
 export class FakeEncoder implements Encoder {
   async encode(plain: string): Promise<string> {

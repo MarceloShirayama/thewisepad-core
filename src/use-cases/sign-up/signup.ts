@@ -1,11 +1,9 @@
-import { InvalidEmailError } from "@/entities/errors/invalid-email-error";
-import { InvalidPasswordError } from "@/entities/errors/invalid-password-error";
-import { User } from "@/entities/user";
-import { UserData } from "@/use-cases/ports/user-data";
-import { Either, left, right } from "@/shared/either";
-import { UserRepository } from "../ports/user-repository";
-import { ExistingUserError } from "./errors/existing-user-error";
-import { Encoder } from "./ports/encoder";
+import { User } from "@/entities";
+import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
+import { Either, left, right } from "@/shared";
+import { UserData, UserRepository } from "@/use-cases/ports";
+import { ExistingUserError } from "./errors";
+import { Encoder } from "./ports";
 
 export class SignUp {
   constructor(

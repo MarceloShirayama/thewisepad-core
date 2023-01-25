@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { UserData } from "@/use-cases/ports/user-data";
-import { UserRepository } from "@/use-cases/ports/user-repository";
+import { UserData, UserRepository } from "@/use-cases/ports";
 
 export class InMemoryUserRepository implements UserRepository {
   private readonly _data: UserData[];

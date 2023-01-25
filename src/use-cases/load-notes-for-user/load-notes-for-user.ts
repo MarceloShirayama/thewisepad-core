@@ -1,5 +1,4 @@
-import { NoteData } from "@/use-cases/ports/note-data";
-import { NoteRepository } from "@/use-cases/ports/note-repository";
+import { NoteData, NoteRepository } from "@/use-cases/ports";
 
 export class LoadNotesForUser {
   constructor(private readonly noteRepository: NoteRepository) {}

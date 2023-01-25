@@ -1,5 +1,6 @@
-import { Password } from "@/entities/password";
 import { describe, expect, test } from "vitest";
+
+import { Password } from "@/entities";
 
 describe("Password validation", () => {
   test("Should not accept empty strings", () => {

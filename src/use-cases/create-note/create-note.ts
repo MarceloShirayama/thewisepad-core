@@ -1,13 +1,8 @@
-import { InvalidTitleError } from "@/entities/errors/invalid-title-error";
-import { Note } from "@/entities/note";
-import { NoteData } from "@/use-cases/ports/note-data";
-import { User } from "@/entities/user";
-import { Either, left, right } from "@/shared/either";
-import { ReplaceType } from "@/shared/replace-type";
-import { NoteRepository } from "@/use-cases/ports/note-repository";
-import { UserRepository } from "@/use-cases/ports/user-repository";
-import { ExistingTitleError } from "./errors/existing-title-error";
-import { UnregisteredOwnerError } from "./errors/unregistered-owner-error";
+import { Note, User } from "@/entities";
+import { InvalidTitleError } from "@/entities/errors";
+import { Either, left, ReplaceType, right } from "@/shared";
+import { NoteData, NoteRepository, UserRepository } from "@/use-cases/ports";
+import { ExistingTitleError, UnregisteredOwnerError } from "./errors";
 
 export class CreateNote {
   constructor(

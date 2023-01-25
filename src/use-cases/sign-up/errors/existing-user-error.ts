@@ -1,4 +1,4 @@
-import { UserData } from "@/use-cases/ports/user-data";
+import { UserData } from "@/use-cases/ports";
 
 export class ExistingUserError extends Error {
   private _statusCode: number;

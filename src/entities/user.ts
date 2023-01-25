@@ -1,9 +1,7 @@
-import { UserData } from "@/use-cases/ports/user-data";
-import { Either, left, right } from "@/shared/either";
-import { InvalidEmailError } from "./errors/invalid-email-error";
-import { Email } from "./email";
-import { Password } from "./password";
-import { InvalidPasswordError } from "./errors/invalid-password-error";
+import { Either, left, right } from "@/shared";
+import { UserData } from "@/use-cases/ports";
+import { Email, Password } from ".";
+import { InvalidEmailError, InvalidPasswordError } from "./errors";
 
 export class User {
   private readonly _email: Email;

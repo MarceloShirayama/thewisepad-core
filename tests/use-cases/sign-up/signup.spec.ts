@@ -1,12 +1,11 @@
 import { describe, expect, test } from "vitest";
 
-import { UserData } from "@/use-cases/ports/user-data";
-import { SignUp } from "@/use-cases/sign-up/signup";
+import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
+import { UserData } from "@/use-cases/ports";
+import { SignUp } from "@/use-cases/sign-up";
+import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { InMemoryUserRepository } from "../in-memory-user-repository";
 import { FakeEncoder } from "./fake-encoder";
-import { ExistingUserError } from "@/use-cases/sign-up/errors/existing-user-error";
-import { InvalidPasswordError } from "@/entities/errors/invalid-password-error";
-import { InvalidEmailError } from "@/entities/errors/invalid-email-error";
 
 describe("SignUp use case", () => {
   const validEmail = "any@mail.com";

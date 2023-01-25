@@ -1,5 +1,4 @@
-import { NoteData } from "@/use-cases/ports/note-data";
-import { NoteRepository } from "../ports/note-repository";
+import { NoteData, NoteRepository } from "@/use-cases/ports";
 
 export class RemoveNote {
   constructor(private readonly noteRepository: NoteRepository) {}

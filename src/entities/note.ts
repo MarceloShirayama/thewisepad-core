@@ -1,7 +1,6 @@
-import { Either, left, right } from "@/shared/either";
-import { InvalidTitleError } from "./errors/invalid-title-error";
-import { Title } from "./title";
-import { User } from "./user";
+import { Either, left, right } from "@/shared";
+import { Title, User } from ".";
+import { InvalidTitleError } from "./errors";
 
 export class Note {
   private readonly _title: Title;
