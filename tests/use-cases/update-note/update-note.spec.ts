@@ -1,6 +1,8 @@
-import { NoteData } from "@/use-cases/ports";
+import { NoteData, UserData } from "@/use-cases/ports";
 import { UpdateNote } from "@/use-cases/update-note";
 import { randomUUID } from "node:crypto";
+import { NoteBuilder } from "tests/doubles/builders/note-builder";
+import { UserBuilder } from "tests/doubles/builders/user-builder";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
@@ -8,38 +10,23 @@ import {
 import { describe, expect, test } from "vitest";
 
 describe("Update note use case", () => {
-  const originalTitle = "my note";
-  const changedTitle = "my changed note";
-
-  const originalContent = "original content";
-  const changedContent = "changed content";
-
-  const validUserEmail = "any@mail.com";
-  const validUserPassword = "1valid_password";
-  const validUserId = randomUUID();
+  const validUser: UserData = UserBuilder.createUser().build();
 
   const noteId = randomUUID();
 
-  const originalNote: NoteData = {
-    title: originalTitle,
-    content: originalContent,
-    ownerEmail: validUserEmail,
-    ownerId: validUserId,
-    id: noteId,
-  };
+  const originalNote: NoteData = NoteBuilder.createNote().build();
 
-  const changedNote: NoteData = {
-    title: changedTitle,
-    content: changedContent,
-    ownerEmail: validUserEmail,
-  };
+  const changedNote: NoteData = NoteBuilder.createNote()
+    .withDifferentTitleAndContent()
+    .build();
 
   const noteRepositoryWithANote = new InMemoryNoteRepository([originalNote]);
+
   const userRepositoryWithAUser = new InMemoryUserRepository([
     {
-      email: validUserEmail,
-      password: validUserPassword,
-      id: validUserId,
+      email: validUser.email,
+      password: validUser.password,
+      id: validUser.id,
     },
   ]);
 
@@ -53,7 +40,7 @@ describe("Update note use case", () => {
 
     const responseData = response.value as NoteData;
 
-    expect(responseData.title).toBe(changedTitle);
-    expect(responseData.content).toBe(changedContent);
+    expect(responseData.title).toBe(changedNote.title);
+    expect(responseData.content).toBe(changedNote.content);
   });
 });

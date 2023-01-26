@@ -14,7 +14,7 @@ describe("SigIn use case", () => {
     .build();
 
   const signInRequestWithUnregisteredUser: UserData = UserBuilder.createUser()
-    .withUnregisteredUser()
+    .withDifferentEmail()
     .build();
 
   const userDataArrayWithSingleUser: UserData[] = [

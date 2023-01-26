@@ -3,29 +3,15 @@ import { describe, expect, test } from "vitest";
 
 import { LoadNotesForUser } from "@/use-cases/load-notes-for-user";
 import { NoteData } from "@/use-cases/ports";
+import { NoteBuilder } from "tests/doubles/builders/note-builder";
 import { InMemoryNoteRepository } from "tests/doubles/repositories";
 
 describe("Load notes for user use case", () => {
-  const validTitle1 = "my note";
-  const validTitle2 = "my second note";
-  const validUserId = randomUUID();
-  const validUserEmail = "valid@mail.com";
-  const someContent = "some content";
-  const someOtherContent = "some other content";
-  const note1: NoteData = {
-    title: validTitle1,
-    content: someContent,
-    ownerEmail: validUserEmail,
-    ownerId: validUserId,
-    id: randomUUID(),
-  };
-  const note2: NoteData = {
-    title: validTitle2,
-    content: someOtherContent,
-    ownerEmail: validUserEmail,
-    ownerId: validUserId,
-    id: randomUUID(),
-  };
+  const note1: NoteData = NoteBuilder.createNote().build();
+
+  const note2: NoteData = NoteBuilder.createNote()
+    .withDifferentTitleAndId()
+    .build();
 
   const noteRepositoryWithTwoNotes = new InMemoryNoteRepository([note1, note2]);
 
@@ -34,7 +20,9 @@ describe("Load notes for user use case", () => {
       noteRepositoryWithTwoNotes
     );
 
-    const notes = await loadNotesForUserUseCase.perform(validUserId);
+    const notes = await loadNotesForUserUseCase.perform(
+      note1.ownerId as string
+    );
 
     expect(notes.length).toEqual(2);
     expect(notes[0]).toEqual(note1);

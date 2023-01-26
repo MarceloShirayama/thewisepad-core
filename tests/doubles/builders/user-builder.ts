@@ -1,12 +1,10 @@
-import { randomUUID } from "node:crypto";
-
 import { UserData } from "@/use-cases/ports";
 
 export class UserBuilder {
   private readonly user: UserData = {
     email: "any@mail.com",
     password: "1valid_password",
-    id: randomUUID(),
+    id: "0",
   };
 
   static createUser(): UserBuilder {
@@ -18,7 +16,7 @@ export class UserBuilder {
     return this;
   }
 
-  withUnregisteredUser(): UserBuilder {
+  withDifferentEmail(): UserBuilder {
     this.user.email = "another@mail.com";
     return this;
   }

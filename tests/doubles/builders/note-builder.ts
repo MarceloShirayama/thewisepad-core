@@ -8,6 +8,7 @@ export class NoteBuilder {
     content: "any content",
     ownerEmail: this.owner.email,
     ownerId: this.owner.id,
+    id: "0",
   };
 
   static createNote(): NoteBuilder {
@@ -26,6 +27,18 @@ export class NoteBuilder {
 
   withTitleWithExcessChars(): NoteBuilder {
     this.note.title = "a".repeat(257);
+    return this;
+  }
+
+  withDifferentTitleAndContent(): NoteBuilder {
+    this.note.title = "another title";
+    this.note.content = "another content";
+    return this;
+  }
+
+  withDifferentTitleAndId(): NoteBuilder {
+    this.note.id = "1";
+    this.note.title = "another title";
     return this;
   }
 

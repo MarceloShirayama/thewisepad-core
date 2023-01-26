@@ -17,7 +17,7 @@ describe("Create note use case", () => {
   const createNoteRequestWithUnregisteredOwner: NoteData =
     NoteBuilder.createNote().build();
   const unregisteredEmail = UserBuilder.createUser()
-    .withUnregisteredUser()
+    .withDifferentEmail()
     .build().email;
   createNoteRequestWithUnregisteredOwner.ownerEmail = unregisteredEmail;
 
