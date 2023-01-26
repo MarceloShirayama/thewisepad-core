@@ -1,16 +1,16 @@
-import { randomUUID } from "node:crypto";
-
 import { NoteData, NoteRepository } from "@/use-cases/ports";
 
 export class InMemoryNoteRepository implements NoteRepository {
   private readonly _data: NoteData[];
+  private idCounter = 0;
 
   constructor(data: NoteData[]) {
     this._data = data;
   }
 
   async add(note: NoteData): Promise<NoteData> {
-    note.id = randomUUID();
+    note.id = this.idCounter.toString();
+    this.idCounter++;
     this._data.push(note);
 
     return note;

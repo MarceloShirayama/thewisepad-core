@@ -1,9 +1,8 @@
-import { randomUUID } from "node:crypto";
-
 import { UserData, UserRepository } from "@/use-cases/ports";
 
 export class InMemoryUserRepository implements UserRepository {
   private readonly _data: UserData[];
+  private idCounter = 0;
 
   constructor(data: UserData[]) {
     this._data = data;
@@ -20,7 +19,8 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async add(userData: UserData): Promise<UserData> {
-    userData.id = randomUUID();
+    userData.id = this.idCounter.toString();
+    this.idCounter++;
     this._data.push(userData);
 
     return userData;
