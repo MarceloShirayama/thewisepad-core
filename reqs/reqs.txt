@@ -7,14 +7,6 @@ Tasks
   - should handle data validation (email, password) ✅
 - sign up
 
-Controllers
-- sign up 
-- sign in 
-- load notes for a user 
-- create note 
-- update note 
-- remove note 
-
 Use Cases
 - sign up ✅
 - sign in ✅
