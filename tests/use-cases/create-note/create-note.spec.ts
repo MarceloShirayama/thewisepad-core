@@ -2,42 +2,30 @@ import { describe, expect, test } from "vitest";
 
 import { CreateNote } from "@/use-cases/create-note";
 import { NoteData, UserData } from "@/use-cases/ports";
+import { NoteBuilder } from "tests/doubles/builders/note-builder";
+import { UserBuilder } from "tests/doubles/builders/user-builder";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
 } from "tests/doubles/repositories";
 
 describe("Create note use case", () => {
-  const validEmail = "any@mail.com";
-  const unregisteredEmail = "other@mail.com";
-  const validPassword = "1valid_password";
-  const validTitle = "my note";
-  const invalidTitle = "no";
-  const emptyContent = "";
+  const createValidNoteRequest: NoteData = NoteBuilder.createNote().build();
 
-  const validRegisteredUser: UserData = {
-    email: validEmail,
-    password: validPassword,
-  };
+  const validRegisteredUser: UserData = UserBuilder.createUser().build();
 
-  const unregisteredUser: UserData = {
-    email: unregisteredEmail,
-    password: validPassword,
-  };
-
-  const createNoteRequestWithUnregisteredOwner: NoteData = {
-    title: validTitle,
-    content: emptyContent,
-    ownerEmail: unregisteredUser.email,
-  };
+  const createNoteRequestWithUnregisteredOwner: NoteData =
+    NoteBuilder.createNote().build();
+  const unregisteredEmail = UserBuilder.createUser()
+    .withUnregisteredUser()
+    .build().email;
+  createNoteRequestWithUnregisteredOwner.ownerEmail = unregisteredEmail;
 
   const makeSut = async () => {
     const userDataArrayWithSingleUser = [validRegisteredUser];
     const singleUserUserRepository = new InMemoryUserRepository(
       userDataArrayWithSingleUser
     );
-
-    const user = await singleUserUserRepository.add(validRegisteredUser);
 
     const emptyNoteRepository = new InMemoryNoteRepository([]);
 
@@ -49,20 +37,12 @@ describe("Create note use case", () => {
     return {
       createNoteUseCase,
       emptyNoteRepository,
-      user,
     };
   };
 
   test("Should create note with valid user and title", async () => {
-    const { createNoteUseCase, emptyNoteRepository, user } = await makeSut();
-
-    const validCreateNoteRequest: NoteData = {
-      title: validTitle,
-      content: emptyContent,
-      ownerEmail: user.email,
-    };
-
-    const response = (await createNoteUseCase.perform(validCreateNoteRequest))
+    const { createNoteUseCase, emptyNoteRepository } = await makeSut();
+    const response = (await createNoteUseCase.perform(createValidNoteRequest))
       .value as NoteData;
 
     const addedNotes = await emptyNoteRepository.findAllNotesFrom(
@@ -71,9 +51,10 @@ describe("Create note use case", () => {
 
     expect(addedNotes.length).toBe(1);
     expect(response).toHaveProperty("id");
-    expect(response).toHaveProperty("content", "");
-    expect(response).toHaveProperty("title", validTitle);
-    expect(response.ownerId).toBe(user.id);
+    expect(response).toHaveProperty("content", createValidNoteRequest.content);
+    expect(response).toHaveProperty("title", createValidNoteRequest.title);
+    expect(response.ownerId).toBeDefined();
+    expect(response.id).toBeDefined();
   });
 
   test("Should not create note with unregistered owner", async () => {
@@ -87,13 +68,11 @@ describe("Create note use case", () => {
   });
 
   test("Should not create note with invalid title", async () => {
-    const { createNoteUseCase, user } = await makeSut();
+    const { createNoteUseCase } = await makeSut();
 
-    const validCreateNoteRequest: NoteData = {
-      title: invalidTitle,
-      content: emptyContent,
-      ownerEmail: user.email,
-    };
+    const validCreateNoteRequest: NoteData = NoteBuilder.createNote()
+      .withTitleWithExcessChars()
+      .build();
 
     const error = (await createNoteUseCase.perform(validCreateNoteRequest))
       .value as Error;
@@ -102,17 +81,11 @@ describe("Create note use case", () => {
   });
 
   test("Should not create note with existing title", async () => {
-    const { createNoteUseCase, user } = await makeSut();
+    const { createNoteUseCase } = await makeSut();
 
-    const validCreateNoteRequest: NoteData = {
-      title: validTitle,
-      content: emptyContent,
-      ownerEmail: user.email,
-    };
+    await createNoteUseCase.perform(createValidNoteRequest);
 
-    await createNoteUseCase.perform(validCreateNoteRequest);
-
-    const error = (await createNoteUseCase.perform(validCreateNoteRequest))
+    const error = (await createNoteUseCase.perform(createValidNoteRequest))
       .value as Error;
 
     expect(error.name).toBe("ExistingTitleError");

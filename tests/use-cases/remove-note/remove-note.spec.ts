@@ -4,18 +4,10 @@ import { describe, expect, test } from "vitest";
 import { NoteData } from "@/use-cases/ports";
 import { RemoveNote } from "@/use-cases/remove-note";
 import { InMemoryNoteRepository } from "tests/doubles/repositories";
+import { NoteBuilder } from "tests/doubles/builders/note-builder";
 
 describe("Remove note use case", () => {
-  const validTitle1 = "my note";
-  const validUserId = randomUUID();
-  const someContent = "some content";
-  const note: NoteData = {
-    title: validTitle1,
-    content: someContent,
-    ownerEmail: "valid@mail.com",
-    ownerId: validUserId,
-    id: randomUUID(),
-  };
+  const note: NoteData = NoteBuilder.createNote().build();
 
   const noteRepositoryWithNote = new InMemoryNoteRepository([note]);
 
