@@ -6,4 +6,8 @@ export class FakeEncoder implements Encoder {
 
     return hash;
   }
+
+  async compare(plain: string, hashed: string): Promise<boolean> {
+    return `${plain}-ENCRYPTED` === hashed;
+  }
 }
