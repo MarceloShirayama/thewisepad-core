@@ -22,7 +22,7 @@ export class SignUp {
 
     if (userOrError.isLeft()) return left(userOrError.value);
 
-    const userAlreadyExists = await this.userRepository.findUserByEmail(
+    const userAlreadyExists = await this.userRepository.findByEmail(
       userSignupRequest.email
     );
 
@@ -33,7 +33,7 @@ export class SignUp {
       userSignupRequest.password
     );
 
-    const user = await this.userRepository.addUser({
+    const user = await this.userRepository.add({
       email: userSignupRequest.email,
       password: encodePassword,
     });

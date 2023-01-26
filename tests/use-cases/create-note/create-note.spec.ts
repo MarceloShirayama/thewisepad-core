@@ -37,7 +37,7 @@ describe("Create note use case", () => {
       userDataArrayWithSingleUser
     );
 
-    const user = await singleUserUserRepository.addUser(validRegisteredUser);
+    const user = await singleUserUserRepository.add(validRegisteredUser);
 
     const emptyNoteRepository = new InMemoryNoteRepository([]);
 

@@ -26,7 +26,7 @@ describe("Remove note use case", () => {
 
     expect(removedNote).toBe(note);
 
-    const findRemovedNote = await noteRepositoryWithNote.findNote(
+    const findRemovedNote = await noteRepositoryWithNote.findById(
       note.id as string
     );
 

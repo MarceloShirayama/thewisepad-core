@@ -18,7 +18,7 @@ export class CreateNote {
       NoteData
     >
   > {
-    const owner = await this.userRepository.findUserByEmail(request.ownerEmail);
+    const owner = await this.userRepository.findByEmail(request.ownerEmail);
 
     if (!owner) return left(new UnregisteredOwnerError(request.ownerEmail));
 
@@ -40,7 +40,7 @@ export class CreateNote {
 
     if (alreadyExistsTitle) return left(new ExistingTitleError());
 
-    const saveNote = await this.noteRepository.addNote({
+    const saveNote = await this.noteRepository.add({
       title: noteOrError.value.title.value,
       content: noteOrError.value.content,
       ownerEmail: owner.email,

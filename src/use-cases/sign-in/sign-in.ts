@@ -11,7 +11,7 @@ export class SignIn {
   async perform(
     sigInRequest: UserData
   ): Promise<Either<UserNotFoundError | WrongPasswordError, UserData>> {
-    const user = await this.userRepository.findUserByEmail(sigInRequest.email);
+    const user = await this.userRepository.findByEmail(sigInRequest.email);
 
     if (!user) return left(new UserNotFoundError());
 

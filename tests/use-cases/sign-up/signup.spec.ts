@@ -41,11 +41,11 @@ describe("SignUp use case", () => {
       `${validPassword}-ENCRYPTED`
     );
 
-    const users = await userRepository.findAllUsers();
+    const users = await userRepository.findAll();
 
     expect(users.length).toBe(1);
 
-    const user = await userRepository.findUserByEmail(validEmail);
+    const user = await userRepository.findByEmail(validEmail);
 
     expect(user?.password).toBe(`${validPassword}-ENCRYPTED`);
   });
