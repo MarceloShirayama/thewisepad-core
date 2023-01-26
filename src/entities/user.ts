@@ -3,6 +3,11 @@ import { UserData } from "@/use-cases/ports";
 import { Email, Password } from ".";
 import { InvalidEmailError, InvalidPasswordError } from "./errors";
 
+type UserInput = {
+  email: string;
+  password: string;
+};
+
 export class User {
   private readonly _email: Email;
   private readonly _password: Password;
@@ -21,25 +26,26 @@ export class User {
     return this._password;
   }
 
-  public static create(
-    userData: UserData
-  ): Either<InvalidEmailError | InvalidPasswordError, User> {
-    const emailOrError = Email.create(userData.email);
+  public static create({
+    email,
+    password,
+  }: UserInput): Either<InvalidEmailError | InvalidPasswordError, User> {
+    const emailOrError = Email.create(email);
 
     if (emailOrError.isLeft()) {
-      return left(new InvalidEmailError(userData.email));
+      return left(new InvalidEmailError(email));
     }
 
-    const email = emailOrError.value;
+    const emailObject = emailOrError.value;
 
-    const passwordOrError = Password.create(userData.password);
+    const passwordOrError = Password.create(password);
 
     if (passwordOrError.isLeft()) {
-      return left(new InvalidPasswordError(userData.password));
+      return left(new InvalidPasswordError(password));
     }
 
-    const password = passwordOrError.value;
+    const passwordObject = passwordOrError.value;
 
-    return right(new User(email, password));
+    return right(new User(emailObject, passwordObject));
   }
 }

@@ -19,11 +19,13 @@ export class UpdateNote {
     noteId: string,
     changeNoteData: NoteData
   ): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
-    const user = (await this.userRepository.findByEmail(
+    const userData = await this.userRepository.findByEmail(
       changeNoteData.ownerEmail as string
-    )) as UserData;
+    );
 
-    const owner = User.create(user).value as User;
+    const { email, password } = userData as UserData;
+
+    const owner = User.create({ email, password }).value as User;
 
     const noteOrError = Note.create(
       owner,
