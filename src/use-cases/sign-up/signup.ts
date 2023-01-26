@@ -1,9 +1,8 @@
 import { User } from "@/entities";
 import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
 import { Either, left, right } from "@/shared";
-import { UserData, UserRepository } from "@/use-cases/ports";
+import { Encoder, UserData, UserRepository } from "@/use-cases/ports";
 import { ExistingUserError } from "./errors";
-import { Encoder } from "./ports";
 
 export class SignUp {
   constructor(
