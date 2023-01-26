@@ -9,17 +9,20 @@ describe("Load notes for user use case", () => {
   const validTitle1 = "my note";
   const validTitle2 = "my second note";
   const validUserId = randomUUID();
+  const validUserEmail = "valid@mail.com";
   const someContent = "some content";
   const someOtherContent = "some other content";
   const note1: NoteData = {
     title: validTitle1,
     content: someContent,
+    ownerEmail: validUserEmail,
     ownerId: validUserId,
     id: randomUUID(),
   };
   const note2: NoteData = {
     title: validTitle2,
     content: someOtherContent,
+    ownerEmail: validUserEmail,
     ownerId: validUserId,
     id: randomUUID(),
   };

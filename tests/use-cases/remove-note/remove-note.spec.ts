@@ -12,6 +12,7 @@ describe("Remove note use case", () => {
   const note: NoteData = {
     title: validTitle1,
     content: someContent,
+    ownerEmail: "valid@mail.com",
     ownerId: validUserId,
     id: randomUUID(),
   };

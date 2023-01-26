@@ -1,6 +1,6 @@
 import { Note, User } from "@/entities";
 import { InvalidTitleError } from "@/entities/errors";
-import { Either, left, ReplaceType, right } from "@/shared";
+import { Either, left, right } from "@/shared";
 import { NoteData, NoteRepository, UserRepository } from "@/use-cases/ports";
 import { ExistingTitleError, UnregisteredOwnerError } from "./errors";
 
@@ -11,7 +11,7 @@ export class CreateNote {
   ) {}
 
   async perform(
-    request: ReplaceType<NoteData, { ownerEmail: string }>
+    request: NoteData
   ): Promise<
     Either<
       UnregisteredOwnerError | InvalidTitleError | ExistingTitleError,
@@ -43,6 +43,7 @@ export class CreateNote {
     const saveNote = await this.noteRepository.addNote({
       title: noteOrError.value.title.value,
       content: noteOrError.value.content,
+      ownerEmail: owner.email,
       ownerId: id,
     });
 

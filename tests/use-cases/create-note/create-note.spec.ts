@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 
-import { ReplaceType } from "@/shared";
 import { CreateNote } from "@/use-cases/create-note";
 import { NoteData, UserData } from "@/use-cases/ports";
 import {
@@ -26,10 +25,7 @@ describe("Create note use case", () => {
     password: validPassword,
   };
 
-  const createNoteRequestWithUnregisteredOwner: ReplaceType<
-    NoteData,
-    { ownerEmail: string }
-  > = {
+  const createNoteRequestWithUnregisteredOwner: NoteData = {
     title: validTitle,
     content: emptyContent,
     ownerEmail: unregisteredUser.email,
@@ -60,10 +56,7 @@ describe("Create note use case", () => {
   test("Should create note with valid user and title", async () => {
     const { createNoteUseCase, emptyNoteRepository, user } = await makeSut();
 
-    const validCreateNoteRequest: ReplaceType<
-      NoteData,
-      { ownerEmail: string }
-    > = {
+    const validCreateNoteRequest: NoteData = {
       title: validTitle,
       content: emptyContent,
       ownerEmail: user.email,
@@ -96,10 +89,7 @@ describe("Create note use case", () => {
   test("Should not create note with invalid title", async () => {
     const { createNoteUseCase, user } = await makeSut();
 
-    const validCreateNoteRequest: ReplaceType<
-      NoteData,
-      { ownerEmail: string }
-    > = {
+    const validCreateNoteRequest: NoteData = {
       title: invalidTitle,
       content: emptyContent,
       ownerEmail: user.email,
@@ -114,10 +104,7 @@ describe("Create note use case", () => {
   test("Should not create note with existing title", async () => {
     const { createNoteUseCase, user } = await makeSut();
 
-    const validCreateNoteRequest: ReplaceType<
-      NoteData,
-      { ownerEmail: string }
-    > = {
+    const validCreateNoteRequest: NoteData = {
       title: validTitle,
       content: emptyContent,
       ownerEmail: user.email,
