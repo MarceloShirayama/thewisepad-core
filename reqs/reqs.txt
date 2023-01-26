@@ -10,7 +10,7 @@ Tasks
 
 Use Cases
 - signUp ✅
-- signIn
+- signIn ✅
 - load notes for a user ✅
 - create note ✅
 - update note ✅
