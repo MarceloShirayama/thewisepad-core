@@ -13,7 +13,7 @@ Use Cases
 - signIn
 - load notes for a user ✅
 - create note ✅
-- update note
-  - update note content
-  - update note title
+- update note ✅
+  - update note content ✅
+  - update note title ✅
 - delete note ✅
