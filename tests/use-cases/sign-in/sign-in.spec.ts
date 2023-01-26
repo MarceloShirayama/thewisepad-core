@@ -4,32 +4,23 @@ import { UserData } from "@/use-cases/ports";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
 import { SignIn } from "@/use-cases/sign-in";
 import { FakeEncoder } from "tests/doubles/encoder";
+import { UserBuilder } from "tests/doubles/builders/user-builder";
 
 describe("SigIn use case", () => {
-  const validEmail = "any@mail.com";
-  const unregisteredEmail = "another@mail.com";
+  const validUserSignInRequest: UserData = UserBuilder.createUser().build();
 
-  const validPassword = "1valid_password";
-  const wrongPassword = "wrong_password";
+  const signInRequestWithWrongPassword: UserData = UserBuilder.createUser()
+    .withWrongPassword()
+    .build();
 
-  const validUserSignInRequest: UserData = {
-    email: validEmail,
-    password: validPassword,
-  };
-
-  const signInRequestWithWrongPassword: UserData = {
-    email: validEmail,
-    password: wrongPassword,
-  };
-  const signInRequestWithUnregisteredUser: UserData = {
-    email: unregisteredEmail,
-    password: validPassword,
-  };
+  const signInRequestWithUnregisteredUser: UserData = UserBuilder.createUser()
+    .withUnregisteredUser()
+    .build();
 
   const userDataArrayWithSingleUser: UserData[] = [
     {
-      email: validEmail,
-      password: `${validPassword}-ENCRYPTED`,
+      email: validUserSignInRequest.email,
+      password: `${validUserSignInRequest.password}-ENCRYPTED`,
     },
   ];
 

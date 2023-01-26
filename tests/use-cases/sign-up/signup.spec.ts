@@ -6,18 +6,18 @@ import { SignUp } from "@/use-cases/sign-up";
 import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
+import { UserBuilder } from "tests/doubles/builders/user-builder";
 
 describe("SignUp use case", () => {
-  const validEmail = "any@mail.com";
-  const validPassword = "1valid_password";
+  const validUserSignupRequest: UserData = UserBuilder.createUser().build();
 
-  const invalidEmail = "invalid_email";
-  const invalidPassword = "1abc";
+  const userSignupRequestWithInvalidPassword = UserBuilder.createUser()
+    .withPasswordWithTooFewChars()
+    .build();
 
-  const userSignupRequest: UserData = {
-    email: validEmail,
-    password: validPassword,
-  };
+  const userSignupRequestWithInvalidEmail = UserBuilder.createUser()
+    .withInvalidEmail()
+    .build();
 
   const makeSut = () => {
     const userRepository = new InMemoryUserRepository([]);
@@ -32,39 +32,37 @@ describe("SignUp use case", () => {
   test("Should sign up user with valid data", async () => {
     const { signUpUseCase, userRepository } = makeSut();
 
-    const userSignupResponse = await signUpUseCase.perform(userSignupRequest);
+    const response = await signUpUseCase.perform(validUserSignupRequest);
 
-    expect(userSignupResponse.value).toHaveProperty("id");
-    expect(userSignupResponse.value).toHaveProperty("email", validEmail);
-    expect(userSignupResponse.value).toHaveProperty(
+    expect(response.value).toHaveProperty("id");
+    expect(response.value).toHaveProperty(
+      "email",
+      validUserSignupRequest.email
+    );
+    expect(response.value).toHaveProperty(
       "password",
-      `${validPassword}-ENCRYPTED`
+      `${validUserSignupRequest.password}-ENCRYPTED`
     );
 
     const users = await userRepository.findAll();
 
     expect(users.length).toBe(1);
 
-    const user = await userRepository.findByEmail(validEmail);
+    const user = await userRepository.findByEmail(validUserSignupRequest.email);
 
-    expect(user?.password).toBe(`${validPassword}-ENCRYPTED`);
+    expect(user?.password).toBe(`${validUserSignupRequest.password}-ENCRYPTED`);
   });
 
   test("Should not sign up existing user", async () => {
     const { signUpUseCase } = makeSut();
 
-    await signUpUseCase.perform(userSignupRequest);
-    const error = await signUpUseCase.perform(userSignupRequest);
+    await signUpUseCase.perform(validUserSignupRequest);
+    const error = await signUpUseCase.perform(validUserSignupRequest);
 
-    expect(error.value).toEqual(new ExistingUserError(userSignupRequest));
+    expect(error.value).toEqual(new ExistingUserError(validUserSignupRequest));
   });
 
   test("Should not sign up user with invalid password", async () => {
-    const userSignupRequestWithInvalidPassword = {
-      email: validEmail,
-      password: invalidPassword,
-    };
-
     const { signUpUseCase } = makeSut();
 
     const error = await signUpUseCase.perform(
@@ -77,19 +75,14 @@ describe("SignUp use case", () => {
   });
 
   test("Should not sign up user with invalid email", async () => {
-    const userSignupRequestWithInvalidPassword = {
-      email: invalidEmail,
-      password: validPassword,
-    };
-
     const { signUpUseCase } = makeSut();
 
     const error = await signUpUseCase.perform(
-      userSignupRequestWithInvalidPassword
+      userSignupRequestWithInvalidEmail
     );
 
     expect(error.value).toEqual(
-      new InvalidEmailError(userSignupRequestWithInvalidPassword.email)
+      new InvalidEmailError(userSignupRequestWithInvalidEmail.email)
     );
   });
 });
