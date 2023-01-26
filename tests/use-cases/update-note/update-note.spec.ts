@@ -10,33 +10,34 @@ import {
 import { describe, expect, test } from "vitest";
 
 describe("Update note use case", () => {
-  const validUser: UserData = UserBuilder.createUser().build();
+  function makeSut() {
+    const validUser: UserData = UserBuilder.createUser().build();
 
-  const noteId = randomUUID();
+    const originalNote: NoteData = NoteBuilder.createNote().build();
 
-  const originalNote: NoteData = NoteBuilder.createNote().build();
+    const changedNote: NoteData = NoteBuilder.createNote()
+      .withDifferentTitleAndContent()
+      .build();
 
-  const changedNote: NoteData = NoteBuilder.createNote()
-    .withDifferentTitleAndContent()
-    .build();
+    const noteRepositoryWithANote = new InMemoryNoteRepository([originalNote]);
 
-  const noteRepositoryWithANote = new InMemoryNoteRepository([originalNote]);
+    const userRepositoryWithAUser = new InMemoryUserRepository([validUser]);
 
-  const userRepositoryWithAUser = new InMemoryUserRepository([
-    {
-      email: validUser.email,
-      password: validUser.password,
-      id: validUser.id,
-    },
-  ]);
-
-  test("Should update title and content of existing note", async () => {
     const useCase = new UpdateNote(
       noteRepositoryWithANote,
       userRepositoryWithAUser
     );
 
-    const response = await useCase.perform(noteId, changedNote);
+    return { useCase, originalNote, changedNote };
+  }
+
+  test("Should update title and content of existing note", async () => {
+    const { useCase, originalNote, changedNote } = makeSut();
+
+    const response = await useCase.perform(
+      originalNote.id as string,
+      changedNote
+    );
 
     const responseData = response.value as NoteData;
 

@@ -1,49 +1,53 @@
 import { describe, expect, test } from "vitest";
 
-import { UserData } from "@/use-cases/ports";
+import { UserData, UserRepository } from "@/use-cases/ports";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
 import { SignIn } from "@/use-cases/sign-in";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 
 describe("SigIn use case", () => {
-  const validUserSignInRequest: UserData = UserBuilder.createUser().build();
-
-  const signInRequestWithWrongPassword: UserData = UserBuilder.createUser()
-    .withWrongPassword()
-    .build();
-
-  const signInRequestWithUnregisteredUser: UserData = UserBuilder.createUser()
-    .withDifferentEmail()
-    .build();
-
-  const userDataArrayWithSingleUser: UserData[] = [
-    {
-      email: validUserSignInRequest.email,
-      password: `${validUserSignInRequest.password}-ENCRYPTED`,
-    },
-  ];
-
-  const singleUserUserRepository = new InMemoryUserRepository(
-    userDataArrayWithSingleUser
-  );
-
-  const encoder = new FakeEncoder();
-
-  test("Should correctly signIn if password is correct", async () => {
+  function makeSut() {
+    const validUser = UserBuilder.createUser().build();
+    const validUserWithHashPassword = UserBuilder.createUser()
+      .withHashPassword()
+      .build();
+    const userWithWrongPassword: UserData = UserBuilder.createUser()
+      .withWrongPassword()
+      .build();
+    const userWithUnregistered: UserData = UserBuilder.createUser()
+      .withDifferentEmail()
+      .build();
+    const userDataArrayWithSingleUser = [validUserWithHashPassword];
+    const singleUserUserRepository = new InMemoryUserRepository(
+      userDataArrayWithSingleUser
+    );
+    const encoder = new FakeEncoder();
     const useCase = new SignIn(singleUserUserRepository, encoder);
 
-    const response = await useCase.perform(validUserSignInRequest);
+    return {
+      useCase,
+      encoder,
+      validUser,
+      userWithWrongPassword,
+      userWithUnregistered,
+    };
+  }
+
+  test("Should correctly signIn if password is correct", async () => {
+    const { useCase, validUser } = makeSut();
+
+    const response = await useCase.perform(validUser);
 
     const user = response.value;
 
-    expect(user).toBe(validUserSignInRequest);
+    expect(user).toBe(validUser);
   });
 
   test("Should not signIn if password is incorrect", async () => {
-    const useCase = new SignIn(singleUserUserRepository, encoder);
+    const { useCase, userWithWrongPassword } = makeSut();
 
-    const response = await useCase.perform(signInRequestWithWrongPassword);
+    const response = await useCase.perform(userWithWrongPassword);
 
     const error = response.value as Error;
 
@@ -51,9 +55,9 @@ describe("SigIn use case", () => {
   });
 
   test("Should not sig in with unregistered user", async () => {
-    const useCase = new SignIn(singleUserUserRepository, encoder);
+    const { useCase, userWithUnregistered } = makeSut();
 
-    const response = await useCase.perform(signInRequestWithUnregisteredUser);
+    const response = await useCase.perform(userWithUnregistered);
 
     const error = response.value as Error;
 

@@ -36,6 +36,11 @@ export class UserBuilder {
     return this;
   }
 
+  withHashPassword(): UserBuilder {
+    this.user.password = `${this.user.password}-ENCRYPTED`;
+    return this;
+  }
+
   build(): UserData {
     return this.user;
   }

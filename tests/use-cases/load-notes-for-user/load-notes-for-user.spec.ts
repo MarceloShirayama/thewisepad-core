@@ -7,22 +7,27 @@ import { NoteBuilder } from "tests/doubles/builders/note-builder";
 import { InMemoryNoteRepository } from "tests/doubles/repositories";
 
 describe("Load notes for user use case", () => {
-  const note1: NoteData = NoteBuilder.createNote().build();
+  function makeSut() {
+    const note1: NoteData = NoteBuilder.createNote().build();
 
-  const note2: NoteData = NoteBuilder.createNote()
-    .withDifferentTitleAndId()
-    .build();
+    const note2: NoteData = NoteBuilder.createNote()
+      .withDifferentTitleAndId()
+      .build();
 
-  const noteRepositoryWithTwoNotes = new InMemoryNoteRepository([note1, note2]);
+    const noteRepositoryWithTwoNotes = new InMemoryNoteRepository([
+      note1,
+      note2,
+    ]);
+
+    const useCase = new LoadNotesForUser(noteRepositoryWithTwoNotes);
+
+    return { useCase, note1, note2 };
+  }
 
   test("Should correctly load notes for a registered user", async () => {
-    const loadNotesForUserUseCase = new LoadNotesForUser(
-      noteRepositoryWithTwoNotes
-    );
+    const { useCase, note1, note2 } = makeSut();
 
-    const notes = await loadNotesForUserUseCase.perform(
-      note1.ownerId as string
-    );
+    const notes = await useCase.perform(note1.ownerId as string);
 
     expect(notes.length).toEqual(2);
     expect(notes[0]).toEqual(note1);
@@ -30,11 +35,9 @@ describe("Load notes for user use case", () => {
   });
 
   test("should fail to load notes for user without notes", async () => {
-    const loadNotesForUserUseCase = new LoadNotesForUser(
-      noteRepositoryWithTwoNotes
-    );
+    const { useCase } = makeSut();
 
-    const notes = await loadNotesForUserUseCase.perform(randomUUID());
+    const notes = await useCase.perform(randomUUID());
 
     expect(notes.length).toBe(0);
   });

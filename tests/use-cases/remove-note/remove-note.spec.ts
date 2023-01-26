@@ -7,12 +7,18 @@ import { InMemoryNoteRepository } from "tests/doubles/repositories";
 import { NoteBuilder } from "tests/doubles/builders/note-builder";
 
 describe("Remove note use case", () => {
-  const note: NoteData = NoteBuilder.createNote().build();
+  function makeSut() {
+    const note: NoteData = NoteBuilder.createNote().build();
 
-  const noteRepositoryWithNote = new InMemoryNoteRepository([note]);
+    const noteRepositoryWithNote = new InMemoryNoteRepository([note]);
+
+    const useCase = new RemoveNote(noteRepositoryWithNote);
+
+    return { useCase, noteRepositoryWithNote, note };
+  }
 
   test("Should ", async () => {
-    const useCase = new RemoveNote(noteRepositoryWithNote);
+    const { useCase, noteRepositoryWithNote, note } = makeSut();
 
     const removedNote = await useCase.perform(note.id as string);
 
