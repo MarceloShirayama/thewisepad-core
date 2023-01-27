@@ -50,13 +50,13 @@ describe("Sign up controller", () => {
 
     const controller = new SignUpController(useCase);
 
-    class ErrorThrowingSingUpUseCaseStub implements UseCase {
+    class ErrorThrowingSignUpUseCaseStub implements UseCase {
       async perform(request: any): Promise<void> {
         throw Error();
       }
     }
 
-    const errorThrowingSingUpUseCaseStub = new ErrorThrowingSingUpUseCaseStub();
+    const errorThrowingSingUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub();
 
     const controllerWithStubUseCaseWithError = new SignUpController(
       errorThrowingSingUpUseCaseStub
