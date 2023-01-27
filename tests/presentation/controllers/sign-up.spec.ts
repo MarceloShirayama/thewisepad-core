@@ -77,9 +77,10 @@ describe("Sign up controller", () => {
   test("Should return 500 if an error is raised internally", async () => {
     const { useCase, validUser } = makeSut();
 
-    SignUp.prototype.perform = vi.fn().mockImplementationOnce(() => {
+    const originalPerform = SignUp.prototype.perform;
+    SignUp.prototype.perform = () => {
       throw new Error();
-    });
+    };
 
     const controller = new SignUpController(useCase);
 
@@ -87,5 +88,7 @@ describe("Sign up controller", () => {
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toBeInstanceOf(Error);
+
+    SignUp.prototype.perform = originalPerform;
   });
 });
