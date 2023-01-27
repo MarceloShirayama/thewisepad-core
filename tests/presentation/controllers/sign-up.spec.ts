@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 import { SignUpController } from "@/presentation/controllers/sign-up";
 import { SignUp } from "@/use-cases/sign-up";
@@ -30,6 +30,7 @@ describe("Sign up controller", () => {
       validUser,
       userWithInvalidEmail,
       userWithInvalidPassword,
+      useCase,
     };
   }
 
@@ -71,5 +72,20 @@ describe("Sign up controller", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidPasswordError);
+  });
+
+  test("Should return 500 if an error is raised internally", async () => {
+    const { useCase, validUser } = makeSut();
+
+    SignUp.prototype.perform = vi.fn().mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const controller = new SignUpController(useCase);
+
+    const response = await controller.handle(validUser);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toBeInstanceOf(Error);
   });
 });
