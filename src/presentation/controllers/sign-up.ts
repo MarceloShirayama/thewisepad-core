@@ -1,10 +1,10 @@
-import { SignUp } from "@/use-cases/sign-up";
+import { UseCase } from "@/use-cases/ports";
 import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, created, forbidden, serverError } from "./util";
 
 export class SignUpController implements Controller {
-  constructor(private readonly useCase: SignUp) {}
+  constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {

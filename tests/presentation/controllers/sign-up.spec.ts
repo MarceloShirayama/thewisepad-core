@@ -8,6 +8,7 @@ import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
+import { UseCase } from "@/use-cases/ports";
 
 describe("Sign up controller", () => {
   function makeSut() {
@@ -49,12 +50,25 @@ describe("Sign up controller", () => {
 
     const controller = new SignUpController(useCase);
 
+    class ErrorThrowingSingUpUseCaseStub implements UseCase {
+      async perform(request: any): Promise<void> {
+        throw Error();
+      }
+    }
+
+    const errorThrowingSingUpUseCaseStub = new ErrorThrowingSingUpUseCaseStub();
+
+    const controllerWithStubUseCaseWithError = new SignUpController(
+      errorThrowingSingUpUseCaseStub
+    );
+
     return {
       controller,
       useCase,
       validUserRequest,
       userWithInvalidPasswordRequest,
       userWithInvalidEmailRequest,
+      controllerWithStubUseCaseWithError,
     };
   }
 
@@ -99,20 +113,13 @@ describe("Sign up controller", () => {
   });
 
   test("Should return 500 if an error is raised internally", async () => {
-    const { useCase, validUserRequest } = makeSut();
+    const { validUserRequest, controllerWithStubUseCaseWithError } = makeSut();
 
-    const originalPerform = SignUp.prototype.perform;
-    SignUp.prototype.perform = () => {
-      throw new Error();
-    };
-
-    const controller = new SignUpController(useCase);
-
-    const response = await controller.handle(validUserRequest);
+    const response = await controllerWithStubUseCaseWithError.handle(
+      validUserRequest
+    );
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toBeInstanceOf(Error);
-
-    SignUp.prototype.perform = originalPerform;
   });
 });
