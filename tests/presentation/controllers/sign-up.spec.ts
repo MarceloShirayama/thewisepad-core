@@ -1,20 +1,19 @@
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test } from "vitest";
 
+import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
+import { HttpRequest } from "@/presentation/controllers/ports";
 import { SignUpController } from "@/presentation/controllers/sign-up";
 import { SignUp } from "@/use-cases/sign-up";
+import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { ExistingUserError } from "@/use-cases/sign-up/errors";
-import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
-import { HttpRequest } from "@/presentation/controllers/ports";
-import { UserData } from "@/use-cases/ports";
 
 describe("Sign up controller", () => {
   function makeSut() {
     const validUser = UserBuilder.createUser().build();
 
-    const validUserRequest: HttpRequest<UserData> = {
+    const validUserRequest: HttpRequest = {
       body: {
         email: validUser.email,
         password: validUser.password,
@@ -25,7 +24,7 @@ describe("Sign up controller", () => {
       .withInvalidEmail()
       .build();
 
-    const userWithInvalidEmailRequest: HttpRequest<UserData> = {
+    const userWithInvalidEmailRequest: HttpRequest = {
       body: {
         email: userWithInvalidEmail.email,
         password: userWithInvalidEmail.password,
@@ -36,7 +35,7 @@ describe("Sign up controller", () => {
       .withPasswordWithTooFewChars()
       .build();
 
-    const userWithInvalidPasswordRequest: HttpRequest<UserData> = {
+    const userWithInvalidPasswordRequest: HttpRequest = {
       body: {
         email: userWithInvalidPassword.email,
         password: userWithInvalidPassword.password,

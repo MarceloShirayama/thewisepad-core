@@ -4,7 +4,7 @@ import { Controller, HttpRequest } from "@/presentation/controllers/ports";
 
 export function AdaptRoute(controller: Controller) {
   return async (req: Request, res: Response) => {
-    const httpRequest: HttpRequest<any> = {
+    const httpRequest: HttpRequest = {
       body: req.body,
     };
 
