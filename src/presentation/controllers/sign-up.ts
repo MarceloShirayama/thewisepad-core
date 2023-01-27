@@ -4,9 +4,7 @@ import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, created, forbidden, serverError } from "./util";
 
-export class SignUpController implements Controller {
-  constructor(private readonly useCase: UseCase) {}
-
+export class SignUpController extends Controller {
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
       if (!request.body.email || !request.body.password) {
