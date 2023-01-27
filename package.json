@@ -7,8 +7,11 @@
     "start": "node dist/main/server.js",
     "build": "tsup src --minify --sourcemap",
     "dev": "tsx watch src/main/server.ts",
-    "test:watch": "vitest",
     "test": "vitest run --passWithNoTests",
+    "test:unit": "vitest run --passWithNoTests --dir tests/unit",
+    "test:unit:watch": "vitest --dir tests/unit",
+    "test:integration": "vitest --passWithNoTests run --dir tests/integration",
+    "test:integration:watch": "vitest --dir tests/integration",
     "coverage": "vitest run --coverage",
     "prepare": "husky install"
   },
