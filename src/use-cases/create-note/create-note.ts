@@ -1,10 +1,15 @@
 import { Note, User } from "@/entities";
 import { InvalidTitleError } from "@/entities/errors";
 import { Either, left, right } from "@/shared";
-import { NoteData, NoteRepository, UserRepository } from "@/use-cases/ports";
+import {
+  NoteData,
+  NoteRepository,
+  UseCase,
+  UserRepository,
+} from "@/use-cases/ports";
 import { ExistingTitleError, UnregisteredOwnerError } from "./errors";
 
-export class CreateNote {
+export class CreateNote implements UseCase {
   constructor(
     private readonly noteRepository: NoteRepository,
     private readonly userRepository: UserRepository

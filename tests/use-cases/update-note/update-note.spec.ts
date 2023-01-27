@@ -1,6 +1,5 @@
 import { NoteData, UserData } from "@/use-cases/ports";
 import { UpdateNote } from "@/use-cases/update-note";
-import { randomUUID } from "node:crypto";
 import { NoteBuilder } from "tests/doubles/builders/note-builder";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 import {
@@ -34,14 +33,12 @@ describe("Update note use case", () => {
   test("Should update title and content of existing note", async () => {
     const { useCase, originalNote, changedNote } = makeSut();
 
-    const response = await useCase.perform(
-      originalNote.id as string,
-      changedNote
-    );
+    const response = await useCase.perform(changedNote);
 
     const responseData = response.value as NoteData;
 
     expect(responseData.title).toBe(changedNote.title);
     expect(responseData.content).toBe(changedNote.content);
+    expect(originalNote.id).toBe(changedNote.id);
   });
 });
