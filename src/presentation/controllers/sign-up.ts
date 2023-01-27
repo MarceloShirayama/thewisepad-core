@@ -2,7 +2,7 @@ import { UserData } from "@/use-cases/ports";
 import { SignUp } from "@/use-cases/sign-up";
 import { ExistingUserError } from "@/use-cases/sign-up/errors";
 import { HttpResponse } from "./ports";
-import { badRequest, forbidden, ok } from "./util";
+import { badRequest, created, forbidden } from "./util";
 
 export class SignUpController {
   constructor(private readonly useCase: SignUp) {}
@@ -10,7 +10,7 @@ export class SignUpController {
   async handle(request: UserData): Promise<HttpResponse> {
     const response = await this.useCase.perform(request);
 
-    if (response.isRight()) return ok(response.value);
+    if (response.isRight()) return created(response.value);
 
     if (response.isLeft() && response.value instanceof ExistingUserError)
       return forbidden(response.value);
