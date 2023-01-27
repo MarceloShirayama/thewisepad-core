@@ -63,6 +63,7 @@ describe("Sign up controller", () => {
     );
 
     return {
+      validUser,
       controller,
       useCase,
       validUserRequest,
@@ -110,6 +111,45 @@ describe("Sign up controller", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidPasswordError);
+  });
+
+  test("Should return 400 when trying to sign up user with missing email", async () => {
+    const { controller, validUser } = makeSut();
+
+    const userWithMissingEmail = {
+      body: { password: validUser.password },
+    };
+
+    const response = await controller.handle(userWithMissingEmail);
+
+    expect(response.statusCode).toBe(400);
+    expect((response.body as Error).message).toBe("Missing param: email.");
+  });
+
+  test("Should return 400 when trying to sign up user with missing password", async () => {
+    const { controller, validUser } = makeSut();
+
+    const userWithMissingPassword = {
+      body: { email: validUser.email },
+    };
+
+    const response = await controller.handle(userWithMissingPassword);
+
+    expect(response.statusCode).toBe(400);
+    expect((response.body as Error).message).toBe("Missing param: password.");
+  });
+
+  test("Should return 400 when trying to sign up user with missing email and password", async () => {
+    const { controller, validUser } = makeSut();
+
+    const userWithMissingEmailAndPassword = { body: {} };
+
+    const response = await controller.handle(userWithMissingEmailAndPassword);
+
+    expect(response.statusCode).toBe(400);
+    expect((response.body as Error).message).toBe(
+      "Missing param: email password."
+    );
   });
 
   test("Should return 500 if an error is raised internally", async () => {
