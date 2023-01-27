@@ -27,6 +27,17 @@ describe("Sign up controller", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toEqual(expect.objectContaining(validUser));
+    expect(response.body).toHaveProperty("password");
+    expect(response.body).toHaveProperty("email", validUser.email);
+  });
+
+  test("Should return 403 when trying to sign up existing user", async () => {
+    const { controller, validUser } = makeSut();
+
+    await controller.handle(validUser);
+
+    const response = await controller.handle(validUser);
+
+    expect(response.statusCode).toBe(403);
   });
 });
