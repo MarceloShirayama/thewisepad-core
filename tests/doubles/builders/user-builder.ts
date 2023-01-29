@@ -3,7 +3,7 @@ import { UserData } from "@/use-cases/ports";
 export class UserBuilder {
   private readonly user: UserData = {
     email: "any@mail.com",
-    password: "1valid_password",
+    password: "valid_password_1",
     id: "0",
   };
 
@@ -32,7 +32,7 @@ export class UserBuilder {
   }
 
   withWrongPassword(): UserBuilder {
-    this.user.password = "1wrong_password";
+    this.user.password = "wrong_password_1";
     return this;
   }
 

@@ -1,8 +1,10 @@
 import express from "express";
-import { setupMIddleware } from "./setup-middleware";
 
-const app = express();
+import { setupMiddleware } from "./setup-middleware";
+import { setupRoutes } from "./setup-routes";
 
-setupMIddleware(app);
+export const app = express();
 
-export { app };
+setupMiddleware(app);
+
+setupRoutes(app);
