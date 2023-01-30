@@ -1,6 +1,5 @@
-import { Either, left, right } from "@/shared";
-import { UserData } from "@/use-cases/ports";
 import { Email, Password } from ".";
+import { Either, left, right } from "../shared";
 import { InvalidEmailError, InvalidPasswordError } from "./errors";
 
 type UserInput = {

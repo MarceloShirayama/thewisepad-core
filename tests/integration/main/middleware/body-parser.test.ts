@@ -1,7 +1,7 @@
 import { describe, test } from "vitest";
 
 import request from "supertest";
-import { app } from "@/main/config/app";
+import { app } from "src/main/config/app";
 
 describe("Body parser Middleware", () => {
   test("Should parse body as json", async () => {

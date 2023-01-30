@@ -1,8 +1,8 @@
-import { User } from "@/entities";
-import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
-import { Either, left, right } from "@/shared";
-import { Encoder, UserData, UserRepository } from "@/use-cases/ports";
-import { UseCase } from "@/use-cases/ports";
+import { User } from "../../entities";
+import { InvalidEmailError, InvalidPasswordError } from "../../entities/errors";
+import { Either, left, right } from "../../shared";
+import { Encoder, UserData, UserRepository } from "../../use-cases/ports";
+import { UseCase } from "../../use-cases/ports";
 import { ExistingUserError } from "./errors";
 
 export class SignUp implements UseCase {

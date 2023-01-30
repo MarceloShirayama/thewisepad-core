@@ -1,4 +1,4 @@
-import { Either, left, right } from "@/shared";
+import { Either, left, right } from "../shared";
 import { Title, User } from ".";
 import { InvalidTitleError } from "./errors";
 

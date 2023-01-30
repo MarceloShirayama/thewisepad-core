@@ -4,8 +4,8 @@
   "description": "Core of a simple notepad app developed using clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main/server.js",
-    "build": "tsup src --minify --sourcemap",
+    "build": "rimraf dist && tsc  -p tsconfig-build.json",
+    "start": "npm run build && node dist/src/main/server.js",
     "dev": "tsx watch src/main/server.ts",
     "test": "vitest run --passWithNoTests",
     "test:unit": "vitest run --passWithNoTests --dir tests/unit",

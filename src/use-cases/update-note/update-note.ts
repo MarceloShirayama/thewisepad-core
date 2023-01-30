@@ -1,14 +1,14 @@
-import { Note, User } from "@/entities";
-import { InvalidTitleError } from "@/entities/errors";
-import { Either, left, right } from "@/shared";
+import { Note, User } from "../../entities";
+import { InvalidTitleError } from "../../entities/errors";
+import { Either, left, right } from "../../shared";
 import {
   NoteData,
   NoteRepository,
   UseCase,
   UserData,
   UserRepository,
-} from "@/use-cases/ports";
-import { ExistingTitleError } from "@/use-cases/create-note/errors";
+} from "../../use-cases/ports";
+import { ExistingTitleError } from "../../use-cases/create-note/errors";
 
 export class UpdateNote implements UseCase {
   constructor(

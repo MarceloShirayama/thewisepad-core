@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 
-import { Note, User } from "@/entities";
-import { InvalidTitleError } from "@/entities/errors/invalid-title-error";
-import { left } from "@/shared";
+import { Note, User } from "src/entities";
+import { InvalidTitleError } from "src/entities/errors/invalid-title-error";
+import { left } from "src/shared";
 
 describe("Note entity", () => {
   test("Should be created with a valid title and owner", () => {

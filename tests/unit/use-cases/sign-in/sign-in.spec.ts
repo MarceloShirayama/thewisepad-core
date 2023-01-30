@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
 
-import { UserData, UserRepository } from "@/use-cases/ports";
-import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { SignIn } from "@/use-cases/sign-in";
-import { FakeEncoder } from "tests/doubles/encoder";
+import { UserData } from "src/use-cases/ports";
+import { SignIn } from "src/use-cases/sign-in";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { FakeEncoder } from "tests/doubles/encoder";
+import { InMemoryUserRepository } from "tests/doubles/repositories";
 
 describe("SigIn use case", () => {
   function makeSut() {

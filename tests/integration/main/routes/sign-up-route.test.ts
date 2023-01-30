@@ -1,6 +1,7 @@
-import { describe, test } from "vitest";
 import supertest from "supertest";
-import { app } from "@/main/config/app";
+import { describe, test } from "vitest";
+
+import { app } from "src/main/config/app";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 
 /**

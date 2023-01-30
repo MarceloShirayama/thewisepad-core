@@ -9,9 +9,4 @@ export default defineConfig({
       exclude: ["*/**/errors/*", "*/**/either.ts", "tests/**/*"],
     },
   },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
 });

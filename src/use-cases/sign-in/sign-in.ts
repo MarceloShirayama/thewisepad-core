@@ -1,5 +1,10 @@
-import { Either, left, right } from "@/shared";
-import { Encoder, UseCase, UserData, UserRepository } from "@/use-cases/ports";
+import { Either, left, right } from "../../shared";
+import {
+  Encoder,
+  UseCase,
+  UserData,
+  UserRepository,
+} from "../../use-cases/ports";
 import { UserNotFoundError, WrongPasswordError } from "./errors";
 
 export class SignIn implements UseCase {

@@ -1,14 +1,14 @@
 import { describe, expect, test } from "vitest";
 
-import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
-import { HttpRequest } from "@/presentation/controllers/ports";
-import { SignUpController } from "@/presentation/controllers/sign-up";
-import { SignUp } from "@/use-cases/sign-up";
-import { ExistingUserError } from "@/use-cases/sign-up/errors";
+import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
+import { HttpRequest } from "src/presentation/controllers/ports";
+import { SignUpController } from "src/presentation/controllers/sign-up";
+import { SignUp } from "src/use-cases/sign-up";
+import { ExistingUserError } from "src/use-cases/sign-up/errors";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { UseCase } from "@/use-cases/ports";
+import { UseCase } from "src/use-cases/ports";
 
 describe("Sign up controller", () => {
   function makeSut() {

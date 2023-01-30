@@ -1,4 +1,4 @@
-import { Either, left, right } from "@/shared";
+import { Either, left, right } from "../shared";
 import { InvalidPasswordError } from "./errors";
 
 export class Password {

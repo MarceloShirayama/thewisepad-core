@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 
-import { User } from "@/entities";
-import { InvalidEmailError, InvalidPasswordError } from "@/entities/errors";
-import { left } from "@/shared";
+import { User } from "src/entities";
+import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
+import { left } from "src/shared";
 
 describe("User domain entity", () => {
   const validEmail = "any@mail.com";

@@ -1,4 +1,4 @@
-import { UseCase } from "@/use-cases/ports";
+import { UseCase } from "../../../use-cases/ports";
 import { HttpRequest } from "./http-request";
 import { HttpResponse } from "./http-response";
 

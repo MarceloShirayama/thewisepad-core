@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { Email } from "@/entities";
+import { Email } from "src/entities";
 
 describe("Email validation", () => {
   test("should not accept empty strings", () => {

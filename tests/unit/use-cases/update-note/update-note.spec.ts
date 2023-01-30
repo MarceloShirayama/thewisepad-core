@@ -1,5 +1,5 @@
-import { NoteData, UserData } from "@/use-cases/ports";
-import { UpdateNote } from "@/use-cases/update-note";
+import { NoteData, UserData } from "src/use-cases/ports";
+import { UpdateNote } from "src/use-cases/update-note";
 import { NoteBuilder } from "tests/doubles/builders/note-builder";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 import {

@@ -1,4 +1,4 @@
-import { NoteData, UserData } from "@/use-cases/ports";
+import { NoteData, UserData } from "src/use-cases/ports";
 import { UserBuilder } from "./user-builder";
 
 export class NoteBuilder {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { Controller, HttpRequest } from "@/presentation/controllers/ports";
+import { Controller, HttpRequest } from "../../presentation/controllers/ports";
 
 export function adaptRoute(controller: Controller) {
   return async (req: Request, res: Response) => {

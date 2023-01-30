@@ -1,4 +1,4 @@
-import { UserData } from "@/use-cases/ports";
+import { UserData } from "src/use-cases/ports";
 
 export class UserBuilder {
   private readonly user: UserData = {

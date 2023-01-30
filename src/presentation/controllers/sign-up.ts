@@ -1,5 +1,4 @@
-import { UseCase } from "@/use-cases/ports";
-import { ExistingUserError } from "@/use-cases/sign-up/errors";
+import { ExistingUserError } from "../../use-cases/sign-up/errors";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, created, forbidden, serverError } from "./util";

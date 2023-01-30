@@ -1,4 +1,4 @@
-import { Either, left, right } from "@/shared";
+import { Either, left, right } from "../shared";
 import { InvalidTitleError } from "./errors";
 
 export class Title {
