@@ -4,14 +4,15 @@ import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { UserData } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
+import { UserBuilder } from "tests/builders/user-builder";
+import { makeAuthenticationServiceStub } from "tests/doubles/authentication/authentication-stub";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { UserBuilder } from "tests/builders/user-builder";
 
 describe("SignUp use case", () => {
-  const makeSut = () => {
-    const validUser: UserData = UserBuilder.createUser().build();
+  const validUser: UserData = UserBuilder.createUser().build();
 
+  function makeSut() {
     const validUserWithHashPassword = UserBuilder.createUser()
       .withHashPassword()
       .build();
@@ -28,30 +29,30 @@ describe("SignUp use case", () => {
 
     const encoder = new FakeEncoder();
 
-    const useCase = new SignUp(userRepository, encoder);
+    const { authenticationServiceStub } = makeAuthenticationServiceStub();
+
+    const useCase = new SignUp(
+      userRepository,
+      encoder,
+      authenticationServiceStub
+    );
 
     return {
       useCase,
       userRepository,
-      validUser,
       userWithInvalidPassword,
       userWithInvalidEmail,
       validUserWithHashPassword,
     };
-  };
+  }
 
   test("Should sign up user with valid data", async () => {
-    const { useCase, userRepository, validUser, validUserWithHashPassword } =
-      makeSut();
+    const { useCase, userRepository, validUserWithHashPassword } = makeSut();
 
     const response = await useCase.perform(validUser);
 
     expect(response.value).toHaveProperty("id");
-    expect(response.value).toHaveProperty("email", validUser.email);
-    expect(response.value).toHaveProperty(
-      "password",
-      `${validUser.password}-ENCRYPTED`
-    );
+    expect(response.value).toHaveProperty("accessToken");
 
     const users = await userRepository.findAll();
 
@@ -63,7 +64,7 @@ describe("SignUp use case", () => {
   });
 
   test("Should not sign up existing user", async () => {
-    const { useCase, validUser } = makeSut();
+    const { useCase } = makeSut();
 
     await useCase.perform(validUser);
     const error = await useCase.perform(validUser);

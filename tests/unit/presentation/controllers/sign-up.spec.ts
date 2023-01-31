@@ -3,17 +3,18 @@ import { describe, expect, test } from "vitest";
 import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { SignUpController } from "src/presentation/controllers/sign-up";
+import { UseCase } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
 import { UserBuilder } from "tests/builders/user-builder";
+import { makeAuthenticationServiceStub } from "tests/doubles/authentication/authentication-stub";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { UseCase } from "src/use-cases/ports";
 
 describe("Sign up controller", () => {
-  function makeSut() {
-    const validUser = UserBuilder.createUser().build();
+  const validUser = UserBuilder.createUser().build();
 
+  function makeSut() {
     const validUserRequest: HttpRequest = {
       body: {
         email: validUser.email,
@@ -46,7 +47,13 @@ describe("Sign up controller", () => {
     const emptyUserRepository = new InMemoryUserRepository([]);
     const encoder = new FakeEncoder();
 
-    const useCase = new SignUp(emptyUserRepository, encoder);
+    const { authenticationServiceStub } = makeAuthenticationServiceStub();
+
+    const useCase = new SignUp(
+      emptyUserRepository,
+      encoder,
+      authenticationServiceStub
+    );
 
     const controller = new SignUpController(useCase);
 
@@ -63,7 +70,6 @@ describe("Sign up controller", () => {
     );
 
     return {
-      validUser,
       controller,
       useCase,
       validUserRequest,
@@ -73,15 +79,14 @@ describe("Sign up controller", () => {
     };
   }
 
-  test("Should return 201 and registered user when user is successfully signed up", async () => {
+  test("Should return 201 and authentication result when user is successfully signed up", async () => {
     const { controller, validUserRequest } = makeSut();
 
     const response = await controller.handle(validUserRequest);
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("password");
-    expect(response.body).toHaveProperty("email", validUserRequest.body.email);
+    expect(response.body).toHaveProperty("accessToken");
   });
 
   test("Should return 403 when trying to sign up existing user", async () => {
@@ -114,7 +119,7 @@ describe("Sign up controller", () => {
   });
 
   test("Should return 400 when trying to sign up user with missing email", async () => {
-    const { controller, validUser } = makeSut();
+    const { controller } = makeSut();
 
     const userWithMissingEmail = {
       body: { password: validUser.password },
@@ -127,7 +132,7 @@ describe("Sign up controller", () => {
   });
 
   test("Should return 400 when trying to sign up user with missing password", async () => {
-    const { controller, validUser } = makeSut();
+    const { controller } = makeSut();
 
     const userWithMissingPassword = {
       body: { email: validUser.email },
@@ -140,7 +145,7 @@ describe("Sign up controller", () => {
   });
 
   test("Should return 400 when trying to sign up user with missing email and password", async () => {
-    const { controller, validUser } = makeSut();
+    const { controller } = makeSut();
 
     const userWithMissingEmailAndPassword = { body: {} };
 

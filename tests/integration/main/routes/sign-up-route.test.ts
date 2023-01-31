@@ -39,8 +39,7 @@ describe("Register routes", () => {
       },
     });
 
-    expect(data).toHaveProperty("email", user.email);
-    expect(data).toHaveProperty("password", `${user.password}-ENCRYPTED`);
+    expect(data).toHaveProperty("accessToken");
     expect(data).toHaveProperty("id");
   });
 });

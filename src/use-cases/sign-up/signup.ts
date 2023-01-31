@@ -3,12 +3,17 @@ import { InvalidEmailError, InvalidPasswordError } from "../../entities/errors";
 import { Either, left, right } from "../../shared";
 import { Encoder, UserData, UserRepository } from "../../use-cases/ports";
 import { UseCase } from "../../use-cases/ports";
+import {
+  AuthenticationResult,
+  AuthenticationService,
+} from "../authentication/ports";
 import { ExistingUserError } from "./errors";
 
 export class SignUp implements UseCase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly encoder: Encoder
+    private readonly encoder: Encoder,
+    private readonly authentication: AuthenticationService
   ) {}
 
   async perform(
@@ -16,7 +21,7 @@ export class SignUp implements UseCase {
   ): Promise<
     Either<
       ExistingUserError | InvalidEmailError | InvalidPasswordError,
-      UserData
+      AuthenticationResult
     >
   > {
     const userOrError = User.create(userSignupRequest);
@@ -39,6 +44,13 @@ export class SignUp implements UseCase {
       password: encodePassword,
     });
 
-    return right(user);
+    const authentication = await this.authentication.auth({
+      email: user.email,
+      password: user.password,
+    });
+
+    const authenticationResult = authentication.value as AuthenticationResult;
+
+    return right(authenticationResult);
   }
 }
