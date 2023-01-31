@@ -1,9 +1,12 @@
+import { UseCase } from "../../use-cases/ports";
 import { ExistingUserError } from "../../use-cases/sign-up/errors";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, created, forbidden, serverError } from "./util";
 
-export class SignUpController extends Controller {
+export class SignUpController implements Controller {
+  constructor(private readonly useCase: UseCase) {}
+
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
       if (!request.body.email || !request.body.password) {
