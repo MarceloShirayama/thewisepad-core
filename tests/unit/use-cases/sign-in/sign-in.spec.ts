@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { UserData } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
-import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { UserBuilder } from "tests/builders/user-builder";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
 

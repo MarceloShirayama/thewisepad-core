@@ -2,8 +2,8 @@ import { describe, expect, test } from "vitest";
 
 import { CreateNote } from "src/use-cases/create-note";
 import { NoteData, UserData } from "src/use-cases/ports";
-import { NoteBuilder } from "tests/doubles/builders/note-builder";
-import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { NoteBuilder } from "tests/builders/note-builder";
+import { UserBuilder } from "tests/builders/user-builder";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,

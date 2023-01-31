@@ -3,7 +3,7 @@ import { describe, test, expect } from "vitest";
 import axios from "axios";
 
 import { app } from "src/main/config/app";
-import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { UserBuilder } from "tests/builders/user-builder";
 
 /**
  * FIXME: this test gets the error "cannot POST" with supertest, but if the

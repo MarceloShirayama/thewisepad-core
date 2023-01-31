@@ -6,7 +6,7 @@ import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
-import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { UserBuilder } from "tests/builders/user-builder";
 
 describe("SignUp use case", () => {
   const makeSut = () => {

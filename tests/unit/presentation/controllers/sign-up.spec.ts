@@ -5,7 +5,7 @@ import { HttpRequest } from "src/presentation/controllers/ports";
 import { SignUpController } from "src/presentation/controllers/sign-up";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
-import { UserBuilder } from "tests/doubles/builders/user-builder";
+import { UserBuilder } from "tests/builders/user-builder";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
 import { UseCase } from "src/use-cases/ports";
