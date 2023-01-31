@@ -1,5 +1,6 @@
 import { readdirSync } from "node:fs";
-import { join } from "path";
+import { join } from "node:path";
+
 import { Express, Router } from "express";
 
 export function setupRoutes(app: Express) {
@@ -9,7 +10,7 @@ export function setupRoutes(app: Express) {
 
   app.use("/api", router);
 
-  readdirSync(routesPath).forEach(async (file) => {
+  readdirSync(routesPath).map(async (file) => {
     (await import(`${routesPath}/${file}`)).default(router);
   });
 }

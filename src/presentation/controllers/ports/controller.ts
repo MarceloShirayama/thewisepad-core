@@ -3,11 +3,7 @@ import { HttpRequest } from "./http-request";
 import { HttpResponse } from "./http-response";
 
 export abstract class Controller {
-  protected readonly useCase: UseCase;
-
-  constructor(useCase: UseCase) {
-    this.useCase = useCase;
-  }
+  constructor(protected readonly useCase: UseCase) {}
 
   abstract handle(request: HttpRequest): Promise<HttpResponse>;
 }

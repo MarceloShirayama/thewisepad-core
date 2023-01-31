@@ -1,11 +1,13 @@
-!(async () => {
+async function init() {
   try {
-    const { app } = await await import("./config/app");
+    const server = (await import("./config/app")).app;
 
     const PORT = Number(process.env.PORT) || 3000;
 
-    app.listen(PORT, () => console.info(`Server running at:${PORT}`));
+    server.listen(PORT, () => console.info(`Server running at:${PORT}`));
   } catch (error) {
     console.error(error);
   }
-})();
+}
+
+const server = init();

@@ -1,33 +1,46 @@
 import supertest from "supertest";
-import { describe, test } from "vitest";
+import { describe, test, expect } from "vitest";
+import axios from "axios";
 
 import { app } from "src/main/config/app";
 import { UserBuilder } from "tests/doubles/builders/user-builder";
 
 /**
- * FIXME: this test gets the error "cannot POST", but if the request is made by
- * the server everything is fine.
+ * FIXME: this test gets the error "cannot POST" with supertest, but if the
+ * request is made by
+ * the server everything is fine
+ * as a palliative I am using axios
  */
-describe.todo("Register routes", () => {
+describe("Register routes", () => {
   const user = UserBuilder.createUser().build();
 
-  const request = supertest(app);
+  // const request = supertest(app);
 
+  // test("Should return an account on success", async () => {
+  //   await request
+  //     .post("/api/sign-up")
+  //     .send({
+  //       email: user.email,
+  //       password: user.password,
+  //     })
+  //     .expect(201, {
+  //       email: user.email,
+  //       password: `${user.password}-ENCRYPTED`,
+  //       id: "0",
+  //     });
+  // });
   test("Should return an account on success", async () => {
-    await request
-      .post("/api/sign-up")
-      .send({
+    const { data } = await axios({
+      method: "POST",
+      url: "http://localhost:3000/api/sign-up",
+      data: {
         email: user.email,
         password: user.password,
-      })
-      .send({
-        email: user.email,
-        password: user.password,
-      })
-      .expect(201, {
-        email: user.email,
-        password: `${user.password}-ENCRYPTED`,
-        id: "0",
-      });
+      },
+    });
+
+    expect(data).toHaveProperty("email", user.email);
+    expect(data).toHaveProperty("password", `${user.password}-ENCRYPTED`);
+    expect(data).toHaveProperty("id");
   });
 });
