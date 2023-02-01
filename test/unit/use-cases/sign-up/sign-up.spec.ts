@@ -1,5 +1,3 @@
-import { describe, expect, test } from "vitest";
-
 import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { UserData } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";

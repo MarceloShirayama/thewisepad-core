@@ -1,5 +1,3 @@
-import { describe, expect, test } from "vitest";
-
 import { CustomAuthentication } from "src/use-cases/authentication";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";

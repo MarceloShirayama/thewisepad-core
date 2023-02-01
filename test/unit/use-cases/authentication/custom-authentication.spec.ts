@@ -5,7 +5,6 @@ import { FakeTokenManager } from "test/doubles/authentication/fake-token-manager
 import { UserBuilder } from "test/builders/user-builder";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
-import { describe, expect, test } from "vitest";
 
 describe("Custom authentication", () => {
   const validUser = UserBuilder.createUser().build();

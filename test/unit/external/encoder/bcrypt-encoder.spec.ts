@@ -1,5 +1,4 @@
 import { BcryptEncoder } from "src/external/encoder";
-import { describe, expect, test } from "vitest";
 
 describe("Bcrypt encoder", () => {
   test("Should correctly encode and decode string", async () => {

@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-import { describe, expect, test } from "vitest";
 
 import { LoadNotesForUser } from "src/use-cases/load-notes-for-user";
 import { NoteData } from "src/use-cases/ports";

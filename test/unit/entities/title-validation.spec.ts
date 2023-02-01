@@ -1,5 +1,3 @@
-import { describe, expect, test } from "vitest";
-
 import { Title } from "src/entities";
 
 describe("Title validation", () => {

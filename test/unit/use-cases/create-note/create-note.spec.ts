@@ -1,5 +1,3 @@
-import { describe, expect, test } from "vitest";
-
 import { CreateNote } from "src/use-cases/create-note";
 import { NoteData, UserData } from "src/use-cases/ports";
 import { NoteBuilder } from "test/builders/note-builder";

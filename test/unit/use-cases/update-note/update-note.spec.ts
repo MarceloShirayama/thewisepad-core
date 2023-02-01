@@ -6,7 +6,6 @@ import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
 } from "test/doubles/repositories";
-import { describe, expect, test } from "vitest";
 
 describe("Update note use case", () => {
   function makeSut() {
