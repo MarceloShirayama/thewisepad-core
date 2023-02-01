@@ -7,6 +7,7 @@ describe("Bcrypt encoder", () => {
     const password = "my password";
 
     const encodedPassword = await encoder.encode(password);
+    console.log({ encodedPassword });
 
     const isEqual = await encoder.compare(password, encodedPassword);
 
