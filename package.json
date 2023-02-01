@@ -4,14 +4,14 @@
   "description": "Core of a simple notepad app developed using clean architecture and TDD.",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && tsc  -p tsconfig-build.json",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "start": "npm run build && node dist/src/main/server.js",
     "dev": "tsx watch src/main/server.ts",
     "test": "vitest run --passWithNoTests",
-    "test:unit": "vitest run --passWithNoTests --dir tests/unit",
+    "test:unit": "vitest run --passWithNoTests --dir test/unit",
     "test:unit:watch": "vitest --dir tests/unit",
-    "test:integration": "vitest --passWithNoTests run --dir tests/integration",
-    "test:integration:watch": "vitest --dir tests/integration",
+    "test:integration": "vitest --passWithNoTests run --dir test/integration",
+    "test:integration:watch": "vitest --dir test/integration",
     "coverage": "vitest run --coverage",
     "prepare": "husky install"
   },

@@ -6,10 +6,10 @@ import { SignUpController } from "src/presentation/controllers/sign-up";
 import { UseCase } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
-import { UserBuilder } from "tests/builders/user-builder";
-import { makeAuthenticationServiceStub } from "tests/doubles/authentication/authentication-stub";
-import { FakeEncoder } from "tests/doubles/encoder";
-import { InMemoryUserRepository } from "tests/doubles/repositories";
+import { UserBuilder } from "test/builders/user-builder";
+import { makeAuthenticationServiceStub } from "test/doubles/authentication/authentication-stub";
+import { FakeEncoder } from "test/doubles/encoder";
+import { InMemoryUserRepository } from "test/doubles/repositories";
 
 describe("Sign up controller", () => {
   const validUser = UserBuilder.createUser().build();

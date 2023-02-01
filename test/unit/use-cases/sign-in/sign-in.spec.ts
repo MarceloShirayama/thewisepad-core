@@ -4,10 +4,10 @@ import { CustomAuthentication } from "src/use-cases/authentication";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
-import { UserBuilder } from "tests/builders/user-builder";
-import { FakeTokenManager } from "tests/doubles/authentication/fake-token-manager";
-import { FakeEncoder } from "tests/doubles/encoder";
-import { InMemoryUserRepository } from "tests/doubles/repositories";
+import { UserBuilder } from "test/builders/user-builder";
+import { FakeTokenManager } from "test/doubles/authentication/fake-token-manager";
+import { FakeEncoder } from "test/doubles/encoder";
+import { InMemoryUserRepository } from "test/doubles/repositories";
 
 describe("SigIn use case", () => {
   function makeSut() {

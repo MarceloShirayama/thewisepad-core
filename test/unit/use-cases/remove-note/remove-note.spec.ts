@@ -2,8 +2,8 @@ import { describe, expect, test } from "vitest";
 
 import { NoteData } from "src/use-cases/ports";
 import { RemoveNote } from "src/use-cases/remove-note";
-import { NoteBuilder } from "tests/builders/note-builder";
-import { InMemoryNoteRepository } from "tests/doubles/repositories";
+import { NoteBuilder } from "test/builders/note-builder";
+import { InMemoryNoteRepository } from "test/doubles/repositories";
 
 describe("Remove note use case", () => {
   function makeSut() {

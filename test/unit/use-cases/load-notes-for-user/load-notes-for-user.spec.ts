@@ -3,8 +3,8 @@ import { describe, expect, test } from "vitest";
 
 import { LoadNotesForUser } from "src/use-cases/load-notes-for-user";
 import { NoteData } from "src/use-cases/ports";
-import { NoteBuilder } from "tests/builders/note-builder";
-import { InMemoryNoteRepository } from "tests/doubles/repositories";
+import { NoteBuilder } from "test/builders/note-builder";
+import { InMemoryNoteRepository } from "test/doubles/repositories";
 
 describe("Load notes for user use case", () => {
   function makeSut() {

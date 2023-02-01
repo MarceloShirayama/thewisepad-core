@@ -1,10 +1,10 @@
 import { CustomAuthentication } from "src/use-cases/authentication";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";
-import { FakeTokenManager } from "tests/doubles/authentication/fake-token-manager";
-import { UserBuilder } from "tests/builders/user-builder";
-import { FakeEncoder } from "tests/doubles/encoder";
-import { InMemoryUserRepository } from "tests/doubles/repositories";
+import { FakeTokenManager } from "test/doubles/authentication/fake-token-manager";
+import { UserBuilder } from "test/builders/user-builder";
+import { FakeEncoder } from "test/doubles/encoder";
+import { InMemoryUserRepository } from "test/doubles/repositories";
 import { describe, expect, test } from "vitest";
 
 describe("Custom authentication", () => {

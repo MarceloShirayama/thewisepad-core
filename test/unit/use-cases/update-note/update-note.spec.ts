@@ -1,11 +1,11 @@
 import { NoteData, UserData } from "src/use-cases/ports";
 import { UpdateNote } from "src/use-cases/update-note";
-import { NoteBuilder } from "tests/builders/note-builder";
-import { UserBuilder } from "tests/builders/user-builder";
+import { NoteBuilder } from "test/builders/note-builder";
+import { UserBuilder } from "test/builders/user-builder";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
-} from "tests/doubles/repositories";
+} from "test/doubles/repositories";
 import { describe, expect, test } from "vitest";
 
 describe("Update note use case", () => {

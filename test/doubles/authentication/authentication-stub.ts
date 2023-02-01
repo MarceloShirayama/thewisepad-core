@@ -8,7 +8,7 @@ import {
   UserNotFoundError,
   WrongPasswordError,
 } from "src/use-cases/sign-in/errors";
-import { UserBuilder } from "tests/builders/user-builder";
+import { UserBuilder } from "test/builders/user-builder";
 
 export function makeAuthenticationServiceStub() {
   const validUser = UserBuilder.createUser().build();
