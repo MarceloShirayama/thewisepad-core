@@ -1,3 +1,5 @@
+import sinon from "sinon";
+
 import { JwtTokenManager } from "src/external/jwt-token-manager";
 
 describe("Jwt token manager", () => {
@@ -8,7 +10,7 @@ describe("Jwt token manager", () => {
 
     const info = { id: "my id" };
 
-    const expires = "10s";
+    const expires = "1h";
 
     const signedToken = await tokenManager.sign(info, expires);
 
@@ -27,7 +29,7 @@ describe("Jwt token manager", () => {
 
     const info = { id: "my id" };
 
-    const expires = "10s";
+    const expires = "1h";
 
     const signedToken = await tokenManager.sign(info, expires);
 
@@ -41,15 +43,19 @@ describe("Jwt token manager", () => {
   });
 
   it("Should correctly verify expired json web token", async () => {
+    const clock = sinon.useFakeTimers();
+
     const secret = "my secret";
 
     const tokenManager = new JwtTokenManager(secret);
 
     const info = { id: "my id" };
 
-    const expires = "0.1s";
+    const expires = "1h";
 
     const signedToken = await tokenManager.sign(info, expires);
+
+    clock.tick(3600100);
 
     const decoded = await tokenManager.verify(signedToken);
 
