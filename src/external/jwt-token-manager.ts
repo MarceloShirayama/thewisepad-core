@@ -1,4 +1,9 @@
-import { sign, verify } from "jsonwebtoken";
+import {
+  sign,
+  TokenExpiredError,
+  verify,
+  JsonWebTokenError,
+} from "jsonwebtoken";
 
 import { Either, left, right } from "../shared";
 import { Payload, TokenManager } from "../use-cases/authentication/ports";
@@ -11,13 +16,15 @@ export class JwtTokenManager implements TokenManager {
       ? sign(info, this.secret, { expiresIn: expires })
       : sign(info, this.secret);
   }
-  async verify(token: string): Promise<Either<Error, string | object>> {
+  async verify(
+    token: string
+  ): Promise<Either<TokenExpiredError | JsonWebTokenError, string | object>> {
     try {
       const decoded = verify(token, this.secret);
 
       return right(decoded);
     } catch (error: any) {
-      return left(error as Error);
+      return left(error as TokenExpiredError | JsonWebTokenError);
     }
   }
 }

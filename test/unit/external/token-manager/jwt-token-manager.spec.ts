@@ -1,3 +1,4 @@
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import sinon from "sinon";
 
 import { JwtTokenManager } from "src/external/jwt-token-manager";
@@ -37,9 +38,10 @@ describe("Jwt token manager", () => {
 
     const decoded = await tokenManager.verify(invalidToken);
 
-    const response = decoded.value as Error;
+    const error = decoded.value as Error;
 
-    expect(response.message).toBe("invalid token");
+    expect(error.message).toBe("invalid token");
+    expect(error).toBeInstanceOf(JsonWebTokenError);
   });
 
   it("Should correctly verify expired json web token", async () => {
@@ -59,8 +61,9 @@ describe("Jwt token manager", () => {
 
     const decoded = await tokenManager.verify(signedToken);
 
-    const response = decoded.value as Error;
+    const error = decoded.value as Error;
 
-    expect(response.message).toBe("jwt expired");
+    expect(error.message).toBe("jwt expired");
+    expect(error).toBeInstanceOf(TokenExpiredError);
   });
 });
