@@ -19,4 +19,42 @@ describe("Jwt token manager", () => {
     expect(signedToken).not.toEqual(info);
     expect(response).toHaveProperty("id");
   });
+
+  it("Should correctly verify invalid json web token", async () => {
+    const secret = "my secret";
+
+    const tokenManager = new JwtTokenManager(secret);
+
+    const info = { id: "my id" };
+
+    const expires = "10s";
+
+    const signedToken = await tokenManager.sign(info, expires);
+
+    const invalidToken = signedToken + "some trash";
+
+    const decoded = await tokenManager.verify(invalidToken);
+
+    const response = decoded.value as Error;
+
+    expect(response.message).toBe("invalid token");
+  });
+
+  it("Should correctly verify expired json web token", async () => {
+    const secret = "my secret";
+
+    const tokenManager = new JwtTokenManager(secret);
+
+    const info = { id: "my id" };
+
+    const expires = "0.1s";
+
+    const signedToken = await tokenManager.sign(info, expires);
+
+    const decoded = await tokenManager.verify(signedToken);
+
+    const response = decoded.value as Error;
+
+    expect(response.message).toBe("jwt expired");
+  });
 });
