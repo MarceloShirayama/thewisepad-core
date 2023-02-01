@@ -8,7 +8,9 @@ describe("Jwt token manager", () => {
 
     const info = { id: "my id" };
 
-    const signedToken = await tokenManager.sign(info);
+    const expires = "10s";
+
+    const signedToken = await tokenManager.sign(info, expires);
 
     const decoded = await tokenManager.verify(signedToken);
 
