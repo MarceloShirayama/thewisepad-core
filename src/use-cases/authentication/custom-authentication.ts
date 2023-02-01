@@ -24,28 +24,26 @@ export class CustomAuthentication implements AuthenticationService {
       authenticationParams.email
     );
 
-    if (userExists) {
-      const isValid = await this.encoder.compare(
-        authenticationParams.password,
-        userExists!.password
-      );
+    if (!userExists) return left(new UserNotFoundError());
 
-      const id = userExists.id as string;
+    const isValid = await this.encoder.compare(
+      authenticationParams.password,
+      userExists!.password
+    );
 
-      if (!isValid) return left(new WrongPasswordError());
+    if (!isValid) return left(new WrongPasswordError());
 
-      const accessToken = await this.tokeManager.sign(id);
+    const id = userExists.id as string;
 
-      await this.userRepository.updateAccessToken(id, accessToken);
+    const accessToken = await this.tokeManager.sign(id);
 
-      const authentication: AuthenticationResult = {
-        accessToken,
-        id,
-      };
+    await this.userRepository.updateAccessToken(id, accessToken);
 
-      return right(authentication);
-    }
+    const authentication: AuthenticationResult = {
+      accessToken,
+      id,
+    };
 
-    return left(new UserNotFoundError());
+    return right(authentication);
   }
 }

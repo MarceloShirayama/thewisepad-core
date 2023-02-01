@@ -1,8 +1,11 @@
 import { describe, expect, test } from "vitest";
 
+import { CustomAuthentication } from "src/use-cases/authentication";
+import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
 import { UserBuilder } from "tests/builders/user-builder";
+import { FakeTokenManager } from "tests/doubles/authentication/fake-token-manager";
 import { FakeEncoder } from "tests/doubles/encoder";
 import { InMemoryUserRepository } from "tests/doubles/repositories";
 
@@ -23,11 +26,15 @@ describe("SigIn use case", () => {
       userDataArrayWithSingleUser
     );
     const encoder = new FakeEncoder();
-    const useCase = new SignIn(singleUserUserRepository, encoder);
+    const tokenManager = new FakeTokenManager();
+    const authenticationService = new CustomAuthentication(
+      singleUserUserRepository,
+      encoder,
+      tokenManager
+    );
 
     return {
-      useCase,
-      encoder,
+      authenticationService,
       validUser,
       userWithWrongPassword,
       userWithUnregistered,
@@ -35,31 +42,38 @@ describe("SigIn use case", () => {
   }
 
   test("Should correctly signIn if password is correct", async () => {
-    const { useCase, validUser } = makeSut();
+    const { authenticationService, validUser } = makeSut();
 
-    const response = await useCase.perform(validUser);
+    const useCase = new SignIn(authenticationService);
 
-    const user = response.value;
+    const authentication = await useCase.perform(validUser);
 
-    expect(user).toBe(validUser);
+    const authenticationResult = authentication.value as AuthenticationResult;
+
+    expect(authenticationResult).toHaveProperty("id");
+    expect(authenticationResult).toHaveProperty("accessToken");
   });
 
   test("Should not signIn if password is incorrect", async () => {
-    const { useCase, userWithWrongPassword } = makeSut();
+    const { authenticationService, userWithWrongPassword } = makeSut();
 
-    const response = await useCase.perform(userWithWrongPassword);
+    const useCase = new SignIn(authenticationService);
 
-    const error = response.value as Error;
+    const authentication = await useCase.perform(userWithWrongPassword);
+
+    const error = authentication.value as Error;
 
     expect(error.name).toBe("WrongPasswordError");
   });
 
   test("Should not sig in with unregistered user", async () => {
-    const { useCase, userWithUnregistered } = makeSut();
+    const { authenticationService, userWithUnregistered } = makeSut();
 
-    const response = await useCase.perform(userWithUnregistered);
+    const useCase = new SignIn(authenticationService);
 
-    const error = response.value as Error;
+    const authentication = await useCase.perform(userWithUnregistered);
+
+    const error = authentication.value as Error;
 
     expect(error.name).toBe("UserNotFoundError");
   });

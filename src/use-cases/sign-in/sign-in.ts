@@ -1,30 +1,24 @@
-import { Either, left, right } from "../../shared";
+import { Either } from "../../shared";
+import { UseCase, UserData } from "../../use-cases/ports";
 import {
-  Encoder,
-  UseCase,
-  UserData,
-  UserRepository,
-} from "../../use-cases/ports";
+  AuthenticationResult,
+  AuthenticationService,
+} from "../authentication/ports";
 import { UserNotFoundError, WrongPasswordError } from "./errors";
 
 export class SignIn implements UseCase {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly encoder: Encoder
-  ) {}
+  constructor(private readonly authentication: AuthenticationService) {}
 
   async perform(
     sigInRequest: UserData
-  ): Promise<Either<UserNotFoundError | WrongPasswordError, UserData>> {
-    const user = await this.userRepository.findByEmail(sigInRequest.email);
+  ): Promise<
+    Either<UserNotFoundError | WrongPasswordError, AuthenticationResult>
+  > {
+    const authentication = await this.authentication.auth({
+      email: sigInRequest.email,
+      password: sigInRequest.password,
+    });
 
-    if (!user) return left(new UserNotFoundError());
-
-    const checkPassword = await this.encoder.compare(
-      sigInRequest.password,
-      user.password
-    );
-
-    return checkPassword ? right(sigInRequest) : left(new WrongPasswordError());
+    return authentication;
   }
 }
