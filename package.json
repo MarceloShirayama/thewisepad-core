@@ -9,7 +9,7 @@
     "dev": "tsx watch src/main/server.ts",
     "test": "vitest run --passWithNoTests",
     "test:unit": "vitest run --passWithNoTests --dir test/unit",
-    "test:unit:watch": "vitest --dir tests/unit",
+    "test:unit:watch": "vitest --dir test/unit",
     "test:integration": "vitest --passWithNoTests run --dir test/integration",
     "test:integration:watch": "vitest --dir test/integration",
     "coverage": "vitest run --coverage",
