@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { adaptRoute } from "../../main/adapter/express-route-adapter";
+import { adaptRoute } from "../adapters/express-route-adapter";
 import { makeSignUpController } from "../../main/factories";
 
 export default (router: Router) => {
