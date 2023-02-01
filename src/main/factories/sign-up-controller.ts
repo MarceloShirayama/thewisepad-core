@@ -1,8 +1,8 @@
-import { SignUpController } from "../../presentation/controllers/sign-up";
+import { SignUpController } from "../../presentation/controllers";
 import { SignUp } from "../../use-cases/sign-up";
 import { FakeEncoder } from "../../../test/doubles/encoder";
 import { InMemoryUserRepository } from "../../../test/doubles/repositories";
-import { makeAuthenticationServiceStub } from "../../../test/doubles/authentication/authentication-stub";
+import { makeAuthenticationServiceStub } from "../../../test/doubles/authentication";
 
 export function makeSignUpController() {
   const userRepository = new InMemoryUserRepository([]);

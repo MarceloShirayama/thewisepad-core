@@ -1,11 +1,11 @@
 import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
-import { SignUpController } from "src/presentation/controllers/sign-up";
+import { SignUpController } from "src/presentation/controllers";
 import { UseCase } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
 import { UserBuilder } from "test/builders/user-builder";
-import { makeAuthenticationServiceStub } from "test/doubles/authentication/authentication-stub";
+import { makeAuthenticationServiceStub } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
 
