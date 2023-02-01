@@ -4,7 +4,10 @@ import {
   AuthenticationResult,
   AuthenticationService,
 } from "../authentication/ports";
-import { UserNotFoundError, WrongPasswordError } from "./errors";
+import {
+  UserNotFoundError,
+  WrongPasswordError,
+} from "../authentication/errors";
 
 export class SignIn implements UseCase {
   constructor(private readonly authentication: AuthenticationService) {}

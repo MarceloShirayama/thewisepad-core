@@ -1,6 +1,6 @@
 import { Either, left, right } from "../../shared";
 import { UserRepository, Encoder } from "../ports";
-import { UserNotFoundError, WrongPasswordError } from "../sign-in/errors";
+import { UserNotFoundError, WrongPasswordError } from "./errors";
 import {
   AuthenticationParams,
   AuthenticationResult,

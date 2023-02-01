@@ -7,7 +7,7 @@ import {
 import {
   UserNotFoundError,
   WrongPasswordError,
-} from "src/use-cases/sign-in/errors";
+} from "src/use-cases/authentication/errors";
 import { UserBuilder } from "test/builders/user-builder";
 
 export function makeAuthenticationServiceStub() {

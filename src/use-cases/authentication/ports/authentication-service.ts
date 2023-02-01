@@ -1,7 +1,4 @@
-import {
-  UserNotFoundError,
-  WrongPasswordError,
-} from "../../../use-cases/sign-in/errors";
+import { UserNotFoundError, WrongPasswordError } from "../errors";
 import { Either } from "../../../shared";
 
 export type AuthenticationParams = {
