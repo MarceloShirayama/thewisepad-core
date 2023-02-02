@@ -59,7 +59,7 @@ describe("Custom authentication", () => {
 
     const verifyToken = (await tokenManager.verify(response.accessToken)).value;
 
-    expect(verifyToken).toBe(validUser.id);
+    expect(verifyToken).toEqual({ id: validUser.id });
   });
 
   test("Should not authenticate if password is incorrect", async () => {

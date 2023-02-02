@@ -18,9 +18,9 @@ export class JwtTokenManager implements TokenManager {
   }
   async verify(
     token: string
-  ): Promise<Either<TokenExpiredError | JsonWebTokenError, string | object>> {
+  ): Promise<Either<TokenExpiredError | JsonWebTokenError, Payload>> {
     try {
-      const decoded = verify(token, this.secret);
+      const decoded = verify(token, this.secret) as Payload;
 
       return right(decoded);
     } catch (error: any) {

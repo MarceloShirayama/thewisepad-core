@@ -22,7 +22,9 @@ export class AuthMiddleware implements Middleware {
       if (decodedTokenOrError.isLeft())
         return forbidden(decodedTokenOrError.value);
 
-      return ok({ id: (decodedTokenOrError.value as Payload).id });
+      const payload = decodedTokenOrError.value as Payload;
+
+      return ok(payload);
     } catch (error) {
       return serverError(error as Error);
     }
