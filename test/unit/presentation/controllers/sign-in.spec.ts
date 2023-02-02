@@ -1,6 +1,7 @@
 import { SignInController } from "src/presentation/controllers";
 import { MissingParamsError } from "src/presentation/controllers/errors";
 import { CustomAuthentication } from "src/use-cases/authentication";
+import { WrongPasswordError } from "src/use-cases/authentication/errors";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { SignIn } from "src/use-cases/sign-in";
 import { UserBuilder } from "test/builders/user-builder";
@@ -103,5 +104,20 @@ describe("Sign in controller", () => {
     expect(response.statusCode).toBe(400);
     expect(error.message).toBe("Missing param: email password.");
     expect(error).toBeInstanceOf(MissingParamsError);
+  });
+
+  it("Should return 403 if password is incorrect", async () => {
+    const { controller, validUser } = await makeSut();
+
+    const SignInRequestWithIncorrectPassword = {
+      body: { email: validUser.email, password: "incorrect password" },
+    };
+
+    const response = await controller.handle(
+      SignInRequestWithIncorrectPassword
+    );
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body).toBeInstanceOf(WrongPasswordError);
   });
 });

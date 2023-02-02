@@ -1,8 +1,13 @@
-import { left } from "src/shared";
+import { Either, left } from "src/shared";
+import {
+  UserNotFoundError,
+  WrongPasswordError,
+} from "src/use-cases/authentication/errors";
+import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UseCase } from "../../use-cases/ports";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
-import { badRequest, ok, serverError } from "./util";
+import { badRequest, forbidden, ok, serverError } from "./util";
 
 export class SignInController implements Controller {
   constructor(private readonly signInUseCase: UseCase) {}
@@ -14,10 +19,16 @@ export class SignInController implements Controller {
         missingParam += !request.body.password ? "password" : "";
         return badRequest(new MissingParamsError(missingParam.trim()));
       }
-      const response = await this.signInUseCase.perform({
+      const response: Either<
+        UserNotFoundError | WrongPasswordError,
+        AuthenticationResult
+      > = await this.signInUseCase.perform({
         email: request.body.email,
         password: request.body.password,
       });
+
+      if (response.value instanceof WrongPasswordError)
+        return forbidden(response.value);
 
       return ok(response.value);
     } catch (error: any) {
