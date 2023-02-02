@@ -5,7 +5,7 @@ import { forbidden, ok, serverError } from "../controllers/util";
 import { Middleware } from "./ports";
 
 export type AuthRequest = {
-  accessToken: string;
+  accessToken: string | null;
 };
 
 export class Authentication implements Middleware {
