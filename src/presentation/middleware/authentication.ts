@@ -8,7 +8,7 @@ export type AuthRequest = {
   accessToken: string;
 };
 
-export class AuthMiddleware implements Middleware {
+export class Authentication implements Middleware {
   constructor(private readonly tokenManager: TokenManager) {}
 
   async handle(httpRequest: AuthRequest): Promise<HttpResponse> {
