@@ -1,7 +1,7 @@
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import sinon from "sinon";
 
-import { JwtTokenManager } from "src/external/jwt-token-manager";
+import { JwtTokenManager } from "src/external/token-manager";
 
 describe("Jwt token manager", () => {
   it("Should correctly sign and verify a json web token", async () => {

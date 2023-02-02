@@ -5,8 +5,8 @@ import {
   JsonWebTokenError,
 } from "jsonwebtoken";
 
-import { Either, left, right } from "../shared";
-import { Payload, TokenManager } from "../use-cases/authentication/ports";
+import { Either, left, right } from "../../shared";
+import { Payload, TokenManager } from "../../use-cases/authentication/ports";
 
 export class JwtTokenManager implements TokenManager {
   constructor(private readonly secret: string) {}
