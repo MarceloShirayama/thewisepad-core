@@ -6,26 +6,26 @@ import { Payload, TokenManager } from "src/use-cases/authentication/ports";
 import { FakeTokenManager } from "test/doubles/authentication";
 
 describe("Authentication middleware", () => {
-  it("Should return forbidden if access token is empty", async () => {
+  it("Should return forbidden with invalid token error if access token is empty", async () => {
     const tokenManager = new FakeTokenManager();
     const authMiddleware = new Authentication(tokenManager);
 
     const response = await authMiddleware.handle({ accessToken: "" });
 
-    expect(response.body).toEqual(new MissingParamsError("accessToken"));
+    expect(response.body).toEqual(new Error("Invalid token."));
     expect(response.statusCode).toBe(403);
   });
 
-  it("Should return forbidden if access token is null", async () => {
+  it("Should return forbidden with invalid token error  if access token is null", async () => {
     const tokenManager = new FakeTokenManager();
     const authMiddleware = new Authentication(tokenManager);
 
     const response = await authMiddleware.handle({ accessToken: null });
 
-    expect(response.body).toEqual(new MissingParamsError("accessToken"));
+    expect(response.body).toEqual(new Error("Invalid token."));
   });
 
-  it("Should return forbidden if access token is invalid", async () => {
+  it("Should return forbidden with invalid token error  if access token is invalid", async () => {
     const tokenManager = new FakeTokenManager();
     const payload = { id: "my id" };
     const token = await tokenManager.sign(payload);

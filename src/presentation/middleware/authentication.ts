@@ -1,6 +1,5 @@
 import { HttpResponse } from "src/presentation/controllers/ports";
 import { Payload, TokenManager } from "../../use-cases/authentication/ports";
-import { MissingParamsError } from "../controllers/errors";
 import { forbidden, ok, serverError } from "../controllers/util";
 import { Middleware } from "./ports";
 
@@ -15,7 +14,7 @@ export class Authentication implements Middleware {
     try {
       const { accessToken } = httpRequest;
 
-      if (!accessToken) return forbidden(new MissingParamsError("accessToken"));
+      if (!accessToken) return forbidden(new Error("Invalid token."));
 
       const decodedTokenOrError = await this.tokenManager.verify(accessToken);
 
