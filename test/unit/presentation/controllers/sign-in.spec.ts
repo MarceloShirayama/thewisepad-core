@@ -3,6 +3,7 @@ import { MissingParamsError } from "src/presentation/controllers/errors";
 import { CustomAuthentication } from "src/use-cases/authentication";
 import { WrongPasswordError } from "src/use-cases/authentication/errors";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
+import { UseCase } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
 import { UserBuilder } from "test/builders/user-builder";
 import { FakeTokenManager } from "test/doubles/authentication";
@@ -37,7 +38,19 @@ describe("Sign in controller", () => {
 
     const controller = new SignInController(signInUseCase);
 
-    return { controller, validUser };
+    class ErrorThrowingSignInUseCaseStub implements UseCase {
+      perform(request: any): Promise<any> {
+        throw Error("purposeful error for testing");
+      }
+    }
+
+    const errorThrowingSignInUseCaseStub = new ErrorThrowingSignInUseCaseStub();
+
+    const controllerWithStubUseCase = new SignInController(
+      errorThrowingSignInUseCaseStub
+    );
+
+    return { controller, validUser, controllerWithStubUseCase };
   }
 
   it("Should return 200 if valid credentials are provided", async () => {
@@ -119,5 +132,18 @@ describe("Sign in controller", () => {
 
     expect(response.statusCode).toBe(403);
     expect(response.body).toBeInstanceOf(WrongPasswordError);
+  });
+
+  it("Should return 500 if an error is raised internally", async () => {
+    const { controllerWithStubUseCase, validUser } = await makeSut();
+
+    const validSignInRequest = {
+      body: { email: validUser.email, password: validUser.password },
+    };
+
+    const response = await controllerWithStubUseCase.handle(validSignInRequest);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toBeInstanceOf(Error);
   });
 });

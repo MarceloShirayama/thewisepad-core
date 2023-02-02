@@ -1,4 +1,4 @@
-import { Either, left } from "src/shared";
+import { Either } from "src/shared";
 import {
   UserNotFoundError,
   WrongPasswordError,
@@ -19,6 +19,7 @@ export class SignInController implements Controller {
         missingParam += !request.body.password ? "password" : "";
         return badRequest(new MissingParamsError(missingParam.trim()));
       }
+
       const response: Either<
         UserNotFoundError | WrongPasswordError,
         AuthenticationResult
@@ -30,10 +31,11 @@ export class SignInController implements Controller {
       if (response.value instanceof WrongPasswordError)
         return forbidden(response.value);
 
-      return ok(response.value);
+      if (response.isRight()) return ok(response.value);
+
+      return forbidden(response.value);
     } catch (error: any) {
-      console.error(error);
-      return serverError(error.message);
+      return serverError(error);
     }
   }
 }
