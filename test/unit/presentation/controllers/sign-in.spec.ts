@@ -59,11 +59,11 @@ describe("Sign in controller", () => {
   it("Should return 400 if email is missing in the request", async () => {
     const { controller, validUser } = await makeSut();
 
-    const SignInRequestWithoutPassword = {
+    const SignInRequestWithoutEmail = {
       body: { password: validUser.password },
     };
 
-    const response = await controller.handle(SignInRequestWithoutPassword);
+    const response = await controller.handle(SignInRequestWithoutEmail);
 
     const error = response.body as Error;
 
@@ -75,11 +75,11 @@ describe("Sign in controller", () => {
   it("Should return 400 if password is missing in the request", async () => {
     const { controller, validUser } = await makeSut();
 
-    const SignInRequestWithoutEmail = {
+    const SignInRequestWithoutPassword = {
       body: { email: validUser.email },
     };
 
-    const response = await controller.handle(SignInRequestWithoutEmail);
+    const response = await controller.handle(SignInRequestWithoutPassword);
 
     const error = response.body as Error;
 
