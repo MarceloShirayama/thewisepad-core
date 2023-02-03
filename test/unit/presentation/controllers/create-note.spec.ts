@@ -9,7 +9,7 @@ import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
 } from "test/doubles/repositories";
-import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases";
 
 describe("Create note controller", () => {
   function makeSut() {

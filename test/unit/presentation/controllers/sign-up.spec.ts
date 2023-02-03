@@ -7,7 +7,7 @@ import { UserBuilder } from "test/builders/user-builder";
 import { makeAuthenticationServiceStub } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
-import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases";
 
 describe("Sign up controller", () => {
   const validUser = UserBuilder.createUser().build();
