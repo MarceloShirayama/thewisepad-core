@@ -9,6 +9,7 @@ import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
 } from "test/doubles/repositories";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
 
 describe("Create note controller", () => {
   function makeSut() {
@@ -32,11 +33,18 @@ describe("Create note controller", () => {
 
     const controller = new CreateNoteController(createNoteUseCase);
 
+    const errorThrowingSignInUseCaseStub = makeErrorThrowingUseCaseStub();
+
+    const controllerWithStubUseCase = new CreateNoteController(
+      errorThrowingSignInUseCaseStub
+    );
+
     return {
       controller,
       validNote,
       emptyNoteRepository,
       noteWithUnregisteredUser,
+      controllerWithStubUseCase,
     };
   }
 
@@ -154,5 +162,22 @@ describe("Create note controller", () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(UnregisteredOwnerError);
     expect(error.message).toBe("Owner: unregistered@mail.com is unregistered.");
+  });
+
+  it("Should return 500 when server raises", async () => {
+    const { controllerWithStubUseCase, validNote } = makeSut();
+
+    const validRequest: HttpRequest = {
+      body: {
+        title: validNote.title,
+        content: validNote.content,
+        ownerEmail: validNote.ownerEmail,
+      },
+    };
+
+    const response = await controllerWithStubUseCase.handle(validRequest);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toBeInstanceOf(Error);
   });
 });
