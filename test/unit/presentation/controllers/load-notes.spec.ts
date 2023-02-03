@@ -3,9 +3,10 @@ import { LoadNotes } from "src/use-cases/load-notes";
 import { NoteBuilder } from "test/builders/note-builder";
 import { UserBuilder } from "test/builders/user-builder";
 import { InMemoryNoteRepository } from "test/doubles/repositories";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases";
 
 describe("Load notes controller", () => {
-  it("Should return 200 when load notes use case returns", async () => {
+  function makeSut() {
     const note1 = NoteBuilder.createNote().build();
     const note2 = NoteBuilder.createNote().withDifferentTitleAndId().build();
 
@@ -17,8 +18,22 @@ describe("Load notes controller", () => {
     ]);
 
     const useCase = new LoadNotes(noteRepositoryWithTwoNotes);
+    const useCaseStub = makeErrorThrowingUseCaseStub();
 
     const controller = new LoadNotesController(useCase);
+    const controllerWithUseCaseStub = new LoadNotesController(useCaseStub);
+
+    return {
+      controller,
+      controllerWithUseCaseStub,
+      valiUser,
+      note1,
+      note2,
+    };
+  }
+
+  it("Should return 200 when load notes use case returns", async () => {
+    const { controller, valiUser, note1, note2 } = makeSut();
 
     const request = {
       body: { userId: valiUser.id },
@@ -29,5 +44,19 @@ describe("Load notes controller", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
     expect(response.body).toEqual(expect.arrayContaining([note1, note2]));
+  });
+
+  it("Should return 500 if load notes use case throws", async () => {
+    const { controllerWithUseCaseStub, valiUser } = makeSut();
+
+    const request = {
+      body: {
+        userId: valiUser.id,
+      },
+    };
+
+    const response = await controllerWithUseCaseStub.handle(request);
+
+    expect(response.statusCode).toBe(500);
   });
 });
