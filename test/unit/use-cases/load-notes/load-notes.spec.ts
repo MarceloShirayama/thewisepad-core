@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { LoadNotesForUser } from "src/use-cases/load-notes-for-user";
+import { LoadNotes } from "src/use-cases/load-notes";
 import { NoteData } from "src/use-cases/ports";
 import { NoteBuilder } from "test/builders/note-builder";
 import { InMemoryNoteRepository } from "test/doubles/repositories";
@@ -18,7 +18,7 @@ describe("Load notes for user use case", () => {
       note2,
     ]);
 
-    const useCase = new LoadNotesForUser(noteRepositoryWithTwoNotes);
+    const useCase = new LoadNotes(noteRepositoryWithTwoNotes);
 
     return { useCase, note1, note2 };
   }
