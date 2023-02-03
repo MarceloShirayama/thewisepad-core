@@ -1,14 +1,13 @@
 import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { SignUpController } from "src/presentation/controllers";
 import { HttpRequest } from "src/presentation/controllers/ports";
-import { UseCase } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
 import { UserBuilder } from "test/builders/user-builder";
 import { makeAuthenticationServiceStub } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
-import { ErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
 
 describe("Sign up controller", () => {
   const validUser = UserBuilder.createUser().build();
@@ -56,7 +55,7 @@ describe("Sign up controller", () => {
 
     const controller = new SignUpController(useCase);
 
-    const errorThrowingSingUpUseCaseStub = new ErrorThrowingUseCaseStub();
+    const errorThrowingSingUpUseCaseStub = makeErrorThrowingUseCaseStub();
 
     const controllerWithStubUseCaseWithError = new SignUpController(
       errorThrowingSingUpUseCaseStub

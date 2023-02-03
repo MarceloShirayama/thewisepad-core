@@ -3,13 +3,12 @@ import { MissingParamsError } from "src/presentation/controllers/errors";
 import { CustomAuthentication } from "src/use-cases/authentication";
 import { WrongPasswordError } from "src/use-cases/authentication/errors";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
-import { UseCase } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
 import { UserBuilder } from "test/builders/user-builder";
 import { FakeTokenManager } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
-import { ErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
 
 describe("Sign in controller", () => {
   async function makeSut() {
@@ -39,7 +38,7 @@ describe("Sign in controller", () => {
 
     const controller = new SignInController(signInUseCase);
 
-    const errorThrowingSignInUseCaseStub = new ErrorThrowingUseCaseStub();
+    const errorThrowingSignInUseCaseStub = makeErrorThrowingUseCaseStub();
 
     const controllerWithStubUseCase = new SignInController(
       errorThrowingSignInUseCaseStub
