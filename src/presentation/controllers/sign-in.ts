@@ -38,8 +38,10 @@ export class SignInController implements Controller {
       if (response.isRight()) return ok(response.value);
 
       return forbidden(response.value);
-    } catch (error: any) {
-      return serverError(error);
+    } catch (error) {
+      if (error instanceof Error) return serverError(error);
+      console.log("Unexpected error", error);
+      return serverError(new Error("Unexpected error"));
     }
   }
 }

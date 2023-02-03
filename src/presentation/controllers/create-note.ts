@@ -7,34 +7,40 @@ import {
 import { NoteData, UseCase } from "../../use-cases/ports";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
-import { badRequest, created, getMissingParams } from "./util";
+import { badRequest, created, getMissingParams, serverError } from "./util";
 
 export class CreateNoteController implements Controller {
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    const missingParams = getMissingParams(request, [
-      "title",
-      "content",
-      "ownerEmail",
-    ]);
+    try {
+      const missingParams = getMissingParams(request, [
+        "title",
+        "content",
+        "ownerEmail",
+      ]);
 
-    if (missingParams.length > 0)
-      return badRequest(new MissingParamsError(missingParams));
+      if (missingParams.length > 0)
+        return badRequest(new MissingParamsError(missingParams));
 
-    const noteRequest: NoteData = {
-      title: request.body.title,
-      content: request.body.content,
-      ownerEmail: request.body.ownerEmail,
-    };
+      const noteRequest: NoteData = {
+        title: request.body.title,
+        content: request.body.content,
+        ownerEmail: request.body.ownerEmail,
+      };
 
-    const response: Either<
-      ExistingTitleError | UnregisteredOwnerError | InvalidTitleError,
-      NoteData
-    > = await this.useCase.perform(noteRequest);
+      const response: Either<
+        ExistingTitleError | UnregisteredOwnerError | InvalidTitleError,
+        NoteData
+      > = await this.useCase.perform(noteRequest);
 
-    if (response.isRight()) return created(response.value);
+      if (response.isRight()) return created(response.value);
 
-    return badRequest(response.value);
+      return badRequest(response.value);
+    } catch (error) {
+      if (error instanceof Error) return serverError(error);
+      console.log("Unexpected error", error);
+      return serverError(new Error("Unexpected error"));
+    }
   }
 }

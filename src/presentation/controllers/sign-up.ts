@@ -30,8 +30,10 @@ export class SignUpController implements Controller {
         return forbidden(response.value);
 
       return badRequest(response.value);
-    } catch (error: any) {
-      return serverError(error);
+    } catch (error) {
+      if (error instanceof Error) return serverError(error);
+      console.log("Unexpected error", error);
+      return serverError(new Error("Unexpected error"));
     }
   }
 }
