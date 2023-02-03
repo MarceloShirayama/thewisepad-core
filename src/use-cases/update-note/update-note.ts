@@ -1,6 +1,7 @@
 import { Note, User } from "../../entities";
 import { InvalidTitleError } from "../../entities/errors";
 import { Either, left, right } from "../../shared";
+import { ExistingTitleError } from "../../use-cases/create-note/errors";
 import {
   NoteData,
   NoteRepository,
@@ -8,7 +9,14 @@ import {
   UserData,
   UserRepository,
 } from "../../use-cases/ports";
-import { ExistingTitleError } from "../../use-cases/create-note/errors";
+
+export type UpdateNoteRequest = {
+  title?: string;
+  content?: string;
+  ownerEmail: string;
+  ownerId: string;
+  id: string;
+};
 
 export class UpdateNote implements UseCase {
   constructor(
@@ -17,10 +25,14 @@ export class UpdateNote implements UseCase {
   ) {}
 
   async perform(
-    changeNoteData: NoteData
+    changeNoteData: UpdateNoteRequest
   ): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
     const userData = await this.userRepository.findByEmail(
-      changeNoteData.ownerEmail as string
+      changeNoteData.ownerEmail
+    );
+
+    const originalNoteData = await this.noteRepository.findById(
+      changeNoteData.id
     );
 
     const { email, password } = userData as UserData;
@@ -29,29 +41,35 @@ export class UpdateNote implements UseCase {
 
     const noteOrError = Note.create(
       owner,
-      changeNoteData.title,
+      changeNoteData.title
+        ? (changeNoteData.title as string)
+        : (originalNoteData?.title as string),
       changeNoteData.content
+        ? (changeNoteData.content as string)
+        : (originalNoteData?.content as string)
     );
 
     if (noteOrError.isLeft()) return left(noteOrError.value);
 
     const changedNote = noteOrError.value;
 
-    const notesFromUser = await this.noteRepository.findAllNotesFrom(
-      changeNoteData.ownerId as string
-    );
-
-    const foundNoteWithSameTitle = notesFromUser.find(
-      (note) => note.title === changedNote.title.value
-    );
-
-    if (foundNoteWithSameTitle) return left(new ExistingTitleError());
-
     if (changeNoteData.title) {
-      await this.noteRepository.updateTitle(
-        changeNoteData.id as string,
-        changeNoteData.title
+      const notesFromUser = await this.noteRepository.findAllNotesFrom(
+        changeNoteData.ownerId as string
       );
+
+      const foundNoteWithSameTitle = notesFromUser.find(
+        (note) => note.title === changedNote.title.value
+      );
+
+      if (foundNoteWithSameTitle) return left(new ExistingTitleError());
+
+      if (changeNoteData.title) {
+        await this.noteRepository.updateTitle(
+          changeNoteData.id as string,
+          changeNoteData.title
+        );
+      }
     }
 
     if (changeNoteData.content) {
@@ -61,6 +79,10 @@ export class UpdateNote implements UseCase {
       );
     }
 
-    return right(changeNoteData);
+    const notesFromOwner = (await this.noteRepository.findById(
+      changeNoteData.id
+    )) as NoteData;
+
+    return right(notesFromOwner);
   }
 }

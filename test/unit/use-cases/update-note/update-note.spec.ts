@@ -1,5 +1,7 @@
+import { InvalidTitleError } from "src/entities/errors";
+import { ExistingTitleError } from "src/use-cases/create-note/errors";
 import { NoteData, UserData } from "src/use-cases/ports";
-import { UpdateNote } from "src/use-cases/update-note";
+import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
 import { NoteBuilder } from "test/builders/note-builder";
 import { UserBuilder } from "test/builders/user-builder";
 import {
@@ -29,15 +31,84 @@ describe("Update note use case", () => {
     return { useCase, originalNote, changedNote };
   }
 
-  test("Should update title and content of existing note", async () => {
+  it("Should update title and content of existing note", async () => {
     const { useCase, originalNote, changedNote } = makeSut();
 
-    const response = await useCase.perform(changedNote);
+    const updateNoteRequest: UpdateNoteRequest = {
+      title: changedNote.title,
+      content: changedNote.content,
+      id: changedNote.id as string,
+      ownerEmail: changedNote.ownerEmail,
+      ownerId: changedNote.ownerId as string,
+    };
+
+    const response = await useCase.perform(updateNoteRequest);
 
     const responseData = response.value as NoteData;
 
-    expect(responseData.title).toBe(changedNote.title);
-    expect(responseData.content).toBe(changedNote.content);
-    expect(originalNote.id).toBe(changedNote.id);
+    expect(responseData.title).toBe(updateNoteRequest.title);
+    expect(responseData.content).toBe(updateNoteRequest.content);
+    expect(originalNote.id).toBe(updateNoteRequest.id);
+  });
+
+  it(`Should not update title of existing note if user already has note with
+    same title`, async () => {
+    const { useCase, originalNote, changedNote } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      title: originalNote.title,
+      content: changedNote.content,
+      id: changedNote.id as string,
+      ownerEmail: changedNote.ownerEmail,
+      ownerId: changedNote.ownerId as string,
+    };
+
+    const response = await useCase.perform(updateNoteRequest);
+
+    const error = response.value as Error;
+
+    expect(error).toBeInstanceOf(ExistingTitleError);
+    expect(error.message).toBe("User already has note with the same title.");
+  });
+
+  it("Should update only content of existing note", async () => {
+    const { useCase, originalNote, changedNote } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      content: changedNote.content,
+      id: originalNote.id as string,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId as string,
+    };
+
+    const response = await useCase.perform(updateNoteRequest);
+
+    expect(response.value).toEqual(
+      expect.objectContaining({
+        title: originalNote.title,
+        content: changedNote.content,
+        ownerEmail: originalNote.ownerEmail,
+        ownerId: originalNote.ownerId,
+        id: originalNote.id,
+      })
+    );
+  });
+
+  it("Should not update title with invalid title", async () => {
+    const { useCase, changedNote } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      title: "ab",
+      content: changedNote.content,
+      id: changedNote.id as string,
+      ownerEmail: changedNote.ownerEmail,
+      ownerId: changedNote.ownerId as string,
+    };
+
+    const response = await useCase.perform(updateNoteRequest);
+
+    const error = response.value as Error;
+
+    expect(error).toBeInstanceOf(InvalidTitleError);
   });
 });
