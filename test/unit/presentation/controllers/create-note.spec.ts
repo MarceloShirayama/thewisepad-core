@@ -1,4 +1,4 @@
-import { CreateNoteController } from "src/presentation/controllers/create-note";
+import { CreateNoteController } from "src/presentation/controllers";
 import { MissingParamsError } from "src/presentation/controllers/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { CreateNote } from "src/use-cases/create-note";
