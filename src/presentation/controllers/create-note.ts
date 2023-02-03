@@ -14,13 +14,11 @@ export class CreateNoteController implements Controller {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const missingParams = getMissingParams(request, [
-        "title",
-        "content",
-        "ownerEmail",
-      ]);
+      const requiredParams = ["title", "content", "ownerEmail"];
 
-      if (missingParams.length > 0)
+      const missingParams = getMissingParams(request, requiredParams);
+
+      if (missingParams)
         return badRequest(new MissingParamsError(missingParams));
 
       const noteRequest: NoteData = {

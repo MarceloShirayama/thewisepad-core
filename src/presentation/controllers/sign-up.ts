@@ -15,8 +15,11 @@ export class SignUpController implements Controller {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const missingParams = getMissingParams(request, ["email", "password"]);
-      if (missingParams.length > 0)
+      const requiredParams = ["email", "password"];
+
+      const missingParams = getMissingParams(request, requiredParams);
+
+      if (missingParams)
         return badRequest(new MissingParamsError(missingParams));
 
       const response = await this.useCase.perform({
