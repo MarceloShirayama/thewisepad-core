@@ -2,6 +2,7 @@ import { CreateNoteController } from "src/presentation/controllers/create-note";
 import { MissingParamsError } from "src/presentation/controllers/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { CreateNote } from "src/use-cases/create-note";
+import { UnregisteredOwnerError } from "src/use-cases/create-note/errors";
 import { NoteBuilder } from "test/builders/note-builder";
 import { UserBuilder } from "test/builders/user-builder";
 import {
@@ -14,6 +15,9 @@ describe("Create note controller", () => {
     const validUser = UserBuilder.createUser().build();
 
     const validNote = NoteBuilder.createNote().build();
+    const noteWithUnregisteredUser = NoteBuilder.createNote()
+      .withUnregisteredOwner()
+      .build();
 
     const emptyNoteRepository = new InMemoryNoteRepository([]);
 
@@ -28,7 +32,12 @@ describe("Create note controller", () => {
 
     const controller = new CreateNoteController(createNoteUseCase);
 
-    return { controller, validNote, emptyNoteRepository };
+    return {
+      controller,
+      validNote,
+      emptyNoteRepository,
+      noteWithUnregisteredUser,
+    };
   }
 
   it("Should return 201 when note is successfully created", async () => {
@@ -125,5 +134,25 @@ describe("Create note controller", () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(MissingParamsError);
     expect(error.message).toBe("Missing param: title, content, ownerEmail.");
+  });
+
+  it("Should return 400 when owner is not registered", async () => {
+    const { controller, noteWithUnregisteredUser } = makeSut();
+
+    const requestWithUnregisteredUser: HttpRequest = {
+      body: {
+        title: noteWithUnregisteredUser.title,
+        content: noteWithUnregisteredUser.content,
+        ownerEmail: noteWithUnregisteredUser.ownerEmail,
+      },
+    };
+
+    const response = await controller.handle(requestWithUnregisteredUser);
+
+    const error = response.body as Error;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toBeInstanceOf(UnregisteredOwnerError);
+    expect(error.message).toBe("Owner: unregistered@mail.com is unregistered.");
   });
 });
