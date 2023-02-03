@@ -9,6 +9,7 @@ import { UserBuilder } from "test/builders/user-builder";
 import { FakeTokenManager } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
+import { ErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
 
 describe("Sign in controller", () => {
   async function makeSut() {
@@ -38,13 +39,7 @@ describe("Sign in controller", () => {
 
     const controller = new SignInController(signInUseCase);
 
-    class ErrorThrowingSignInUseCaseStub implements UseCase {
-      perform(request: any): Promise<any> {
-        throw Error("purposeful error for testing");
-      }
-    }
-
-    const errorThrowingSignInUseCaseStub = new ErrorThrowingSignInUseCaseStub();
+    const errorThrowingSignInUseCaseStub = new ErrorThrowingUseCaseStub();
 
     const controllerWithStubUseCase = new SignInController(
       errorThrowingSignInUseCaseStub

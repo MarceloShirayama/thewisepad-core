@@ -8,6 +8,7 @@ import { UserBuilder } from "test/builders/user-builder";
 import { makeAuthenticationServiceStub } from "test/doubles/authentication";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
+import { ErrorThrowingUseCaseStub } from "test/doubles/use-cases/error-throwing-use-case-stub";
 
 describe("Sign up controller", () => {
   const validUser = UserBuilder.createUser().build();
@@ -55,13 +56,7 @@ describe("Sign up controller", () => {
 
     const controller = new SignUpController(useCase);
 
-    class ErrorThrowingSignUpUseCaseStub implements UseCase {
-      async perform(request: any): Promise<void> {
-        throw Error();
-      }
-    }
-
-    const errorThrowingSingUpUseCaseStub = new ErrorThrowingSignUpUseCaseStub();
+    const errorThrowingSingUpUseCaseStub = new ErrorThrowingUseCaseStub();
 
     const controllerWithStubUseCaseWithError = new SignUpController(
       errorThrowingSingUpUseCaseStub
