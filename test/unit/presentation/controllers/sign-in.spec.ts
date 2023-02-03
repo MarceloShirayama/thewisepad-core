@@ -115,7 +115,7 @@ describe("Sign in controller", () => {
     const error = response.body as Error;
 
     expect(response.statusCode).toBe(400);
-    expect(error.message).toBe("Missing param: email password.");
+    expect(error.message).toBe("Missing param: email, password.");
     expect(error).toBeInstanceOf(MissingParamsError);
   });
 

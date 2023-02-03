@@ -7,18 +7,22 @@ import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UseCase } from "../../use-cases/ports";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
-import { badRequest, forbidden, ok, serverError } from "./util";
+import {
+  badRequest,
+  forbidden,
+  getMissingParams,
+  ok,
+  serverError,
+} from "./util";
 
 export class SignInController implements Controller {
   constructor(private readonly signInUseCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      if (!request.body.email || !request.body.password) {
-        let missingParam = !request.body.email ? "email " : "";
-        missingParam += !request.body.password ? "password" : "";
-        return badRequest(new MissingParamsError(missingParam.trim()));
-      }
+      const missingParams = getMissingParams(request, ["email", "password"]);
+      if (missingParams.length > 0)
+        return badRequest(new MissingParamsError(missingParams));
 
       const response: Either<
         UserNotFoundError | WrongPasswordError,

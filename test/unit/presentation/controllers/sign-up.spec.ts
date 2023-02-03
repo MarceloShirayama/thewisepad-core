@@ -1,6 +1,6 @@
 import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
-import { HttpRequest } from "src/presentation/controllers/ports";
 import { SignUpController } from "src/presentation/controllers";
+import { HttpRequest } from "src/presentation/controllers/ports";
 import { UseCase } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
@@ -151,7 +151,7 @@ describe("Sign up controller", () => {
 
     expect(response.statusCode).toBe(400);
     expect((response.body as Error).message).toBe(
-      "Missing param: email password."
+      "Missing param: email, password."
     );
   });
 

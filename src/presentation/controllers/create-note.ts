@@ -1,17 +1,27 @@
+import { InvalidTitleError } from "../../entities/errors";
+import { Either } from "../../shared";
 import {
   ExistingTitleError,
   UnregisteredOwnerError,
 } from "../../use-cases/create-note/errors";
-import { Either } from "../../shared";
 import { NoteData, UseCase } from "../../use-cases/ports";
+import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
-import { InvalidTitleError } from "../../entities/errors";
-import { badRequest, created } from "./util";
+import { badRequest, created, getMissingParams } from "./util";
 
 export class CreateNoteController implements Controller {
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
+    const missingParams = getMissingParams(request, [
+      "title",
+      "content",
+      "ownerEmail",
+    ]);
+
+    if (missingParams.length > 0)
+      return badRequest(new MissingParamsError(missingParams));
+
     const noteRequest: NoteData = {
       title: request.body.title,
       content: request.body.content,
