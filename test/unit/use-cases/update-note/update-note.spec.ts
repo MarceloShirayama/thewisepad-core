@@ -37,9 +37,9 @@ describe("Update note use case", () => {
     const updateNoteRequest: UpdateNoteRequest = {
       title: changedNote.title,
       content: changedNote.content,
-      id: changedNote.id as string,
-      ownerEmail: changedNote.ownerEmail,
-      ownerId: changedNote.ownerId as string,
+      id: originalNote.id as string,
+      ownerEmail: originalNote.ownerEmail,
+      ownerId: originalNote.ownerId as string,
     };
 
     const response = await useCase.perform(updateNoteRequest);
