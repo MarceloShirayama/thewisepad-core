@@ -9,12 +9,15 @@ export class Title {
   }
 
   static create(title: string): Either<InvalidTitleError, Title> {
-    return Title.validate(title)
+    return Title.isValid(title)
       ? right(new Title(title))
       : left(new InvalidTitleError(title));
   }
 
-  static validate(title: string) {
-    return title.trim().length >= 3 && title.trim().length <= 256;
+  static isValid(title: string) {
+    const emptyOrTooLittle = !title || title.trim().length < 3;
+    const tooLarge = title.length > 256;
+
+    return !emptyOrTooLittle && !tooLarge;
   }
 }
