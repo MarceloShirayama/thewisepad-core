@@ -41,7 +41,8 @@ export class UpdateNote implements UseCase {
 
     const noteOrError = Note.create(
       owner,
-      !changeNoteData.title && changeNoteData.content
+      Object.keys(changeNoteData).indexOf("title") === -1 &&
+        Object.keys(changeNoteData).indexOf("content") !== -1
         ? (originalNoteData?.title as string)
         : (changeNoteData.title as string),
       changeNoteData.content
