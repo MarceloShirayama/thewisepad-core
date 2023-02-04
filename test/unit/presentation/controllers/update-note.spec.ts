@@ -9,6 +9,7 @@ import {
   InMemoryNoteRepository,
   InMemoryUserRepository,
 } from "test/doubles/repositories";
+import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases";
 
 describe("Update note controller", () => {
   const originalNoteData = NoteBuilder.createNote().build();
@@ -67,7 +68,13 @@ describe("Update note controller", () => {
 
     const controller = new UpdateNoteController(useCase);
 
-    return { controller };
+    const errorThrowingSignInUseCaseStub = makeErrorThrowingUseCaseStub();
+
+    const controllerWithStubUseCase = new UpdateNoteController(
+      errorThrowingSignInUseCaseStub
+    );
+
+    return { controller, controllerWithStubUseCase };
   }
 
   it("Should return 200 and updated note when note is updated", async () => {
@@ -150,7 +157,27 @@ describe("Update note controller", () => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toBeInstanceOf(MissingParamsError);
       expect(error.message).toEqual(expect.stringContaining("Missing param: "));
-      console.log(error.message);
     }
   );
+
+  it("Should return 500 if an error is raised internally", async () => {
+    const { controllerWithStubUseCase } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      title: changeNoteData.title,
+      content: changeNoteData.content,
+      id: originalNoteData.id as string,
+      ownerEmail: originalNoteData.ownerEmail,
+      ownerId: originalNoteData.ownerId as string,
+    };
+
+    const request: HttpRequest = {
+      body: updateNoteRequest,
+    };
+
+    const response = await controllerWithStubUseCase.handle(request);
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toBeInstanceOf(Error);
+  });
 });

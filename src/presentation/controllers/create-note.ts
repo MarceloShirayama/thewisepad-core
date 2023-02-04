@@ -37,7 +37,7 @@ export class CreateNoteController implements Controller {
       return badRequest(response.value);
     } catch (error) {
       if (error instanceof Error) return serverError(error);
-      console.log("Unexpected error", error);
+      console.error("Unexpected error", error);
       return serverError(new Error("Unexpected error"));
     }
   }
