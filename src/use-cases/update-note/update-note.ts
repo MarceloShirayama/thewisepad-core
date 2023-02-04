@@ -41,12 +41,10 @@ export class UpdateNote implements UseCase {
 
     const noteOrError = Note.create(
       owner,
-      changeNoteData.title
-        ? (changeNoteData.title as string)
-        : (originalNoteData?.title as string),
+      !changeNoteData.title && changeNoteData.content
+        ? (originalNoteData?.title as string)
+        : (changeNoteData.title as string),
       changeNoteData.content
-        ? (changeNoteData.content as string)
-        : (originalNoteData?.content as string)
     );
 
     if (noteOrError.isLeft()) return left(noteOrError.value);
