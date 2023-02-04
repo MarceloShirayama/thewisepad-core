@@ -7,12 +7,19 @@ export class UpdateNoteController implements Controller {
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    const requiredParams = ["title", "content"];
+    const requiredNoteParams = ["id", "ownerEmail", "ownerId"];
 
-    const missingParams = getMissingParams(request, requiredParams);
+    const missingNoteParams = getMissingParams(request, requiredNoteParams);
 
-    if (missingParams.includes(requiredParams.join(", ")))
-      return badRequest(new MissingParamsError(missingParams));
+    if (missingNoteParams)
+      return badRequest(new MissingParamsError(missingNoteParams));
+
+    const requiredUpdateParams = ["title", "content"];
+
+    const missingUpdateParams = getMissingParams(request, requiredUpdateParams);
+
+    if (missingUpdateParams.includes(requiredUpdateParams.join(", ")))
+      return badRequest(new MissingParamsError(missingUpdateParams));
 
     const useCaseResponse = await this.useCase.perform(request.body);
 

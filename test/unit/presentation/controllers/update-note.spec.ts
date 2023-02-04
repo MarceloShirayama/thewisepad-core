@@ -11,12 +11,47 @@ import {
 } from "test/doubles/repositories";
 
 describe("Update note controller", () => {
-  function makeSut() {
-    const originalNoteData = NoteBuilder.createNote().build();
-    const changeNoteData = NoteBuilder.createNote()
-      .withDifferentTitleAndContent()
-      .build();
+  const originalNoteData = NoteBuilder.createNote().build();
 
+  const changeNoteData = NoteBuilder.createNote()
+    .withDifferentTitleAndContent()
+    .build();
+
+  const requestWithoutNoteId = {
+    body: {
+      title: changeNoteData.title,
+      content: changeNoteData.content,
+      ownerEmail: originalNoteData.ownerEmail,
+      ownerId: originalNoteData.ownerId as string,
+    },
+  };
+
+  const requestWithoutNoteOwnerEmail = {
+    body: {
+      title: changeNoteData.title,
+      content: changeNoteData.content,
+      id: originalNoteData.id as string,
+      ownerId: originalNoteData.ownerId as string,
+    },
+  };
+
+  const requestWithoutNoteOwnerId = {
+    body: {
+      title: changeNoteData.title,
+      content: changeNoteData.content,
+      id: originalNoteData.id as string,
+      ownerEmail: originalNoteData.ownerEmail,
+    },
+  };
+
+  const requestWithoutNoteParams = {
+    body: {
+      title: changeNoteData.title,
+      content: changeNoteData.content,
+    },
+  };
+
+  function makeSut() {
     const owner = UserBuilder.createUser().build();
 
     const noteRepositoryWithANote = new InMemoryNoteRepository([
@@ -32,11 +67,11 @@ describe("Update note controller", () => {
 
     const controller = new UpdateNoteController(useCase);
 
-    return { originalNoteData, changeNoteData, controller };
+    return { controller };
   }
 
   it("Should return 200 and updated note when note is updated", async () => {
-    const { originalNoteData, changeNoteData, controller } = makeSut();
+    const { controller } = makeSut();
 
     const updateNoteRequest: UpdateNoteRequest = {
       title: changeNoteData.title,
@@ -57,7 +92,7 @@ describe("Update note controller", () => {
   });
 
   it("Should return 400 when trying to update note with invalid title", async () => {
-    const { originalNoteData, controller } = makeSut();
+    const { controller } = makeSut();
 
     const updateNoteRequest: UpdateNoteRequest = {
       title: "",
@@ -77,7 +112,7 @@ describe("Update note controller", () => {
   });
 
   it("Should return 400 when request does not contain title nor content", async () => {
-    const { originalNoteData, controller } = makeSut();
+    const { controller } = makeSut();
 
     const updateNoteRequest: UpdateNoteRequest = {
       id: originalNoteData.id as string,
@@ -97,4 +132,25 @@ describe("Update note controller", () => {
     expect(response.body).toBeInstanceOf(MissingParamsError);
     expect(error.message).toBe("Missing param: title, content.");
   });
+
+  it.each([
+    requestWithoutNoteId,
+    requestWithoutNoteOwnerEmail,
+    requestWithoutNoteOwnerId,
+    requestWithoutNoteParams,
+  ])(
+    "Should return 400 when request does not contain note required params",
+    async (request) => {
+      const { controller } = makeSut();
+
+      const response = await controller.handle(request);
+
+      const error = response.body as Error;
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toBeInstanceOf(MissingParamsError);
+      expect(error.message).toEqual(expect.stringContaining("Missing param: "));
+      console.log(error.message);
+    }
+  );
 });
