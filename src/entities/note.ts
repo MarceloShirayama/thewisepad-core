@@ -28,12 +28,12 @@ export class Note {
   static create(
     owner: User,
     title: string,
-    content: string
+    content?: string | null
   ): Either<InvalidTitleError, Note> {
     const titleOrError = Title.create(title);
 
     if (titleOrError.isLeft()) return left(titleOrError.value);
 
-    return right(new Note(owner, titleOrError.value, content));
+    return right(new Note(owner, titleOrError.value, !content ? "" : content));
   }
 }
