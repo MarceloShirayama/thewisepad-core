@@ -32,7 +32,7 @@ describe("Load notes controller", () => {
     };
   }
 
-  it("Should return 200 when load notes use case returns", async () => {
+  it("Should return 200 and notes when load notes use case returns", async () => {
     const { controller, valiUser, note1, note2 } = makeSut();
 
     const request = {
