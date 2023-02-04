@@ -1,4 +1,5 @@
 import { InvalidTitleError } from "src/entities/errors";
+import { MissingParamsError } from "src/presentation/controllers/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { UpdateNoteController } from "src/presentation/controllers/update-note";
 import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
@@ -73,5 +74,27 @@ describe("Update note controller", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidTitleError);
+  });
+
+  it("Should return 400 when request does not contain title nor content", async () => {
+    const { originalNoteData, controller } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      id: originalNoteData.id as string,
+      ownerEmail: originalNoteData.ownerEmail,
+      ownerId: originalNoteData.ownerId as string,
+    };
+
+    const request: HttpRequest = {
+      body: updateNoteRequest,
+    };
+
+    const response = await controller.handle(request);
+
+    const error = response.body as Error;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toBeInstanceOf(MissingParamsError);
+    expect(error.message).toBe("Missing param: title, content.");
   });
 });
