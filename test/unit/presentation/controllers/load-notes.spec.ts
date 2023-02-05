@@ -1,4 +1,5 @@
 import { LoadNotesController } from "src/presentation/controllers";
+import { MissingParamsError } from "src/presentation/controllers/errors";
 import { LoadNotes } from "src/use-cases/load-notes";
 import { NoteBuilder } from "test/builders/note-builder";
 import { UserBuilder } from "test/builders/user-builder";
@@ -44,6 +45,17 @@ describe("Load notes controller", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
     expect(response.body).toEqual(expect.arrayContaining([note1, note2]));
+  });
+
+  it("Should return 400 if request does not contain user id", async () => {
+    const { controller } = makeSut();
+
+    const request = { body: {} };
+
+    const response = await controller.handle(request);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toBeInstanceOf(MissingParamsError);
   });
 
   it("Should return 500 if load notes use case throws", async () => {
