@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { Document, ObjectId } from "mongodb";
 
 import { UserData, UserRepository } from "../../../use-cases/ports";
 import { MongoHelper } from "./helpers";
@@ -12,13 +12,7 @@ export class MongodbUserRepository implements UserRepository {
     const userCollection = await MongoHelper.getCollection("users");
     const user = await userCollection.findOne({ email: email });
 
-    return user
-      ? {
-          email: user.email as string,
-          password: user.password as string,
-          id: user._id.toString(),
-        }
-      : null;
+    return user ? this.withApplicationId(user) : null;
   }
 
   async add(user: UserData): Promise<UserData> {
@@ -32,10 +26,14 @@ export class MongodbUserRepository implements UserRepository {
 
     await userCollection.insertOne(userClone);
 
+    return this.withApplicationId(userClone);
+  }
+
+  private withApplicationId(dbUser: Document): UserData {
     return {
-      email: userClone.email,
-      password: userClone.password,
-      id: userClone._id.toString(),
+      email: dbUser.email,
+      password: dbUser.password,
+      id: dbUser._id,
     };
   }
 }
