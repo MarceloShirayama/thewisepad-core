@@ -62,4 +62,24 @@ describe("Mongodb user repository", () => {
 
     expect(removedNote).toBeNull();
   });
+
+  it("Should update title of existing note", async () => {
+    const repository = new MongodbNoteRepository();
+
+    const validNote = NoteBuilder.createNote().build();
+
+    const addedNote = await repository.add(validNote);
+
+    const noteId = addedNote.id as string;
+
+    const newTitle = "New title";
+
+    const result = await repository.updateTitle(noteId, newTitle);
+
+    expect(result).toBeTruthy();
+
+    const updatedNote = await repository.findById(noteId);
+
+    expect(updatedNote?.title).toBe(newTitle);
+  });
 });

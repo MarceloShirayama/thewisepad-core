@@ -52,7 +52,20 @@ export class MongodbNoteRepository implements NoteRepository {
   }
 
   async updateTitle(noteId: string, newTitle: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+    const noteCollection = await MongoHelper.getCollection("notes");
+
+    const _id = new ObjectId(noteId);
+
+    const result = await noteCollection.updateOne(
+      { _id },
+      {
+        $set: {
+          title: newTitle,
+        },
+      }
+    );
+
+    return result.modifiedCount === 1;
   }
 
   async updateContent(noteId: string, newContent: string): Promise<boolean> {
