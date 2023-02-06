@@ -42,4 +42,24 @@ describe("Mongodb user repository", () => {
     expect(foundNotes[0].title).toBe(validNote1.title);
     expect(foundNotes[1].title).toBe(validNote2.title);
   });
+
+  it("Should remove existing note", async () => {
+    const repository = new MongodbNoteRepository();
+
+    const validNote = NoteBuilder.createNote().build();
+
+    const addedNote = await repository.add(validNote);
+
+    const noteId = addedNote.id as string;
+
+    const foundNote = await repository.findById(noteId);
+
+    expect(foundNote).toBeTruthy();
+
+    await repository.remove(noteId);
+
+    const removedNote = await repository.findById(noteId);
+
+    expect(removedNote).toBeNull();
+  });
 });
