@@ -21,4 +21,20 @@ describe("Mongodb user repository", () => {
     expect(user?.id).toBeTruthy();
     expect(user?.id).not.toBe(validUser.id);
   });
+
+  it("Should add two users and find all", async () => {
+    const repository = new MongodbUserRepository();
+
+    const validUser1 = UserBuilder.createUser().build();
+    const validUser2 = UserBuilder.createUser().withDifferentEmail().build();
+
+    await repository.add(validUser1);
+    await repository.add(validUser2);
+
+    const users = await repository.findAll();
+
+    expect(users.length).toBe(2);
+    expect(users[0]).toHaveProperty("id");
+    expect(users[1]).toHaveProperty("id");
+  });
 });

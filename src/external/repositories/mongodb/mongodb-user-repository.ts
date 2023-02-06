@@ -5,7 +5,11 @@ import { MongoHelper } from "./helpers";
 
 export class MongodbUserRepository implements UserRepository {
   async findAll(): Promise<UserData[]> {
-    throw new Error("Method not implemented.");
+    const userCollection = await MongoHelper.getCollection("users");
+
+    const users = await userCollection.find().toArray();
+
+    return users.map(this.withApplicationId);
   }
 
   async findByEmail(email: string): Promise<UserData | null> {
@@ -33,7 +37,7 @@ export class MongodbUserRepository implements UserRepository {
     return {
       email: dbUser.email,
       password: dbUser.password,
-      id: dbUser._id,
+      id: dbUser._id.toString(),
     };
   }
 }
