@@ -20,7 +20,13 @@ export class MongodbNoteRepository implements NoteRepository {
   }
 
   async findAllNotesFrom(userId: string): Promise<NoteData[]> {
-    throw new Error("Method not implemented.");
+    const noteCollection = await MongoHelper.getCollection("notes");
+
+    const notesFromUser = await noteCollection
+      .find({ ownerId: userId })
+      .toArray();
+
+    return notesFromUser.map(this.withApplicationId);
   }
 
   async findById(noteId: string): Promise<NoteData | null> {

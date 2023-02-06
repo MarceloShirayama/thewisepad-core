@@ -22,4 +22,24 @@ describe("Mongodb user repository", () => {
 
     expect(foundNote).toBeTruthy();
   });
+
+  it("Should find all notes from an user", async () => {
+    const repository = new MongodbNoteRepository();
+
+    const validNote1 = NoteBuilder.createNote().build();
+    const validNote2 = NoteBuilder.createNote()
+      .withDifferentTitleAndId()
+      .build();
+
+    await repository.add(validNote1);
+    await repository.add(validNote2);
+
+    const userId = validNote1.ownerId as string;
+
+    const foundNotes = await repository.findAllNotesFrom(userId);
+
+    expect(foundNotes.length).toBe(2);
+    expect(foundNotes[0].title).toBe(validNote1.title);
+    expect(foundNotes[1].title).toBe(validNote2.title);
+  });
 });
