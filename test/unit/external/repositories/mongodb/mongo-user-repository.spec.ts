@@ -37,4 +37,21 @@ describe("Mongodb user repository", () => {
     expect(users[0]).toHaveProperty("id");
     expect(users[1]).toHaveProperty("id");
   });
+
+  it("Should return null if it looks for a non-existent user", async () => {
+    const repository = new MongodbUserRepository();
+
+    const validUser = UserBuilder.createUser().build();
+    const anotherValidUser = UserBuilder.createUser()
+      .withDifferentEmail()
+      .build();
+
+    await repository.add(validUser);
+
+    const foundAnotherValidUser = await repository.findByEmail(
+      anotherValidUser.email
+    );
+
+    expect(foundAnotherValidUser).toBeNull();
+  });
 });
