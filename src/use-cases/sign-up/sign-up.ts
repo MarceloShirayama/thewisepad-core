@@ -45,8 +45,8 @@ export class SignUp implements UseCase {
     });
 
     const authentication = await this.authentication.auth({
-      email: user.email,
-      password: user.password,
+      email: userSignupRequest.email,
+      password: userSignupRequest.password,
     });
 
     const authenticationResult = authentication.value as AuthenticationResult;
