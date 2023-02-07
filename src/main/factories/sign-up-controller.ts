@@ -1,17 +1,15 @@
+import { makeTokenManager, makeUserRepository } from ".";
 import { BcryptEncoder } from "../../external/encoder";
-import { MongodbUserRepository } from "../../external/repositories/mongodb/mongodb-user-repository";
-import { JwtTokenManager } from "../../external/token-manager";
 import { SignUpController } from "../../presentation/controllers";
 import { CustomAuthentication } from "../../use-cases/authentication";
 import { SignUp } from "../../use-cases/sign-up";
-import { env } from "../config/environment";
 
 export function makeSignUpController() {
-  const userRepository = new MongodbUserRepository();
+  const userRepository = makeUserRepository();
 
   const encoder = new BcryptEncoder();
 
-  const tokenManager = new JwtTokenManager(env.JWT_SECRET);
+  const tokenManager = makeTokenManager();
 
   const authenticationService = new CustomAuthentication(
     userRepository,

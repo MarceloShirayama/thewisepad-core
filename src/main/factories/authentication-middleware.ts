@@ -1,11 +1,9 @@
-import { FakeTokenManager } from "../../../test/doubles/authentication";
-import { Middleware } from "../../presentation/middleware/ports";
 import { Authentication } from "../../presentation/middleware";
-import { JwtTokenManager } from "src/external/token-manager";
-import { env } from "../config/environment";
+import { Middleware } from "../../presentation/middleware/ports";
+import { makeTokenManager } from ".";
 
 export function makeAuthMiddleware(): Middleware {
-  const tokenManager = new JwtTokenManager(env.JWT_SECRET);
+  const tokenManager = makeTokenManager();
 
   return new Authentication(tokenManager);
 }
