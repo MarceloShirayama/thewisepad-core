@@ -1,6 +1,9 @@
+import { MongoHelper } from "../external/repositories/mongodb/helpers";
+
 async function init() {
   try {
     const server = (await import("./config/app")).app;
+    await MongoHelper.connect();
 
     const PORT = Number(process.env.PORT) || 3000;
 
@@ -10,4 +13,4 @@ async function init() {
   }
 }
 
-const server = init();
+init();
