@@ -1,21 +1,24 @@
+import { BcryptEncoder } from "../../external/encoder";
+import { MongodbUserRepository } from "../../external/repositories/mongodb/mongodb-user-repository";
+import { JwtTokenManager } from "../../external/token-manager";
 import { SignUpController } from "../../presentation/controllers";
+import { CustomAuthentication } from "../../use-cases/authentication";
 import { SignUp } from "../../use-cases/sign-up";
-import { FakeEncoder } from "../../../test/doubles/encoder";
-import { InMemoryUserRepository } from "../../../test/doubles/repositories";
-import { makeAuthenticationServiceStub } from "../../../test/doubles/authentication";
 
 export function makeSignUpController() {
-  const userRepository = new InMemoryUserRepository([]);
+  const userRepository = new MongodbUserRepository();
 
-  const encoder = new FakeEncoder();
+  const encoder = new BcryptEncoder();
 
-  const { authenticationServiceStub } = makeAuthenticationServiceStub();
+  const tokenManager = new JwtTokenManager("my secret");
 
-  const useCase = new SignUp(
+  const authenticationService = new CustomAuthentication(
     userRepository,
     encoder,
-    authenticationServiceStub
+    tokenManager
   );
+
+  const useCase = new SignUp(userRepository, encoder, authenticationService);
 
   const controller = new SignUpController(useCase);
 
