@@ -8,16 +8,12 @@ curl -v -H POST http://localhost:3000/api/sign-up \
 
 # headers
 # < HTTP/1.1 201 Created
-# < access-control-allow-origin: *
-# < access-control-allow-headers: *
-# < access-control-allow-methods: *
-# < Content-Type: application/json; charset=utf-8
+# ...
 
 # body
 # {
-#   "email": "any@mail.com",
-#   "password": "valid_Password_1-ENCRYPTED",
-#   "id": "0"
+#   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTIyYTMwN2UzOTkzYmJjY2VkZDkyZCIsImlhdCI6MTY3NTc2NjMyMX0.Z5aKmj3GA_67c_ryTnJ_I-Uz9kSz-EEzHVl-bB8Jsio",
+#   "id": "63e22a307e3993bbccedd92d"
 # }
 
 # # running more than once
@@ -25,6 +21,7 @@ curl -v -H POST http://localhost:3000/api/sign-up \
 
 # headers
 # < HTTP/1.1 403 Forbidden
+# ...
 
 # body
 # {

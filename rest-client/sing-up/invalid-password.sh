@@ -7,6 +7,7 @@ curl -v -H POST http://localhost:3000/api/sign-up \
 
 # headers
 # < HTTP/1.1 400 Bad Request
+# ...
 
 # body
 # {
