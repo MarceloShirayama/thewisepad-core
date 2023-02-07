@@ -1,5 +1,5 @@
 # valid email and valid password
-curl -v -H POST http://localhost:3000/api/sign-up \
+curl -v -H "Connection: close" POST http://localhost:3000/api/sign-up \
   -H 'Content-Type: application/json' \
   -d '{"email":"any@mail.com","password":"valid_Password_1"}' | jq
 
