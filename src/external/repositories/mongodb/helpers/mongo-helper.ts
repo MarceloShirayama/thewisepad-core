@@ -10,7 +10,9 @@ export const MongoHelper = {
   async connect() {
     this.mongodbInstance = await MongoMemoryServer.create();
 
-    this.uri = this.mongodbInstance.getUri();
+    this.uri = process.env.URI_DATABASE
+      ? process.env.URI_DATABASE
+      : this.mongodbInstance.getUri();
 
     this.client = new MongoClient(this.uri);
 
