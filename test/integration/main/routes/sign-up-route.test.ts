@@ -21,7 +21,7 @@ describe.skip("Register routes", () => {
 
   // const request = supertest(app);
 
-  // test("Should return an account on success", async () => {
+  // test("Should return access token and id on success", async () => {
   //   await request
   //     .post("/api/sign-up")
   //     .send({
@@ -34,7 +34,7 @@ describe.skip("Register routes", () => {
   //       id: "0",
   //     });
   // });
-  test("Should return an account on success", async () => {
+  test("Should return access token and id on success", async () => {
     const { data } = await axios({
       method: "POST",
       url: "http://localhost:3000/api/sign-up",
