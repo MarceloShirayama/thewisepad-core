@@ -9,6 +9,7 @@ describe.skip("SignIn route", () => {
   });
 
   afterAll(async () => {
+    await MongoHelper.clearCollection("users");
     await MongoHelper.disconnect();
   });
 

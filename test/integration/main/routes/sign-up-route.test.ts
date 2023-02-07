@@ -15,7 +15,10 @@ import { MongoHelper } from "src/external/repositories/mongodb/helpers";
 describe.skip("Register routes", () => {
   beforeAll(async () => await MongoHelper.connect());
 
-  afterAll(async () => await MongoHelper.disconnect());
+  afterAll(async () => {
+    await MongoHelper.clearCollection("users");
+    await MongoHelper.disconnect();
+  });
 
   const user = UserBuilder.createUser().build();
 
