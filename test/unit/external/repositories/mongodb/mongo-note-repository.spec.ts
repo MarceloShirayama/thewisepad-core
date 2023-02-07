@@ -1,5 +1,5 @@
 import { MongoHelper } from "src/external/repositories/mongodb/helpers";
-import { MongodbNoteRepository } from "src/external/repositories/mongodb/mongodb-note-repository";
+import { MongodbNoteRepository } from "src/external/repositories/mongodb";
 import { NoteBuilder } from "test/builders/note-builder";
 
 describe("Mongodb user repository", () => {

@@ -1,5 +1,5 @@
 import { MongoHelper } from "src/external/repositories/mongodb/helpers";
-import { MongodbUserRepository } from "src/external/repositories/mongodb/mongodb-user-repository";
+import { MongodbUserRepository } from "src/external/repositories/mongodb";
 import { UserBuilder } from "test/builders/user-builder";
 
 describe("Mongodb user repository", () => {
