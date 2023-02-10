@@ -32,7 +32,9 @@ export class MongodbNoteRepository implements NoteRepository {
   async findById(noteId: string): Promise<NoteData | null> {
     const noteCollection = await MongoHelper.getCollection("notes");
 
-    const note = await noteCollection.findOne({ _id: new ObjectId(noteId) });
+    const _id = new ObjectId(noteId);
+
+    const note = await noteCollection.findOne({ _id });
 
     return note ? this.withApplicationId(note) : null;
   }
