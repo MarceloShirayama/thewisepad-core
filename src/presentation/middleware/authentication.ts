@@ -5,6 +5,7 @@ import { Middleware } from "./ports";
 
 export type AuthRequest = {
   accessToken: string | null;
+  requesterId: string;
 };
 
 export class Authentication implements Middleware {
@@ -12,9 +13,10 @@ export class Authentication implements Middleware {
 
   async handle(httpRequest: AuthRequest): Promise<HttpResponse> {
     try {
-      const { accessToken } = httpRequest;
+      const { accessToken, requesterId } = httpRequest;
 
-      if (!accessToken) return forbidden(new Error("Invalid token."));
+      if (!accessToken || !requesterId)
+        return forbidden(new Error("Invalid token or requester id."));
 
       const decodedTokenOrError = await this.tokenManager.verify(accessToken);
 
@@ -23,11 +25,13 @@ export class Authentication implements Middleware {
 
       const payload = decodedTokenOrError.value as Payload;
 
-      return ok(payload);
+      if (payload.id === requesterId) return ok(payload);
+
+      return forbidden(
+        new Error("User not allowed to perform this operation.")
+      );
     } catch (error) {
       return serverError(error as Error);
     }
   }
 }
-
-// export const authMiddleware = adaptMiddleware(makeAuthMiddleware());

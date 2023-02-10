@@ -10,9 +10,12 @@ describe("Authentication middleware", () => {
     const tokenManager = new FakeTokenManager();
     const authMiddleware = new Authentication(tokenManager);
 
-    const response = await authMiddleware.handle({ accessToken: "" });
+    const response = await authMiddleware.handle({
+      accessToken: "",
+      requesterId: "",
+    });
 
-    expect(response.body).toEqual(new Error("Invalid token."));
+    expect(response.body).toEqual(new Error("Invalid token or requester id."));
     expect(response.statusCode).toBe(403);
   });
 
@@ -20,9 +23,12 @@ describe("Authentication middleware", () => {
     const tokenManager = new FakeTokenManager();
     const authMiddleware = new Authentication(tokenManager);
 
-    const response = await authMiddleware.handle({ accessToken: null });
+    const response = await authMiddleware.handle({
+      accessToken: null,
+      requesterId: "0",
+    });
 
-    expect(response.body).toEqual(new Error("Invalid token."));
+    expect(response.body).toEqual(new Error("Invalid token or requester id."));
   });
 
   it("Should return forbidden with invalid token error  if access token is invalid", async () => {
@@ -33,20 +39,26 @@ describe("Authentication middleware", () => {
 
     const authMiddleware = new Authentication(tokenManager);
 
-    const response = await authMiddleware.handle({ accessToken: invalidToken });
+    const response = await authMiddleware.handle({
+      accessToken: invalidToken,
+      requesterId: "",
+    });
 
     expect(response.statusCode).toBe(403);
-    expect(response.body).toEqual(new Error("Invalid token."));
+    expect(response.body).toEqual(new Error("Invalid token or requester id."));
   });
 
   it("Should return payload if access token is valid", async () => {
     const tokenManager = new FakeTokenManager();
-    const payload = { id: "my id" };
+    const payload = { id: "0" };
     const token = await tokenManager.sign(payload);
 
     const authMiddleware = new Authentication(tokenManager);
 
-    const response = await authMiddleware.handle({ accessToken: token });
+    const response = await authMiddleware.handle({
+      accessToken: token,
+      requesterId: "0",
+    });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(payload);
@@ -63,7 +75,7 @@ describe("Authentication middleware", () => {
       }
     }
 
-    const payload = { id: "my id" };
+    const payload = { id: "0" };
 
     const tokenManager = new ThrowingFakeTokenManager();
 
@@ -71,7 +83,10 @@ describe("Authentication middleware", () => {
 
     const authMiddleware = new Authentication(tokenManager);
 
-    const response = await authMiddleware.handle({ accessToken: validToken });
+    const response = await authMiddleware.handle({
+      accessToken: validToken,
+      requesterId: "0",
+    });
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toEqual(new Error("Method not implemented."));

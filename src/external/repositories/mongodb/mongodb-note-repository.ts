@@ -89,7 +89,8 @@ export class MongodbNoteRepository implements NoteRepository {
     return {
       title: dbNote.title,
       content: dbNote.content,
-      ownerEmail: dbNote.ownerId,
+      ownerEmail: dbNote.ownerEmail,
+      ownerId: dbNote.ownerId,
       id: dbNote._id.toString(),
     };
   }

@@ -6,13 +6,15 @@ export function adaptMiddleware(middleware: Middleware) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const request = {
       accessToken: req.headers?.["x-access-token"],
+      requesterId: req.body.ownerId,
       ...(req.headers || {}),
     };
 
     const httpResponse = await middleware.handle(request);
 
-    if (httpResponse.statusCode === 200) {
+    if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       Object.assign(req, httpResponse.body);
+
       next();
     } else {
       res
