@@ -1,5 +1,5 @@
 import { MissingParamsError } from "src/presentation/controllers/errors";
-import { ok, serverError } from "src/presentation/controllers/util";
+import { forbidden, ok, serverError } from "src/presentation/controllers/util";
 import { Authentication } from "src/presentation/middleware";
 import { Either } from "src/shared";
 import { Payload, TokenManager } from "src/use-cases/authentication/ports";
@@ -63,6 +63,26 @@ describe("Authentication middleware", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(payload);
     expect(response).toEqual(ok(payload));
+  });
+
+  it("Should return forbidden if id on access token is different from requester id", async () => {
+    const tokenManager = new FakeTokenManager();
+    const payload = { id: "my id" };
+    const token = await tokenManager.sign(payload);
+
+    const authMiddleware = new Authentication(tokenManager);
+
+    const response = await authMiddleware.handle({
+      accessToken: token,
+      requesterId: "other id",
+    });
+
+    const error = response.body as Error;
+
+    expect(response).toEqual(
+      forbidden(new Error("User not allowed to perform this operation."))
+    );
+    expect(error.message).toBe("User not allowed to perform this operation.");
   });
 
   it("Should return server error if server throws", async () => {
