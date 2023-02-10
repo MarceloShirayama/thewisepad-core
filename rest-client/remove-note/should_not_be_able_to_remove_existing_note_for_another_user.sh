@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-# should not be able to remove existing note for valid user
+# should not be able to remove existing note for another user
 
 # variables
 URL_SIGNUP=http://localhost:3000/api/sign-up
