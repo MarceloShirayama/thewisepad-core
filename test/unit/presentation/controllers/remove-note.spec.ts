@@ -1,3 +1,4 @@
+import { MissingParamsError } from "src/presentation/controllers/errors";
 import { RemoveNoteController } from "src/presentation/controllers/remove-note";
 import { RemoveNote } from "src/use-cases/remove-note";
 import { NoExistentNoteError } from "src/use-cases/remove-note/errors";
@@ -40,5 +41,17 @@ describe("Remove note controller", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(NoExistentNoteError);
+  });
+
+  it("Should return 400 if request does not contain note id", async () => {
+    const { controller } = makeSut();
+
+    const response = await controller.handle({
+      body: {},
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toBeInstanceOf(MissingParamsError);
+    expect(response.body.message).toBe("Missing param: noteId.");
   });
 });
