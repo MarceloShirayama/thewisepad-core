@@ -54,7 +54,7 @@ describe("Custom authentication", () => {
 
     const response = authentication.value as AuthenticationResult;
 
-    expect(response).toHaveProperty("id");
+    expect(response).toHaveProperty("id", validUser.id);
     expect(response).toHaveProperty("accessToken");
 
     const verifyToken = (await tokenManager.verify(response.accessToken)).value;

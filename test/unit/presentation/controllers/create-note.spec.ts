@@ -65,8 +65,9 @@ describe("Create note controller", () => {
     expect(response.body).toEqual(validNote);
 
     const notesInRepository = await emptyNoteRepository.findAllNotesFrom(
-      validNote.id as string
+      validNote.ownerId as string
     );
+
     expect(notesInRepository.length).toBe(1);
     expect(notesInRepository[0]).toEqual(validNote);
   });

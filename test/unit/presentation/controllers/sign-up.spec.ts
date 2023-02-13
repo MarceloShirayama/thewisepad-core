@@ -77,7 +77,7 @@ describe("Sign up controller", () => {
     const response = await controller.handle(validUserRequest);
 
     expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("id", validUser.id);
     expect(response.body).toHaveProperty("accessToken");
   });
 

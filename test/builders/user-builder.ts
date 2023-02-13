@@ -4,7 +4,7 @@ export class UserBuilder {
   private readonly user: UserData = {
     email: "any@mail.com",
     password: "valid_password_1",
-    id: "0",
+    id: "63ea18e9d617623ac31c34bb",
   };
 
   static createUser(): UserBuilder {
