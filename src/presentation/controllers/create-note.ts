@@ -10,13 +10,13 @@ import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, created, getMissingParams, serverError } from "./util";
 
 export class CreateNoteController implements Controller {
+  readonly requiredParams = ["title", "content", "ownerEmail"];
+
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredParams = ["title", "content", "ownerEmail"];
-
-      const missingParams = getMissingParams(request, requiredParams);
+      const missingParams = getMissingParams(request, this.requiredParams);
 
       if (missingParams)
         return badRequest(new MissingParamsError(missingParams));

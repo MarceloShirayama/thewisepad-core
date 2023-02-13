@@ -4,25 +4,24 @@ import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, getMissingParams, serverError } from "./util";
 
 export class UpdateNoteController implements Controller {
+  readonly requiredParams = ["id", "ownerEmail", "ownerId"];
+  readonly requiredUpdateParams = ["title", "content"];
+
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredNoteParams = ["id", "ownerEmail", "ownerId"];
-
-      const missingNoteParams = getMissingParams(request, requiredNoteParams);
+      const missingNoteParams = getMissingParams(request, this.requiredParams);
 
       if (missingNoteParams)
         return badRequest(new MissingParamsError(missingNoteParams));
 
-      const requiredUpdateParams = ["title", "content"];
-
       const missingUpdateParams = getMissingParams(
         request,
-        requiredUpdateParams
+        this.requiredUpdateParams
       );
 
-      if (missingUpdateParams.includes(requiredUpdateParams.join(", ")))
+      if (missingUpdateParams.includes(this.requiredUpdateParams.join(", ")))
         return badRequest(new MissingParamsError(missingUpdateParams));
 
       const useCaseResponse = await this.useCase.perform(request.body);

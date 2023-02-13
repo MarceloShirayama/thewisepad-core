@@ -11,13 +11,13 @@ import {
 } from "./util";
 
 export class SignUpController implements Controller {
+  readonly requiredParams = ["email", "password"];
+
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredParams = ["email", "password"];
-
-      const missingParams = getMissingParams(request, requiredParams);
+      const missingParams = getMissingParams(request, this.requiredParams);
 
       if (missingParams)
         return badRequest(new MissingParamsError(missingParams));

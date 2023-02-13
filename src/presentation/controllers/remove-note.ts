@@ -4,13 +4,13 @@ import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, getMissingParams, ok, serverError } from "./util";
 
 export class RemoveNoteController implements Controller {
+  readonly requiredParams = ["noteId"];
+
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredParams = ["noteId"];
-
-      const missingParams = getMissingParams(request, requiredParams);
+      const missingParams = getMissingParams(request, this.requiredParams);
 
       if (missingParams)
         return badRequest(new MissingParamsError(missingParams));

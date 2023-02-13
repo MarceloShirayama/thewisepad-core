@@ -4,13 +4,13 @@ import { Controller, HttpRequest, HttpResponse } from "./ports";
 import { badRequest, getMissingParams, ok, serverError } from "./util";
 
 export class LoadNotesController implements Controller {
+  readonly requiredParams = ["userId"];
+
   constructor(private readonly useCase: UseCase) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredParams = ["userId"];
-
-      const missingParams = getMissingParams(request, requiredParams);
+      const missingParams = getMissingParams(request, this.requiredParams);
 
       if (missingParams)
         return badRequest(new MissingParamsError(missingParams));
