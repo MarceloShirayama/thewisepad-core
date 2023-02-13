@@ -74,7 +74,7 @@ describe("Sign up controller", () => {
   test("Should return 201 and authentication result when user is successfully signed up", async () => {
     const { controller, validUserRequest } = makeSut();
 
-    const response = await controller.handle(validUserRequest);
+    const response = await controller.specificOp(validUserRequest);
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id", validUser.id);
@@ -84,9 +84,9 @@ describe("Sign up controller", () => {
   test("Should return 403 when trying to sign up existing user", async () => {
     const { controller, validUserRequest } = makeSut();
 
-    await controller.handle(validUserRequest);
+    await controller.specificOp(validUserRequest);
 
-    const response = await controller.handle(validUserRequest);
+    const response = await controller.specificOp(validUserRequest);
 
     expect(response.statusCode).toBe(403);
     expect(response.body).toBeInstanceOf(ExistingUserError);
@@ -95,7 +95,7 @@ describe("Sign up controller", () => {
   test("Should return 400 when trying to sign up user with invalid email", async () => {
     const { controller, userWithInvalidEmailRequest } = makeSut();
 
-    const response = await controller.handle(userWithInvalidEmailRequest);
+    const response = await controller.specificOp(userWithInvalidEmailRequest);
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidEmailError);
@@ -104,7 +104,9 @@ describe("Sign up controller", () => {
   test("Should return 400 when trying to sign up user with invalid password", async () => {
     const { controller, userWithInvalidPasswordRequest } = makeSut();
 
-    const response = await controller.handle(userWithInvalidPasswordRequest);
+    const response = await controller.specificOp(
+      userWithInvalidPasswordRequest
+    );
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidPasswordError);
@@ -117,7 +119,7 @@ describe("Sign up controller", () => {
       body: { password: validUser.password },
     };
 
-    const response = await controller.handle(userWithMissingEmail);
+    const response = await controller.specificOp(userWithMissingEmail);
 
     expect(response.statusCode).toBe(400);
     expect((response.body as Error).message).toBe("Missing param: email.");
@@ -130,7 +132,7 @@ describe("Sign up controller", () => {
       body: { email: validUser.email },
     };
 
-    const response = await controller.handle(userWithMissingPassword);
+    const response = await controller.specificOp(userWithMissingPassword);
 
     expect(response.statusCode).toBe(400);
     expect((response.body as Error).message).toBe("Missing param: password.");
@@ -141,7 +143,9 @@ describe("Sign up controller", () => {
 
     const userWithMissingEmailAndPassword = { body: {} };
 
-    const response = await controller.handle(userWithMissingEmailAndPassword);
+    const response = await controller.specificOp(
+      userWithMissingEmailAndPassword
+    );
 
     expect(response.statusCode).toBe(400);
     expect((response.body as Error).message).toBe(
@@ -152,7 +156,7 @@ describe("Sign up controller", () => {
   test("Should return 500 if an error is raised internally", async () => {
     const { validUserRequest, controllerWithStubUseCaseWithError } = makeSut();
 
-    const response = await controllerWithStubUseCaseWithError.handle(
+    const response = await controllerWithStubUseCaseWithError.specificOp(
       validUserRequest
     );
 

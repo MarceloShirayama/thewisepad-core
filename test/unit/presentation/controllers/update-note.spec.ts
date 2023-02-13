@@ -91,7 +91,7 @@ describe("Update note controller", () => {
       body: updateNoteRequest,
     };
 
-    const response = await controller.handle(request);
+    const response = await controller.specificOp(request);
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(updateNoteRequest);
@@ -111,7 +111,7 @@ describe("Update note controller", () => {
       body: updateNoteRequest,
     };
 
-    const response = await controller.handle(request);
+    const response = await controller.specificOp(request);
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(InvalidTitleError);
@@ -130,7 +130,7 @@ describe("Update note controller", () => {
       body: updateNoteRequest,
     };
 
-    const response = await controller.handle(request);
+    const response = await controller.specificOp(request);
 
     const error = response.body as Error;
 
@@ -149,7 +149,7 @@ describe("Update note controller", () => {
     async (request) => {
       const { controller } = makeSut();
 
-      const response = await controller.handle(request);
+      const response = await controller.specificOp(request);
 
       const error = response.body as Error;
 
@@ -174,7 +174,7 @@ describe("Update note controller", () => {
       body: updateNoteRequest,
     };
 
-    const response = await controllerWithStubUseCase.handle(request);
+    const response = await controllerWithStubUseCase.specificOp(request);
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toBeInstanceOf(Error);

@@ -58,7 +58,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controller.handle(validRequest);
+    const response = await controller.specificOp(validRequest);
 
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual(validNote);
@@ -81,7 +81,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controller.handle(requestWithoutTitle);
+    const response = await controller.specificOp(requestWithoutTitle);
 
     const error = response.body as Error;
 
@@ -100,7 +100,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controller.handle(requestWithoutContent);
+    const response = await controller.specificOp(requestWithoutContent);
 
     const error = response.body as Error;
 
@@ -119,7 +119,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controller.handle(requestWithoutOwnerEmail);
+    const response = await controller.specificOp(requestWithoutOwnerEmail);
 
     const error = response.body as Error;
 
@@ -135,7 +135,7 @@ describe("Create note controller", () => {
       body: {},
     };
 
-    const response = await controller.handle(requestWithoutParams);
+    const response = await controller.specificOp(requestWithoutParams);
 
     const error = response.body as Error;
 
@@ -155,7 +155,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controller.handle(requestWithUnregisteredUser);
+    const response = await controller.specificOp(requestWithUnregisteredUser);
 
     const error = response.body as Error;
 
@@ -175,7 +175,7 @@ describe("Create note controller", () => {
       },
     };
 
-    const response = await controllerWithStubUseCase.handle(validRequest);
+    const response = await controllerWithStubUseCase.specificOp(validRequest);
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toBeInstanceOf(Error);

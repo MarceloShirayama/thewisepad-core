@@ -9,7 +9,7 @@ export class UpdateNoteController implements Controller {
 
   constructor(private readonly useCase: UseCase) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async specificOp(request: HttpRequest): Promise<HttpResponse> {
     try {
       const missingNoteParams = getMissingParams(request, this.requiredParams);
 

@@ -20,7 +20,7 @@ export class SignInController implements Controller {
 
   constructor(private readonly signInUseCase: UseCase) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async specificOp(request: HttpRequest): Promise<HttpResponse> {
     try {
       const missingParams = getMissingParams(request, this.requiredParams);
 

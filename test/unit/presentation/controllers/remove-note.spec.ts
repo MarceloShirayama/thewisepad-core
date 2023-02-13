@@ -37,7 +37,7 @@ describe("Remove note controller", () => {
   it("Should return 200 if successfully removing note", async () => {
     const { validNote, controller } = makeSut();
 
-    const response = await controller.handle({
+    const response = await controller.specificOp({
       body: { noteId: validNote.id },
     });
 
@@ -48,7 +48,7 @@ describe("Remove note controller", () => {
   it("Should return 400 in an attempt to remove the non-existing note", async () => {
     const { anotherValidNote, controller } = makeSut();
 
-    const response = await controller.handle({
+    const response = await controller.specificOp({
       body: { noteId: anotherValidNote.id },
     });
 
@@ -59,7 +59,7 @@ describe("Remove note controller", () => {
   it("Should return 400 if request does not contain note id", async () => {
     const { controller } = makeSut();
 
-    const response = await controller.handle({
+    const response = await controller.specificOp({
       body: {},
     });
 
@@ -71,7 +71,7 @@ describe("Remove note controller", () => {
   it("Should return 500 if server throws", async () => {
     const { validNote, controllerWithUseCaseStub } = makeSut();
 
-    const response = await controllerWithUseCaseStub.handle({
+    const response = await controllerWithUseCaseStub.specificOp({
       body: { noteId: validNote.id },
     });
 

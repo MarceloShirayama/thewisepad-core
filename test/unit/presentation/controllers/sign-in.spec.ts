@@ -54,7 +54,7 @@ describe("Sign in controller", () => {
       body: { email: validUser.email, password: validUser.password },
     };
 
-    const response = await controller.handle(validSignInRequest);
+    const response = await controller.specificOp(validSignInRequest);
 
     const authResult = response.body as AuthenticationResult;
 
@@ -70,7 +70,7 @@ describe("Sign in controller", () => {
       body: { password: validUser.password },
     };
 
-    const response = await controller.handle(SignInRequestWithoutEmail);
+    const response = await controller.specificOp(SignInRequestWithoutEmail);
 
     const error = response.body as Error;
 
@@ -86,7 +86,7 @@ describe("Sign in controller", () => {
       body: { email: validUser.email },
     };
 
-    const response = await controller.handle(SignInRequestWithoutPassword);
+    const response = await controller.specificOp(SignInRequestWithoutPassword);
 
     const error = response.body as Error;
 
@@ -102,7 +102,7 @@ describe("Sign in controller", () => {
       body: {},
     };
 
-    const response = await controller.handle(
+    const response = await controller.specificOp(
       SignInRequestWithoutEmailAndPassword
     );
 
@@ -120,7 +120,7 @@ describe("Sign in controller", () => {
       body: { email: validUser.email, password: "incorrect password" },
     };
 
-    const response = await controller.handle(
+    const response = await controller.specificOp(
       SignInRequestWithIncorrectPassword
     );
 
@@ -135,7 +135,9 @@ describe("Sign in controller", () => {
       body: { email: validUser.email, password: validUser.password },
     };
 
-    const response = await controllerWithStubUseCase.handle(validSignInRequest);
+    const response = await controllerWithStubUseCase.specificOp(
+      validSignInRequest
+    );
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toBeInstanceOf(Error);

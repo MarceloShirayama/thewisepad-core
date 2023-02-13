@@ -39,7 +39,7 @@ describe("Load notes controller", () => {
       body: { userId: valiUser.id },
     };
 
-    const response = await controller.handle(request);
+    const response = await controller.specificOp(request);
 
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
@@ -51,7 +51,7 @@ describe("Load notes controller", () => {
 
     const request = { body: {} };
 
-    const response = await controller.handle(request);
+    const response = await controller.specificOp(request);
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toBeInstanceOf(MissingParamsError);
@@ -66,7 +66,7 @@ describe("Load notes controller", () => {
       },
     };
 
-    const response = await controllerWithUseCaseStub.handle(request);
+    const response = await controllerWithUseCaseStub.specificOp(request);
 
     expect(response.statusCode).toBe(500);
   });

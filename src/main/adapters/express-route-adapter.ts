@@ -8,7 +8,7 @@ export function adaptRoute(controller: Controller) {
       body: req.body,
     };
 
-    const httpResponse = await controller.handle(httpRequest);
+    const httpResponse = await controller.specificOp(httpRequest);
 
     res.status(httpResponse.statusCode).json(httpResponse.body);
   };

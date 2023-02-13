@@ -15,7 +15,7 @@ export class SignUpController implements Controller {
 
   constructor(private readonly useCase: UseCase) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse> {
+  async specificOp(request: HttpRequest): Promise<HttpResponse> {
     try {
       const missingParams = getMissingParams(request, this.requiredParams);
 
