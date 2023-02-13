@@ -1,4 +1,14 @@
-curl -v -H "Connection: close" POST http://localhost:3000/api/sign-up \
+#!/usr/bin/sh
+
+source ../../.env
+
+if test -z $SERVER_PORT_TESTS; then
+  PORT="3000"
+else
+  PORT=$SERVER_PORT_TESTS
+fi
+
+curl -v -H "Connection: close" POST http://localhost:$PORT/api/sign-up \
   -H 'Content-Type: application/json' \
   -d '{"email":"any@mail.com","password":"valid_Password_1"}' | jq
 
@@ -30,7 +40,7 @@ curl -v -H "Connection: close" POST http://localhost:3000/api/sign-up \
 
 sleep 1
 
-curl -v -H "Connection: close" POST http://localhost:3000/api/sign-in \
+curl -v -H "Connection: close" POST http://localhost:$PORT/api/sign-in \
   -H 'Content-Type: application/json' \
   -d '{"email":"any@mail.com","password":"valid_Password_1"}' | jq
 

@@ -1,5 +1,15 @@
-URL_SIGNUP=http://localhost:3000/api/sign-up
-URL_SIGNIN=http://localhost:3000/api/sign-in
+#!/usr/bin/sh
+
+source ../../.env
+
+if test -z $SERVER_PORT_TESTS; then
+  PORT="3000"
+else
+  PORT=$SERVER_PORT_TESTS
+fi
+
+URL_SIGNUP=http://localhost:$PORT/api/sign-up
+URL_SIGNIN=http://localhost:$PORT/api/sign-in
 VALID_USER_EMAIL=any@mail.com
 VALID_USER_PASSWORD=valid_Password_1
 ANOTHER_VALID_USER_EMAIL=another@mail.com

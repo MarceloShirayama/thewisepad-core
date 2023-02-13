@@ -2,10 +2,18 @@
 
 # should be able to remove existing note for valid user
 
+source ../../.env
+
+if test -z $SERVER_PORT_TESTS; then
+  PORT="3000"
+else
+  PORT=$SERVER_PORT_TESTS
+fi
+
 # variables
-URL_SIGNUP=http://localhost:3000/api/sign-up
-URL_SIGNIN=http://localhost:3000/api/sign-in
-URL_NOTES=http://localhost:3000/api/notes
+URL_SIGNUP=http://localhost:$PORT/api/sign-up
+URL_SIGNIN=http://localhost:$PORT/api/sign-in
+URL_NOTES=http://localhost:$PORT/api/notes
 VALID_USER_EMAIL=any@mail.com
 VALID_USER_PASSWORD=valid_Password_1
 
