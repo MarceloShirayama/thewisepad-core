@@ -7,3 +7,4 @@ export * from "./user-repository";
 export * from "./note-repository";
 export * from "./remove-note-controller";
 export * from "./create-note-controller";
+export * from "./update-note-controller";
