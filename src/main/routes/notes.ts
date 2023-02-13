@@ -3,6 +3,7 @@ import { Router } from "express";
 import { adaptRoute } from "../adapters";
 import {
   makeCreateNoteController,
+  makeLoadNotesController,
   makeRemoveNoteController,
   makeUpdateNoteController,
 } from "../factories";
@@ -20,4 +21,5 @@ export default (router: Router) => {
     authentication,
     adaptRoute(makeUpdateNoteController())
   );
+  router.get("/notes", authentication, adaptRoute(makeLoadNotesController()));
 };
