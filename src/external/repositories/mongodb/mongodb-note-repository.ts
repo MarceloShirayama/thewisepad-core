@@ -47,12 +47,12 @@ export class MongodbNoteRepository implements NoteRepository {
     await noteCollection.deleteOne({ _id });
   }
 
-  async updateTitle(noteId: string, newTitle: string): Promise<boolean> {
+  async updateTitle(noteId: string, newTitle: string): Promise<void> {
     const noteCollection = await MongoHelper.getCollection("notes");
 
     const _id = new ObjectId(noteId);
 
-    const result = await noteCollection.updateOne(
+    await noteCollection.updateOne(
       { _id },
       {
         $set: {
@@ -60,16 +60,14 @@ export class MongodbNoteRepository implements NoteRepository {
         },
       }
     );
-
-    return result.modifiedCount === 1;
   }
 
-  async updateContent(noteId: string, newContent: string): Promise<boolean> {
+  async updateContent(noteId: string, newContent: string): Promise<void> {
     const noteCollection = await MongoHelper.getCollection("notes");
 
     const _id = new ObjectId(noteId);
 
-    const result = await noteCollection.updateOne(
+    await noteCollection.updateOne(
       { _id },
       {
         $set: {
@@ -77,8 +75,6 @@ export class MongodbNoteRepository implements NoteRepository {
         },
       }
     );
-
-    return result.modifiedCount === 1;
   }
 
   private withApplicationId(dbNote: Document): NoteData {

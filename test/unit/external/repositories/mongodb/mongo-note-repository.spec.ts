@@ -84,9 +84,7 @@ describe("Mongodb user repository", () => {
 
     const newTitle = "New title";
 
-    const result = await repository.updateTitle(noteId, newTitle);
-
-    expect(result).toBeTruthy();
+    await repository.updateTitle(noteId, newTitle);
 
     const updatedNote = await repository.findById(noteId);
 
@@ -104,9 +102,7 @@ describe("Mongodb user repository", () => {
 
     const newContent = "New content";
 
-    const result = await repository.updateContent(noteId, newContent);
-
-    expect(result).toBeTruthy();
+    await repository.updateContent(noteId, newContent);
 
     const updatedNote = await repository.findById(noteId);
 

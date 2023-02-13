@@ -32,21 +32,15 @@ export class InMemoryNoteRepository implements NoteRepository {
     this._data.splice(noteIndex, 1);
   }
 
-  async updateTitle(noteId: string, newTitle: string): Promise<boolean> {
+  async updateTitle(noteId: string, newTitle: string): Promise<void> {
     const originalNote = await this.findById(noteId);
 
-    if (!originalNote) return false;
-
-    originalNote.title = newTitle;
-    return true;
+    if (originalNote) originalNote.title = newTitle;
   }
 
-  async updateContent(noteId: string, newContent: string): Promise<boolean> {
+  async updateContent(noteId: string, newContent: string): Promise<void> {
     const originalNote = await this.findById(noteId);
 
-    if (!originalNote) return false;
-
-    originalNote.content = newContent;
-    return true;
+    if (originalNote) originalNote.content = newContent;
   }
 }
