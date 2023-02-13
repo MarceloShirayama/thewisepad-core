@@ -2,8 +2,7 @@ import { InvalidTitleError } from "src/entities/errors";
 import { ExistingTitleError } from "src/use-cases/create-note/errors";
 import { NoteData, UserData } from "src/use-cases/ports";
 import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
-import { NoteBuilder } from "test/builders/note-builder";
-import { UserBuilder } from "test/builders/user-builder";
+import { NoteBuilder, UserBuilder } from "test/builders";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,

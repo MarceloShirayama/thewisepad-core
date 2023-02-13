@@ -1,5 +1,5 @@
 import { NoteData, UserData } from "src/use-cases/ports";
-import { UserBuilder } from "./user-builder";
+import { UserBuilder } from ".";
 
 export class NoteBuilder {
   private readonly owner: UserData = UserBuilder.createUser().build();

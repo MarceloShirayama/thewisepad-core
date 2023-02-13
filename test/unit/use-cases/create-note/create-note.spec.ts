@@ -1,7 +1,6 @@
 import { CreateNote } from "src/use-cases/create-note";
 import { NoteData, UserData } from "src/use-cases/ports";
-import { NoteBuilder } from "test/builders/note-builder";
-import { UserBuilder } from "test/builders/user-builder";
+import { NoteBuilder, UserBuilder } from "test/builders";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,

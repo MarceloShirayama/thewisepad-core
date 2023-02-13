@@ -6,8 +6,7 @@ import {
   makeTokenManager,
   makeUserRepository,
 } from "src/main/factories";
-import { NoteBuilder } from "test/builders/note-builder";
-import { UserBuilder } from "test/builders/user-builder";
+import { NoteBuilder, UserBuilder } from "test/builders";
 import { app } from "src/main/config/app";
 
 describe.skip("Sign-in route", () => {

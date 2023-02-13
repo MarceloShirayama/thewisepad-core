@@ -3,8 +3,7 @@ import { MissingParamsError } from "src/presentation/controllers/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { UpdateNoteController } from "src/presentation/controllers/update-note";
 import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
-import { NoteBuilder } from "test/builders/note-builder";
-import { UserBuilder } from "test/builders/user-builder";
+import { NoteBuilder, UserBuilder } from "test/builders";
 import {
   InMemoryNoteRepository,
   InMemoryUserRepository,

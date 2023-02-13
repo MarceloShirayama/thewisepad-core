@@ -1,8 +1,8 @@
 import { CustomAuthentication } from "src/use-cases/authentication";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";
+import { UserBuilder } from "test/builders";
 import { FakeTokenManager } from "test/doubles/authentication/fake-token-manager";
-import { UserBuilder } from "test/builders/user-builder";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
 

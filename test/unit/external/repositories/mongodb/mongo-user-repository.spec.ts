@@ -1,6 +1,6 @@
 import { MongoHelper } from "src/external/repositories/mongodb/helpers";
 import { MongodbUserRepository } from "src/external/repositories/mongodb";
-import { UserBuilder } from "test/builders/user-builder";
+import { UserBuilder } from "test/builders";
 
 describe("Mongodb user repository", () => {
   beforeAll(async () => await MongoHelper.connect());

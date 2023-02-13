@@ -2,7 +2,7 @@ import { InvalidEmailError, InvalidPasswordError } from "src/entities/errors";
 import { UserData } from "src/use-cases/ports";
 import { SignUp } from "src/use-cases/sign-up";
 import { ExistingUserError } from "src/use-cases/sign-up/errors";
-import { UserBuilder } from "test/builders/user-builder";
+import { UserBuilder } from "test/builders";
 import { makeAuthenticationServiceStub } from "test/doubles/authentication/authentication-stub";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";

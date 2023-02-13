@@ -1,8 +1,7 @@
 import { LoadNotesController } from "src/presentation/controllers";
 import { MissingParamsError } from "src/presentation/controllers/errors";
 import { LoadNotes } from "src/use-cases/load-notes";
-import { NoteBuilder } from "test/builders/note-builder";
-import { UserBuilder } from "test/builders/user-builder";
+import { NoteBuilder, UserBuilder } from "test/builders";
 import { InMemoryNoteRepository } from "test/doubles/repositories";
 import { makeErrorThrowingUseCaseStub } from "test/doubles/use-cases";
 

@@ -2,7 +2,7 @@ import { CustomAuthentication } from "src/use-cases/authentication";
 import { AuthenticationResult } from "src/use-cases/authentication/ports";
 import { UserData } from "src/use-cases/ports";
 import { SignIn } from "src/use-cases/sign-in";
-import { UserBuilder } from "test/builders/user-builder";
+import { UserBuilder } from "test/builders";
 import { FakeTokenManager } from "test/doubles/authentication/fake-token-manager";
 import { FakeEncoder } from "test/doubles/encoder";
 import { InMemoryUserRepository } from "test/doubles/repositories";
