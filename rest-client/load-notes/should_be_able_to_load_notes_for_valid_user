@@ -1,0 +1,76 @@
+#!/usr/bin/sh
+
+#should be able to load notes for valid user
+
+URL_SIGNUP=http://localhost:3000/api/sign-up
+URL_SIGNIN=http://localhost:3000/api/sign-in
+URL_NOTES=http://localhost:3000/api/notes
+VALID_USER_EMAIL=any@mail.com
+VALID_USER_PASSWORD=valid_Password_1
+
+echo "*** SIGN-UP ***"
+ID=$(curl -s -v -H POST $URL_SIGNUP \
+  -H 'Content-Type:application/json' \
+  -d '{"email":"'$VALID_USER_EMAIL'","password":"'$VALID_USER_PASSWORD'"}' | jq -r '.id')
+
+sleep 0.5
+echo '===================================================='
+
+echo "*** SIGN-IN ***"
+SIGNIN_RESPONSE=$(curl -s -v -H POST $URL_SIGNIN \
+  -H 'Content-Type:application/json' \
+  -d '{"email":"'$VALID_USER_EMAIL'","password":"'$VALID_USER_PASSWORD'"}')
+
+TOKEN=$(echo $SIGNIN_RESPONSE | jq -r '.accessToken')
+
+sleep 0.5
+echo '===================================================='
+
+echo "*** CREATE NOTE 1 ***"
+CREATE_NOTE_RESPONSE_1=$(curl -s -v -H POST $URL_NOTES \
+  -H 'Content-Type:application/json' \
+  -H 'Accept:application/json' \
+  -H 'x-access-token:'$TOKEN \
+  -d '{
+        "title":"any title",
+        "content": "any content",
+        "ownerEmail": "'$VALID_USER_EMAIL'",
+        "ownerId": "'$ID'"
+      }')
+
+echo $CREATE_NOTE_RESPONSE_1 | jq
+
+OWNER_ID=$(echo $CREATE_NOTE_RESPONSE_1 | jq -r '.ownerId')
+
+sleep 0.5
+echo '===================================================='
+
+echo "*** CREATE NOTE 2 ***"
+CREATE_NOTE_RESPONSE_2=$(curl -s -v -H POST $URL_NOTES \
+  -H 'Content-Type:application/json' \
+  -H 'Accept:application/json' \
+  -H 'x-access-token:'$TOKEN \
+  -d '{
+        "title":"another title",
+        "content": "another content",
+        "ownerEmail": "'$VALID_USER_EMAIL'",
+        "ownerId": "'$ID'"
+      }')
+
+echo $CREATE_NOTE_RESPONSE_2 | jq
+
+OWNER_ID=$(echo $CREATE_NOTE_RESPONSE_2 | jq -r '.ownerId')
+
+sleep 0.5
+echo '===================================================='
+
+echo "*** LOAD NOTES ***"
+LOAD_NOTES=$(curl -s -v -X GET $URL_NOTES \
+  -H 'Content-Type:application/json' \
+  -H 'Accept:application/json' \
+  -H 'x-access-token:'$TOKEN \
+  -d '{
+        "userId": "'$OWNER_ID'"
+      }')
+
+echo $LOAD_NOTES | jq
