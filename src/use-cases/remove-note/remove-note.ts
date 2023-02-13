@@ -1,4 +1,4 @@
-import { Either, left, right } from "src/shared";
+import { Either, left, right } from "../../shared";
 import { NoteData, NoteRepository, UseCase } from "../../use-cases/ports";
 import { NoExistentNoteError } from "./errors";
 

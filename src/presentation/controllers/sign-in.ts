@@ -1,9 +1,9 @@
-import { Either } from "src/shared";
+import { Either } from "../../shared";
 import {
   UserNotFoundError,
   WrongPasswordError,
-} from "src/use-cases/authentication/errors";
-import { AuthenticationResult } from "src/use-cases/authentication/ports";
+} from "../../use-cases/authentication/errors";
+import { AuthenticationResult } from "../../use-cases/authentication/ports";
 import { UseCase } from "../../use-cases/ports";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
