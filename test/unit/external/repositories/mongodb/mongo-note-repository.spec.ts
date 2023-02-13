@@ -1,6 +1,9 @@
 import { MongoHelper } from "src/external/repositories/mongodb/helpers";
-import { MongodbNoteRepository } from "src/external/repositories/mongodb";
-import { NoteBuilder } from "test/builders/note-builder";
+import {
+  MongodbNoteRepository,
+  MongodbUserRepository,
+} from "src/external/repositories/mongodb";
+import { NoteBuilder, UserBuilder } from "test/builders";
 
 describe("Mongodb user repository", () => {
   beforeAll(async () => await MongoHelper.connect());
@@ -24,23 +27,30 @@ describe("Mongodb user repository", () => {
   });
 
   it("Should find all notes from an user", async () => {
-    const repository = new MongodbNoteRepository();
+    const userRepository = new MongodbUserRepository();
+    const noteRepository = new MongodbNoteRepository();
+
+    const validUser = UserBuilder.createUser().build();
+
+    const user = await userRepository.add(validUser);
 
     const validNote1 = NoteBuilder.createNote().build();
     const validNote2 = NoteBuilder.createNote()
       .withDifferentTitleAndId()
       .build();
 
-    await repository.add(validNote1);
-    await repository.add(validNote2);
+    const userId = user.id as string;
+    validNote1.ownerId = userId;
+    validNote2.ownerId = userId;
 
-    const userId = validNote1.ownerId as string;
+    const note1 = await noteRepository.add(validNote1);
+    const note2 = await noteRepository.add(validNote2);
 
-    const foundNotes = await repository.findAllNotesFrom(userId);
+    const foundNotes = await noteRepository.findAllNotesFrom(userId);
 
     expect(foundNotes.length).toBe(2);
-    expect(foundNotes[0].title).toBe(validNote1.title);
-    expect(foundNotes[1].title).toBe(validNote2.title);
+    expect(foundNotes[0].title).toBe(note1.title);
+    expect(foundNotes[1].title).toBe(note2.title);
   });
 
   it("Should remove existing note", async () => {
