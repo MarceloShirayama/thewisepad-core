@@ -5,16 +5,12 @@ import { NoExistentNoteError } from "./errors";
 export class RemoveNote implements UseCase {
   constructor(private readonly noteRepository: NoteRepository) {}
 
-  async perform(
-    noteId: string
-  ): Promise<Either<NoExistentNoteError, NoteData>> {
+  async perform(noteId: string): Promise<Either<NoExistentNoteError, void>> {
     const noteExists = await this.noteRepository.findById(noteId);
 
     if (noteExists) {
-      const noteToRemove = (await this.noteRepository.remove(
-        noteId
-      )) as NoteData;
-      return right(noteToRemove);
+      const removedNote = await this.noteRepository.remove(noteId);
+      return right(removedNote);
     }
 
     return left(new NoExistentNoteError());

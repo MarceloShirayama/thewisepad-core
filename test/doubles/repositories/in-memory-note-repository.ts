@@ -26,14 +26,10 @@ export class InMemoryNoteRepository implements NoteRepository {
     return note || null;
   }
 
-  async remove(noteId: string): Promise<NoteData | null> {
+  async remove(noteId: string): Promise<void> {
     const noteIndex = this._data.findIndex((note) => note.id === noteId);
 
-    if (noteIndex === -1) return null;
-
-    const [removedNote] = this._data.splice(noteIndex, 1);
-
-    return removedNote;
+    this._data.splice(noteIndex, 1);
   }
 
   async updateTitle(noteId: string, newTitle: string): Promise<boolean> {

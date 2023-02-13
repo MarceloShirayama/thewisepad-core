@@ -31,18 +31,28 @@ describe("Remove note controller", () => {
       anotherValidNote,
       controller,
       controllerWithUseCaseStub,
+      noteRepositoryWithOneNote,
     };
   }
 
   it("Should return 200 if successfully removing note", async () => {
-    const { validNote, controller } = makeSut();
+    const { validNote, controller, noteRepositoryWithOneNote } = makeSut();
 
     const response = await controller.specificOp({
       body: { noteId: validNote.id },
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toBe(validNote);
+
+    const note = await noteRepositoryWithOneNote.findById(
+      validNote.id as string
+    );
+    const notes = await noteRepositoryWithOneNote.findAllNotesFrom(
+      validNote.ownerId as string
+    );
+
+    expect(note).toBeNull();
+    expect(notes).toHaveLength(0);
   });
 
   it("Should return 400 in an attempt to remove the non-existing note", async () => {

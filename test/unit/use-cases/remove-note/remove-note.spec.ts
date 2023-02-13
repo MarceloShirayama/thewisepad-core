@@ -21,11 +21,7 @@ describe("Remove note use case", () => {
   test("Should remove existing note", async () => {
     const { useCase, noteRepositoryWithNote, note } = makeSut();
 
-    const removedNote = await useCase.perform(note.id as string);
-
-    const result = removedNote.value as NoteData;
-
-    expect(result).toBe(note);
+    await useCase.perform(note.id as string);
 
     const findRemovedNote = await noteRepositoryWithNote.findById(
       note.id as string

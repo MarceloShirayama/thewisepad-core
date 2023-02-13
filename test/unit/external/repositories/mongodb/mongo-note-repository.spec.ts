@@ -73,16 +73,6 @@ describe("Mongodb user repository", () => {
     expect(removedNote).toBeNull();
   });
 
-  it("Should not remove non-existent note", async () => {
-    const repository = new MongodbNoteRepository();
-
-    const idNonExistentNote = "6058fdd8dcaa1ab0d608f337";
-
-    const response = await repository.remove(idNonExistentNote);
-
-    expect(response).toBeNull();
-  });
-
   it("Should update title of existing note", async () => {
     const repository = new MongodbNoteRepository();
 
