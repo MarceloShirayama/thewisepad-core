@@ -14,7 +14,7 @@ export class JwtTokenManager implements TokenManager {
   async sign(info: Payload, expires?: string): Promise<string> {
     return expires
       ? sign(info, this.secret, { expiresIn: expires })
-      : sign(info, this.secret);
+      : sign(info, this.secret, { expiresIn: "1m" });
   }
   async verify(
     token: string
