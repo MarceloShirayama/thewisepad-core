@@ -10,6 +10,7 @@ fi
 
 URL_SIGNUP=http://localhost:$PORT/api/sign-up
 URL_SIGNIN=http://localhost:$PORT/api/sign-in
+URL_NOTES=http://localhost:$PORT/api/notes
 VALID_USER_EMAIL=any@mail.com
 VALID_USER_PASSWORD=valid_Password_1
 ANOTHER_VALID_USER_EMAIL=another@mail.com
@@ -46,7 +47,7 @@ sleep 0.5
 echo '===================================================='
 
 echo create note
-curl -v -s -v -H POST http://localhost:3000/api/notes \
+curl -v -s -v -H POST $URL_NOTES \
   -H 'Content-Type:application/json' \
   -H 'Accept:application/json' \
   -H 'x-access-token:'$TOKEN \
