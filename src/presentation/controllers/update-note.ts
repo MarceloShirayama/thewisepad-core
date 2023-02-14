@@ -1,7 +1,10 @@
-import { UseCase } from "../../use-cases/ports";
+import { InvalidTitleError } from "../../entities/errors";
+import { Either } from "../../shared";
+import { ExistingTitleError } from "../../use-cases/create-note/errors";
+import { NoteData, UseCase } from "../../use-cases/ports";
 import { MissingParamsError } from "./errors";
 import { Controller, HttpRequest, HttpResponse } from "./ports";
-import { badRequest, getMissingParams, serverError } from "./util";
+import { badRequest, getMissingParams, ok, serverError } from "./util";
 
 export class UpdateNoteController implements Controller {
   readonly requiredParams = ["id", "ownerEmail", "ownerId"];
@@ -24,18 +27,14 @@ export class UpdateNoteController implements Controller {
       if (missingUpdateParams.includes(this.requiredUpdateParams.join(", ")))
         return badRequest(new MissingParamsError(missingUpdateParams));
 
-      const useCaseResponse = await this.useCase.perform(request.body);
+      const useCaseResponse: Either<
+        ExistingTitleError | InvalidTitleError,
+        NoteData
+      > = await this.useCase.perform(request.body);
 
-      if (useCaseResponse.isLeft())
-        return {
-          statusCode: 400,
-          body: useCaseResponse.value,
-        };
+      if (useCaseResponse.isRight()) return ok(useCaseResponse.value);
 
-      return {
-        statusCode: 200,
-        body: useCaseResponse.value,
-      };
+      return badRequest(useCaseResponse.value);
     } catch (error) {
       if (error instanceof Error) return serverError(error);
       console.error("Unexpected error", error);
