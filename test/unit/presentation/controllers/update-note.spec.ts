@@ -2,6 +2,7 @@ import { InvalidTitleError } from "src/entities/errors";
 import { MissingParamsError } from "src/presentation/controllers/errors";
 import { HttpRequest } from "src/presentation/controllers/ports";
 import { UpdateNoteController } from "src/presentation/controllers/update-note";
+import { NoExistentNoteError } from "src/use-cases/remove-note/errors";
 import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
 import { NoteBuilder, UserBuilder } from "test/builders";
 import {
@@ -15,6 +16,10 @@ describe("Update note controller", () => {
 
   const changeNoteData = NoteBuilder.createNote()
     .withDifferentTitleAndContent()
+    .build();
+
+  const anotherNoteData = NoteBuilder.createNote()
+    .withDifferentTitleAndId()
     .build();
 
   const requestWithoutNoteId = {
@@ -95,6 +100,26 @@ describe("Update note controller", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(updateNoteRequest);
+  });
+
+  it.only("Should return 400 when trying to update non-existent note", async () => {
+    const { controller } = makeSut();
+
+    const updateAnotherNoteRequest: UpdateNoteRequest = {
+      id: anotherNoteData.id as string,
+      title: anotherNoteData.title,
+      ownerEmail: anotherNoteData.ownerEmail,
+      ownerId: anotherNoteData.ownerId as string,
+    };
+
+    const request: HttpRequest = {
+      body: updateAnotherNoteRequest,
+    };
+
+    const response = await controller.specificOp(request);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toBeInstanceOf(NoExistentNoteError);
   });
 
   it("Should return 400 when trying to update note with invalid title", async () => {

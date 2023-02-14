@@ -1,6 +1,7 @@
 import { InvalidTitleError } from "src/entities/errors";
 import { ExistingTitleError } from "src/use-cases/create-note/errors";
 import { NoteData, UserData } from "src/use-cases/ports";
+import { NoExistentNoteError } from "src/use-cases/remove-note/errors";
 import { UpdateNote, UpdateNoteRequest } from "src/use-cases/update-note";
 import { NoteBuilder, UserBuilder } from "test/builders";
 import {
@@ -18,6 +19,10 @@ describe("Update note use case", () => {
       .withDifferentTitleAndContent()
       .build();
 
+    const anotherNote: NoteData = NoteBuilder.createNote()
+      .withDifferentTitleAndId()
+      .build();
+
     const noteRepositoryWithANote = new InMemoryNoteRepository([originalNote]);
 
     const userRepositoryWithAUser = new InMemoryUserRepository([validUser]);
@@ -27,7 +32,7 @@ describe("Update note use case", () => {
       userRepositoryWithAUser
     );
 
-    return { useCase, originalNote, changedNote };
+    return { useCase, originalNote, changedNote, anotherNote };
   }
 
   it("Should update title and content of existing note", async () => {
@@ -109,5 +114,24 @@ describe("Update note use case", () => {
     const error = response.value as Error;
 
     expect(error).toBeInstanceOf(InvalidTitleError);
+  });
+
+  it("Should not update non-existent note", async () => {
+    const { useCase, anotherNote } = makeSut();
+
+    const updateNoteRequest: UpdateNoteRequest = {
+      title: anotherNote.title,
+      content: anotherNote.content,
+      id: anotherNote.id as string,
+      ownerEmail: anotherNote.ownerEmail,
+      ownerId: anotherNote.ownerId as string,
+    };
+
+    const response = await useCase.perform(updateNoteRequest);
+
+    const error = response.value as Error;
+
+    expect(error).toBeInstanceOf(NoExistentNoteError);
+    expect(error.message).toBe("Note does not exist.");
   });
 });

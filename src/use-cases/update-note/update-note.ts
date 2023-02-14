@@ -9,6 +9,7 @@ import {
   UserData,
   UserRepository,
 } from "../../use-cases/ports";
+import { NoExistentNoteError } from "../remove-note/errors";
 
 export type UpdateNoteRequest = {
   title?: string;
@@ -26,7 +27,12 @@ export class UpdateNote implements UseCase {
 
   async perform(
     changeNoteData: UpdateNoteRequest
-  ): Promise<Either<ExistingTitleError | InvalidTitleError, NoteData>> {
+  ): Promise<
+    Either<
+      ExistingTitleError | InvalidTitleError | NoExistentNoteError,
+      NoteData
+    >
+  > {
     const userData = await this.userRepository.findByEmail(
       changeNoteData.ownerEmail
     );
@@ -34,6 +40,8 @@ export class UpdateNote implements UseCase {
     const originalNoteData = await this.noteRepository.findById(
       changeNoteData.id
     );
+
+    if (!originalNoteData) return left(new NoExistentNoteError());
 
     const { email, password } = userData as UserData;
 
