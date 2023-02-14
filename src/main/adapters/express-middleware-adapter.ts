@@ -7,7 +7,6 @@ export function adaptMiddleware(middleware: Middleware) {
     const request = {
       accessToken: req.headers?.["x-access-token"],
       requesterId: req.body.ownerId ? req.body.ownerId : req.body.userId,
-      ...(req.headers || {}),
     };
 
     const httpResponse = await middleware.handle(request);
