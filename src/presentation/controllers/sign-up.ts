@@ -29,7 +29,7 @@ export class SignUpController implements Controller {
 
       if (response.isRight()) return created(response.value);
 
-      if (response.isLeft() && response.value instanceof ExistingUserError)
+      if (response.value instanceof ExistingUserError)
         return forbidden(response.value);
 
       return badRequest(response.value);
